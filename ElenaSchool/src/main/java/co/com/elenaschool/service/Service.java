@@ -25,7 +25,7 @@ public class Service {
     LoginBusiness loginBusiness;
     
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/web/elenaschool/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/web/elenaschool/login", method = RequestMethod.GET, produces = "application/json")
     public String login(){
         return loginBusiness.generateToken();
     }
