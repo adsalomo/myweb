@@ -6,6 +6,7 @@
 package co.com.elenaschool.business;
 
 import java.util.Random;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,8 +21,6 @@ public class LoginBusiness {
      * @return 
      */
     public String generateToken() {
-        Random rand = new Random();
-        int myRandomNumber = rand.nextInt(0x10) + 0x10; 
-        return Integer.toHexString(myRandomNumber);
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
