@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.CompetenciaModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -17,24 +17,24 @@ public interface ICompetenciaDao {
      *
      * @param comp
      */
-    public boolean deleteCompetencia(CompetenciaModel comp) throws SQLException;
+    public boolean deleteCompetencia(CompetenciaModel comp);
 
     /**
      *
      * @param compentencia
      */
-    public boolean insertCompetencia(CompetenciaModel compentencia) throws SQLException;
+    public boolean insertCompetencia(CompetenciaModel compentencia);
 
     /**
      * 
      * @return 
      */
-    public List<CompetenciaModel> readCompetencia() throws SQLException;
+    public List<CompetenciaModel> readCompetencia();
 
     /**
      *
      * @param comp
      */
-    public boolean updateCompetencia(CompetenciaModel comp) throws SQLException;
+    public boolean updateCompetencia(CompetenciaModel comp);
 
 }

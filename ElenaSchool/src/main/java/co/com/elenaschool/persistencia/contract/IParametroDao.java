@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.ParametroModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,24 +15,24 @@ public interface IParametroDao {
      *
      * @param parametro
      */
-    public boolean deleteParametro(ParametroModel parametro) throws SQLException;
+    public boolean deleteParametro(ParametroModel parametro);
 
     /**
      *
      * @param parametro
      */
-    public boolean insertParametro(ParametroModel parametro) throws SQLException;
+    public boolean insertParametro(ParametroModel parametro);
 
     /**
      *
      * @return @throws SQLException
      */
-    public List<ParametroModel> readParametro() throws SQLException;
+    public List<ParametroModel> readParametro();
 
     /**
      *
      * @param parametro
      */
-    public boolean updateParametro(ParametroModel parametro) throws SQLException;
+    public boolean updateParametro(ParametroModel parametro);
 
 }

@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.GrupoAcademicoModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,25 +15,25 @@ public interface IGrupoAcademicoDao {
      *
      * @param grupo
      */
-    public boolean deleteGrupoAcademico(GrupoAcademicoModel grupo) throws SQLException;
+    public boolean deleteGrupoAcademico(GrupoAcademicoModel grupo);
 
     /**
      *
      * @param grupo
      */
-    public boolean insertGrupoAcademico(GrupoAcademicoModel grupo) throws SQLException;
+    public boolean insertGrupoAcademico(GrupoAcademicoModel grupo);
 
     /**
      * 
      * @return
      * @throws SQLException 
      */
-    public List<GrupoAcademicoModel> readGrupoAcademico() throws SQLException;
+    public List<GrupoAcademicoModel> readGrupoAcademico();
 
     /**
      *
      * @param grupo
      */
-    public boolean updateGrupoAcademico(GrupoAcademicoModel grupo) throws SQLException;
+    public boolean updateGrupoAcademico(GrupoAcademicoModel grupo);
 
 }

@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class CalendarioDao implements ICalendarioDao {
 
-    public CalendarioDao() {
-
-    }
-
-    /**
-     *
-     * @param calendario
-     */
+    @Override
     public boolean deleteCalendario(CalendarioModel calendario) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param calendario
-     */
+    @Override
     public boolean insertCalendario(CalendarioModel calendario) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * 
-     * @return 
-     */
+    @Override
     public List<CalendarioModel> readCalendario() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param calendario
-     */
+    @Override
     public boolean updateCalendario(CalendarioModel calendario) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }//end CalendarioDao

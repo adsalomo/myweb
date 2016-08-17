@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.AsignaturaModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -17,24 +17,24 @@ public interface IAsignaturaDao {
      *
      * @param asignatura
      */
-    public boolean deleteAsignatura(AsignaturaModel asignatura) throws SQLException;
+    boolean deleteAsignatura(AsignaturaModel asignatura);
 
     /**
      *
      * @param asignatura
      */
-    public boolean insertAsignatura(AsignaturaModel asignatura) throws SQLException;
+    boolean insertAsignatura(AsignaturaModel asignatura);
 
     /**
      *
      * @return
      */
-    public List<AsignaturaModel> readAsignatura() throws SQLException;
+    List<AsignaturaModel> readAsignatura();
 
     /**
      *
      * @param asignatura
      */
-    public boolean updateAsignatura(AsignaturaModel asignatura) throws SQLException;
+    boolean updateAsignatura(AsignaturaModel asignatura);
 
 }

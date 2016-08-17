@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.GradoEscolarModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,24 +15,24 @@ public interface IGradoEscolarDao {
      *
      * @param grado
      */
-    public boolean deleteGradoEscolar(GradoEscolarModel grado) throws SQLException;
+    public boolean deleteGradoEscolar(GradoEscolarModel grado);
 
     /**
      *
      * @param grado
      */
-    public boolean insertGradoEscolar(GradoEscolarModel grado) throws SQLException;
+    public boolean insertGradoEscolar(GradoEscolarModel grado);
 
     /**
      *
      * @return
      */
-    public List<GradoEscolarModel> readGradoEscolar() throws SQLException;
+    public List<GradoEscolarModel> readGradoEscolar();
 
     /**
      *
      * @param grado
      */
-    public boolean updateGradoEscolar(GradoEscolarModel grado) throws SQLException;
+    public boolean updateGradoEscolar(GradoEscolarModel grado);
 
 }

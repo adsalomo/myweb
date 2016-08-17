@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class InstitucionAcademicaDao implements IInstitucionAcademicaDao {
 
-    public InstitucionAcademicaDao() {
-
-    }
-
-    /**
-     *
-     * @param inst
-     */
+    @Override
     public boolean deleteInstitucionAcademicaModel(InstitucionAcademicaModel inst) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param inst
-     */
+    @Override
     public boolean insertInstitucionAcademicaModel(InstitucionAcademicaModel inst) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * 
-     * @return 
-     */
+    @Override
     public List<InstitucionAcademicaModel> readInstitucionAcademicaModel() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param inst
-     */
+    @Override
     public boolean updateInstitucionAcademicaModel(InstitucionAcademicaModel inst) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }//end InstitucionAcademicaDao

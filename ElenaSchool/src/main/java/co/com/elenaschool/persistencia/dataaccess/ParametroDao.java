@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class ParametroDao implements IParametroDao {
 
-    public ParametroDao() {
-
-    }
-
-    /**
-     *
-     * @param parametro
-     */
+    @Override
     public boolean deleteParametro(ParametroModel parametro) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param parametro
-     */
+    @Override
     public boolean insertParametro(ParametroModel parametro) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * 
-     * @return 
-     */
+    @Override
     public List<ParametroModel> readParametro() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param parametro
-     */
+    @Override
     public boolean updateParametro(ParametroModel parametro) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }//end ParametroDao

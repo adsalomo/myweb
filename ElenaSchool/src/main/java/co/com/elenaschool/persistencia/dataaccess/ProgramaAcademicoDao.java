@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class ProgramaAcademicoDao implements IProgramaAcademicoDao {
 
-    public ProgramaAcademicoDao() {
-
-    }
-
-    /**
-     *
-     * @param programa
-     */
+    @Override
     public boolean deleteProgramaAcademico(ProgramaAcademicoModel programa) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param programa
-     */
+    @Override
     public boolean insertProgramaAcademico(ProgramaAcademicoModel programa) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public List<ProgramaAcademicoModel> readProgramaAcademico() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param programa
-     */
+    @Override
     public boolean update(ProgramaAcademicoModel programa) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }//end ProgramaAcademicoDao

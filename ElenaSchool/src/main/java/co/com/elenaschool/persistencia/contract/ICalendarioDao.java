@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.CalendarioModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,24 +15,24 @@ public interface ICalendarioDao {
      *
      * @param calendario
      */
-    public boolean deleteCalendario(CalendarioModel calendario) throws SQLException;
+    public boolean deleteCalendario(CalendarioModel calendario);
 
     /**
      *
      * @param calendario
      */
-    public boolean insertCalendario(CalendarioModel calendario) throws SQLException;
+    public boolean insertCalendario(CalendarioModel calendario);
 
     /**
      *
      * @return
      */
-    public List<CalendarioModel> readCalendario() throws SQLException;
+    public List<CalendarioModel> readCalendario();
 
     /**
      *
      * @param calendario
      */
-    public boolean updateCalendario(CalendarioModel calendario) throws SQLException;
+    public boolean updateCalendario(CalendarioModel calendario);
 
 }

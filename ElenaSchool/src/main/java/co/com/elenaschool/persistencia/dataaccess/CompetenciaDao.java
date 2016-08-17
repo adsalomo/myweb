@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class CompetenciaDao implements ICompetenciaDao {
 
-    public CompetenciaDao() {
-
-    }
-
-    /**
-     *
-     * @param comp
-     */
+    @Override
     public boolean deleteCompetencia(CompetenciaModel comp) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param compentencia
-     */
+    @Override
     public boolean insertCompetencia(CompetenciaModel compentencia) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public List<CompetenciaModel> readCompetencia() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param comp
-     */
+    @Override
     public boolean updateCompetencia(CompetenciaModel comp) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }//end CompetenciaDao

@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.PeriodoAcademicoModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,24 +15,24 @@ public interface IPeriodoAcademicoDao {
      *
      * @param periodo
      */
-    public boolean deletePeriodoAcademico(PeriodoAcademicoModel periodo) throws SQLException;
+    public boolean deletePeriodoAcademico(PeriodoAcademicoModel periodo);
 
     /**
      *
      * @param periodo
      */
-    public boolean insertPeriodoAcademico(PeriodoAcademicoModel periodo) throws SQLException;
+    public boolean insertPeriodoAcademico(PeriodoAcademicoModel periodo);
 
     /**
      *
      * @return
      */
-    public List<PeriodoAcademicoModel> readPeriodoAcademico() throws SQLException;
+    public List<PeriodoAcademicoModel> readPeriodoAcademico();
 
     /**
      *
      * @param periodo
      */
-    public boolean updatePeriodoAcademico(PeriodoAcademicoModel periodo) throws SQLException;
+    public boolean updatePeriodoAcademico(PeriodoAcademicoModel periodo);
 
 }

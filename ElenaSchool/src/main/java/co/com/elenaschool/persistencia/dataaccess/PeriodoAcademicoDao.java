@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class PeriodoAcademicoDao implements IPeriodoAcademicoDao {
 
-    public PeriodoAcademicoDao() {
-
-    }
-
-    /**
-     *
-     * @param periodo
-     */
+    @Override
     public boolean deletePeriodoAcademico(PeriodoAcademicoModel periodo) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param periodo
-     */
+    @Override
     public boolean insertPeriodoAcademico(PeriodoAcademicoModel periodo) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public List<PeriodoAcademicoModel> readPeriodoAcademico() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param periodo
-     */
+    @Override
     public boolean updatePeriodoAcademico(PeriodoAcademicoModel periodo) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }//end PeriodoAcademicoDao

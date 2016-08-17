@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.DetalleCompetenciaModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,24 +15,24 @@ public interface IDetalleCompetenciaDao {
      *
      * @param detalle
      */
-    public boolean deleteDetalleCompetencia(DetalleCompetenciaModel detalle) throws SQLException;
+    public boolean deleteDetalleCompetencia(DetalleCompetenciaModel detalle);
 
     /**
      *
      * @param detalle
      */
-    public boolean insertDetalleCompetencia(DetalleCompetenciaModel detalle) throws SQLException;
+    public boolean insertDetalleCompetencia(DetalleCompetenciaModel detalle);
 
     /**
      *
      * @return
      */
-    public List<DetalleCompetenciaModel> readDetalleCompetencia() throws SQLException;
+    public List<DetalleCompetenciaModel> readDetalleCompetencia();
 
     /**
      *
      * @param detalle
      */
-    public boolean updateDetalleCompetencia(DetalleCompetenciaModel detalle) throws SQLException;
+    public boolean updateDetalleCompetencia(DetalleCompetenciaModel detalle);
 
 }

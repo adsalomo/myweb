@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.ClaseModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,25 +15,25 @@ public interface IClaseDao {
      *
      * @param clase
      */
-    public boolean deleteClase(ClaseModel clase) throws SQLException;
+    public boolean deleteClase(ClaseModel clase);
 
     /**
      *
      * @param clase
      * @return 
      */
-    public boolean insertClase(ClaseModel clase) throws SQLException;
+    public boolean insertClase(ClaseModel clase);
 
     /**
      * 
      * @return 
      */
-    public List<ClaseModel> readClase() throws SQLException;
+    public List<ClaseModel> readClase();
 
     /**
      *
      * @param clase
      */
-    public boolean updateClase(ClaseModel clase) throws SQLException;
+    public boolean updateClase(ClaseModel clase);
 
 }

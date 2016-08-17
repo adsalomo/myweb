@@ -1,7 +1,7 @@
 package co.com.elenaschool.persistencia.contract;
 
 import co.com.elenaschool.persistencia.model.ProgramaAcademicoModel;
-import java.sql.SQLException;
+
 import java.util.List;
 
 /**
@@ -15,24 +15,24 @@ public interface IProgramaAcademicoDao {
      *
      * @param programa
      */
-    public boolean deleteProgramaAcademico(ProgramaAcademicoModel programa) throws SQLException;
+    public boolean deleteProgramaAcademico(ProgramaAcademicoModel programa);
 
     /**
      *
      * @param programa
      */
-    public boolean insertProgramaAcademico(ProgramaAcademicoModel programa) throws SQLException;
+    public boolean insertProgramaAcademico(ProgramaAcademicoModel programa);
 
     /**
      *
      * @return
      */
-    public List<ProgramaAcademicoModel> readProgramaAcademico() throws SQLException;
+    public List<ProgramaAcademicoModel> readProgramaAcademico();
 
     /**
      *
      * @param programa
      */
-    public boolean update(ProgramaAcademicoModel programa) throws SQLException;
+    public boolean update(ProgramaAcademicoModel programa);
 
 }

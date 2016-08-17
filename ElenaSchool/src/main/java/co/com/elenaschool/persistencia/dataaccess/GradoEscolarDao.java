@@ -11,39 +11,24 @@ import java.util.List;
  */
 public class GradoEscolarDao implements IGradoEscolarDao {
 
-    public GradoEscolarDao() {
-
-    }
-
-    /**
-     *
-     * @param grado
-     */
+    @Override
     public boolean deleteGradoEscolar(GradoEscolarModel grado) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param grado
-     */
+    @Override
     public boolean insertGradoEscolar(GradoEscolarModel grado) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public List<GradoEscolarModel> readGradoEscolar() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param grado
-     */
+    @Override
     public boolean updateGradoEscolar(GradoEscolarModel grado) {
-        return false;
-    }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }   
+    
 }//end GradoEscolarDao

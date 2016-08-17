@@ -11,39 +11,26 @@ import java.util.List;
  */
 public class DetalleCompetenciaDao implements IDetalleCompetenciaDao {
 
-    public DetalleCompetenciaDao() {
-
-    }
-    
-    /**
-     *
-     * @param detalle
-     */
+    @Override
     public boolean deleteDetalleCompetencia(DetalleCompetenciaModel detalle) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param detalle
-     */
+    @Override
     public boolean insertDetalleCompetencia(DetalleCompetenciaModel detalle) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public List<DetalleCompetenciaModel> readDetalleCompetencia() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param detalle
-     */
+    @Override
     public boolean updateDetalleCompetencia(DetalleCompetenciaModel detalle) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
+    
 }//end DetalleCompetenciaDao

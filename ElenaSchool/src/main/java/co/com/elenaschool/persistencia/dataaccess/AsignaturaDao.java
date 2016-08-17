@@ -9,41 +9,26 @@ import java.util.List;
  * @version 1.0
  * @created 17-ago-2016 08:41:32
  */
-public class AsignaturaDao implements IAsignaturaDao {
+public class AsignaturaDao implements IAsignaturaDao{
 
-    public AsignaturaDao() {
-
-    }
-
-    /**
-     *
-     * @param asignatura
-     */
+    @Override
     public boolean deleteAsignatura(AsignaturaModel asignatura) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param asignatura
-     */
+    @Override
     public boolean insertAsignatura(AsignaturaModel asignatura) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * 
-     * @return 
-     */
+    @Override
     public List<AsignaturaModel> readAsignatura() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param asignatura
-     */
+    @Override
     public boolean updateAsignatura(AsignaturaModel asignatura) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+  
 }//end AsignaturaDao
