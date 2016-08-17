@@ -3,12 +3,14 @@ package co.com.elenaschool.persistencia.dataaccess;
 import co.com.elenaschool.persistencia.model.CompetenciaModel;
 import co.com.elenaschool.persistencia.contract.ICompetenciaDao;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  * @author AdrianL
  * @version 1.0
  * @created 17-ago-2016 08:41:36
  */
+@Component
 public class CompetenciaDao implements ICompetenciaDao {
 
     @Override

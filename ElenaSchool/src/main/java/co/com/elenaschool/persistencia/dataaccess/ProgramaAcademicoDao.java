@@ -3,12 +3,14 @@ package co.com.elenaschool.persistencia.dataaccess;
 import co.com.elenaschool.persistencia.model.ProgramaAcademicoModel;
 import co.com.elenaschool.persistencia.contract.IProgramaAcademicoDao;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  * @author AdrianL
  * @version 1.0
  * @created 17-ago-2016 08:41:42
  */
+@Component
 public class ProgramaAcademicoDao implements IProgramaAcademicoDao {
 
     @Override

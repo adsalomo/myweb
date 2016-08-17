@@ -3,12 +3,14 @@ package co.com.elenaschool.persistencia.dataaccess;
 import co.com.elenaschool.persistencia.model.AsignaturaModel;
 import co.com.elenaschool.persistencia.contract.IAsignaturaDao;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  * @author AdrianL
  * @version 1.0
  * @created 17-ago-2016 08:41:32
  */
+@Component
 public class AsignaturaDao implements IAsignaturaDao{
 
     @Override

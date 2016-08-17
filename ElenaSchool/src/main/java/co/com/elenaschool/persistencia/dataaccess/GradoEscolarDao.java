@@ -3,12 +3,14 @@ package co.com.elenaschool.persistencia.dataaccess;
 import co.com.elenaschool.persistencia.model.GradoEscolarModel;
 import co.com.elenaschool.persistencia.contract.IGradoEscolarDao;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  * @author AdrianL
  * @version 1.0
  * @created 17-ago-2016 08:41:38
  */
+@Component
 public class GradoEscolarDao implements IGradoEscolarDao {
 
     @Override
