@@ -31,6 +31,13 @@
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
         </dependency>
+        <dependency>
+            <groupId>elenaschooldataaccess</groupId>
+            <artifactId>elenaschooldataaccess</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/ElenaSchoolDataAccess.jar</systemPath>
+        </dependency>
     </dependencies>
    
     <build>
