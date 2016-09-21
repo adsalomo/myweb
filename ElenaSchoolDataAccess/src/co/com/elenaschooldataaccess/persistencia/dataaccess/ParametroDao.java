@@ -1,7 +1,7 @@
 package co.com.elenaschooldataaccess.persistencia.dataaccess;
 
-import co.com.elenaschooldataaccess.persistencia.model.ParametroModel;
 import co.com.elenaschooldataaccess.persistencia.contract.IParametroDao;
+import co.com.elenaschoolmodel.model.ParametroModel;
 import java.util.List;
 
 /**

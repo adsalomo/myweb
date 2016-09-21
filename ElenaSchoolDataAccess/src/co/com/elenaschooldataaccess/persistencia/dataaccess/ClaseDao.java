@@ -1,7 +1,7 @@
 package co.com.elenaschooldataaccess.persistencia.dataaccess;
 
-import co.com.elenaschooldataaccess.persistencia.model.ClaseModel;
 import co.com.elenaschooldataaccess.persistencia.contract.IClaseDao;
+import co.com.elenaschoolmodel.model.ClaseModel;
 import java.util.List;
 
 /**

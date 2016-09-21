@@ -1,7 +1,6 @@
 package co.com.elenaschooldataaccess.persistencia.contract;
 
-import co.com.elenaschooldataaccess.persistencia.model.PeriodoAcademicoModel;
-
+import co.com.elenaschoolmodel.model.PeriodoAcademicoModel;
 import java.util.List;
 
 /**

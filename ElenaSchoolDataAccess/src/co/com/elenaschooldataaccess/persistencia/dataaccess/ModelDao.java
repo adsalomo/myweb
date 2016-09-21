@@ -2,9 +2,13 @@ package co.com.elenaschooldataaccess.persistencia.dataaccess;
 
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.helper.ModelHelper;
-import co.com.elenaschooldataaccess.persistencia.model.Model;
+import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschooltransverse.util.Util;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -43,7 +47,19 @@ public class ModelDao implements IModelDao {
      * constructor
      */
     public ModelDao() {
-        jdbcTemplate = new JdbcTemplate(Util.getDataSource());
+        jdbcTemplate = new JdbcTemplate(getDataSource());
+    }
+    
+    private DataSource getDataSource(){
+        DataSource dataSource = null;
+        try {
+            dataSource = Util.getDataSource();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dataSource;
     }
 
     @Override
