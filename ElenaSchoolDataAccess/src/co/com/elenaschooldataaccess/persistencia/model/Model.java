@@ -6,7 +6,7 @@
 package co.com.elenaschooldataaccess.persistencia.model;
 
 /**
- *
+ * Define las propiedades de la estructura de una tabla
  * @author AdrianL
  */
 public class Model {

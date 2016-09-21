@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.elenaschooldataaccess.persistencia.dataaccess;
 
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.helper.ModelHelper;
 import co.com.elenaschooldataaccess.persistencia.model.Model;
-import co.com.elenaschooldataaccess.persistencia.util.Util;
+import co.com.elenaschooltransverse.util.Util;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -18,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class ModelDao implements IModelDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     private final String sqlSelect = "SELECT "
             + "c.table_name NameTable, "
