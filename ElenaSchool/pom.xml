@@ -38,6 +38,13 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/ElenaSchoolDataAccess.jar</systemPath>
         </dependency>
+          <dependency>
+            <groupId>elenaschooltransverse</groupId>
+            <artifactId>elenaschooltransverse</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/ElenaSchoolTransverse.jar</systemPath>
+        </dependency>
     </dependencies>
    
     <build>

@@ -19,8 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ModelBusiness {
     
-    private IModelDao iModelDao;
+    private final IModelDao iModelDao;
     
+    /**
+     * Constructor
+     */
     public ModelBusiness(){
         iModelDao = new ModelDao();
     }
