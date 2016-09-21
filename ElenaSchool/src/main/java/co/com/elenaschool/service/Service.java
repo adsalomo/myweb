@@ -7,7 +7,7 @@ package co.com.elenaschool.service;
 
 import co.com.elenaschool.business.LoginBusiness;
 import co.com.elenaschool.business.ModelBusiness;
-import co.com.elenaschooldataaccess.persistencia.model.Model;
+import co.com.elenaschoolmodel.model.Model;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

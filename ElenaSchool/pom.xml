@@ -38,12 +38,19 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/ElenaSchoolDataAccess.jar</systemPath>
         </dependency>
-          <dependency>
+        <dependency>
             <groupId>elenaschooltransverse</groupId>
             <artifactId>elenaschooltransverse</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/ElenaSchoolTransverse.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>elenaschoolmodel</groupId>
+            <artifactId>elenaschoolmodel</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/ElenaSchoolModel.jar</systemPath>
         </dependency>
     </dependencies>
    
@@ -56,7 +63,7 @@
         </plugins>
     </build>
     
-     <properties>
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

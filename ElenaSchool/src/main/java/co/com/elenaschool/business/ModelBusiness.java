@@ -7,7 +7,7 @@ package co.com.elenaschool.business;
 
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
-import co.com.elenaschooldataaccess.persistencia.model.Model;
+import co.com.elenaschoolmodel.model.Model;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
