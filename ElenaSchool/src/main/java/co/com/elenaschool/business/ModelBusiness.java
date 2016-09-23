@@ -30,9 +30,10 @@ public class ModelBusiness {
     
     /**
      * Obtiene la estructura de una tabla
+     * @param model
      * @return 
      */
-    public List<Model> getEstructuraTabla(){
-        return iModelDao.readModel(new Model());
+    public List<Model> getEstructuraTabla(Model model){
+        return iModelDao.readModel(model);
     }
 }

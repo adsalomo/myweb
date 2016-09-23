@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.elenaschool.service;
 
 import co.com.elenaschool.business.LoginBusiness;
@@ -11,6 +6,7 @@ import co.com.elenaschoolmodel.model.Model;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +33,9 @@ public class Service {
     }
     
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.GET, produces = "application/json")
-    public List<Model> getEstructuraTabla(){
-        return modelBusiness.getEstructuraTabla();
+    @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.POST, produces = "application/json")
+    public List<Model> getEstructuraTabla(@RequestBody Model model){
+        return modelBusiness.getEstructuraTabla(model);
     }
     
     
