@@ -41,7 +41,7 @@ public class ModelDao implements IModelDao {
             + "WHERE "
             + "c.table_schema LIKE 'public' "
             + "AND c.table_catalog LIKE 'elenaschool' "
-            + "AND c.table_name LIKE 'grupo_academico' ";
+            + "AND c.table_name LIKE ? ";
 
     /**
      * constructor
@@ -64,7 +64,7 @@ public class ModelDao implements IModelDao {
 
     @Override
     public List<Model> readModel(Model model) {
-        return jdbcTemplate.query(sqlSelect, new ModelHelper());
+        return jdbcTemplate.query(sqlSelect, new Object[]{model.getNameTable()}, new ModelHelper());
     }
 
 }
