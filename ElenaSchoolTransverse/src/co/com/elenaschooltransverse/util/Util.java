@@ -55,9 +55,10 @@ public class Util {
      * @throws FileNotFoundException 
      */
     public static Object deserialize(String fileName) throws FileNotFoundException {
-        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
-        Object obj = decoder.readObject();
-        decoder.close();
+        Object obj;
+        try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)))) {
+            obj = decoder.readObject();
+        }
         return obj;
     }
 
@@ -68,9 +69,9 @@ public class Util {
      * @throws FileNotFoundException 
      */
     public static void serialize(Object obj, String fileName) throws FileNotFoundException {
-        XMLEncoder encoder = new XMLEncoder(new FileOutputStream(fileName));
-        encoder.writeObject(obj);
-        encoder.close();
+        try (XMLEncoder encoder = new XMLEncoder(new FileOutputStream(fileName))) {
+            encoder.writeObject(obj);
+        }
     }
     
     
