@@ -11,7 +11,7 @@ public class CalendarioModel {
 
     private boolean activo;
     private int ano;
-    private char codigo;
+    private String codigo;
     private String descripcion;
     private Date fechaCreacion;
     private Date fechaFin;
@@ -55,14 +55,14 @@ public class CalendarioModel {
     /**
      * @return the codigo
      */
-    public char getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
     /**
      * @param codigo the codigo to set
      */
-    public void setCodigo(char codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

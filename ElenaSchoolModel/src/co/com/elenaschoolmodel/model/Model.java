@@ -19,6 +19,15 @@ public class Model {
     private int lenght;
     private int numericPrecision;
     private String labelName;
+    private Object valor;
+
+    public Object getValor() {
+        return valor;
+    }
+
+    public void setValor(Object valor) {
+        this.valor = valor;
+    }
 
     /**
      * @return the tableName
