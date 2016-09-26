@@ -3,6 +3,7 @@ package co.com.elenaschool.service;
 import co.com.elenaschool.business.LoginBusiness;
 import co.com.elenaschool.business.ModelBusiness;
 import co.com.elenaschoolmodel.model.Model;
+import co.com.elenaschoolmodel.model.QueryModel;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +37,12 @@ public class Service {
     @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.POST, produces = "application/json")
     public List<Model> getEstructuraTabla(@RequestBody Model model){
         return modelBusiness.getEstructuraTabla(model);
+    }
+    
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/web/elenaschool/getConsulta", method = RequestMethod.GET, produces = "application/json")
+    public QueryModel getConsulta(){
+        return modelBusiness.getConsulta(new QueryModel());
     }
     
     
