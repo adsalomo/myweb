@@ -1,25 +1,32 @@
 package co.com.elenaschooldataaccess.persistencia.dataaccess;
 
+import co.com.elenaschooldataaccess.persistencia.helper.ModelMapperHelper;
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.helper.ModelHelper;
 import co.com.elenaschoolmodel.model.Model;
-import co.com.elenaschooltransverse.util.Util;
-import java.io.FileNotFoundException;
+import co.com.elenaschoolmodel.model.QueryModel;
+import co.com.elenaschooltransverse.util.Conexion;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
+ * Implementación crud dynamic table
  *
  * @author AdrianL
  */
 public class ModelDao implements IModelDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final Conexion conexion = Conexion.getInstance();
+    private ResultSet resultSet;
+    private PreparedStatement preparedStatement;
 
-    private final String sqlSelect = "SELECT "
+    /**
+     * Consulta para obtener la estructura de una tabla
+     */
+    private final String sqlSelectEstrutura = "SELECT "
             + "c.table_name NameTable, "
             + "c.column_name ColumnName, "
             + "(CASE WHEN substring(k.constraint_name FROM 1 FOR 2) LIKE 'pk' THEN '1'::bit ELSE '0'::bit END) AS IsPrimary, "
@@ -44,27 +51,31 @@ public class ModelDao implements IModelDao {
             + "AND c.table_name LIKE ? ";
 
     /**
-     * constructor
+     * Obtiene la estructura de una tabla de la base de datos
+     *
+     * @param model objeto Model de la estructura de una tabla
+     * @return
+     * @throws SQLException
      */
-    public ModelDao() {
-        jdbcTemplate = new JdbcTemplate(getDataSource());
-    }
-    
-    private DataSource getDataSource(){
-        DataSource dataSource = null;
-        try {
-            dataSource = Util.getDataSource();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return dataSource;
+    @Override
+    public List<Model> getEstructura(Model model) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(conexion.getDataSource());
+        return jdbcTemplate.query(sqlSelectEstrutura, new Object[]{model.getNameTable()}, new ModelHelper());
     }
 
+    /**
+     * Realiza consulta de una tabla
+     *
+     * @param queryModel
+     * @return objeto queryModel
+     * @throws SQLException
+     */
     @Override
-    public List<Model> readModel(Model model) {
-        return jdbcTemplate.query(sqlSelect, new Object[]{model.getNameTable()}, new ModelHelper());
+    public QueryModel getConsulta(QueryModel queryModel) throws SQLException {
+        preparedStatement = conexion.getDataSource().getConnection().prepareStatement("select * from calendario;");
+        resultSet = preparedStatement.executeQuery();
+        queryModel.setListResult(ModelMapperHelper.mapRersultSetToObject(resultSet));
+        return queryModel;
     }
 
 }

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package co.com.elenaschooldataaccess.persistencia.helper;
 
 import co.com.elenaschoolmodel.model.Model;
@@ -6,11 +11,10 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
- * 
+ *
  * @author AdrianL
  */
 public class ModelHelper implements RowMapper<Model>{
-
     /**
      * Mapea los campos de la consulta
      * @param rs
@@ -32,5 +36,4 @@ public class ModelHelper implements RowMapper<Model>{
         model.setLabelName(rs.getString("LabelName"));
         return model;
     }
-    
 }
