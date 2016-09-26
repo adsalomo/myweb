@@ -15,6 +15,17 @@ app.factory('$myService', ['$http', function ($http) {
                 url: 'http://localhost:8081/web/elenaschool/getEstructuraTabla',
                 data: { nameTable: nameTable }
             });
+        },
+        
+        getConsultaService: function () {
+            return $http({
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                url: 'http://localhost:8081/web/elenaschool/getConsulta',
+                data: { }
+            });
         }
         
     }

@@ -31,6 +31,8 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         for (var i = 0, l = numRow; i < l; i++) {
                             $scope.numRow[i] = i;
                         };
+                        
+                        $scope.getConsultaAction();
 
                     }).error(function (data, status, headers, config) {
                 console.log(data);
@@ -52,6 +54,19 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         return true;
                     }
                 }
+            });
+        };
+        
+        $scope.getConsultaAction = function () {
+
+            $myService.getConsultaService()
+                    .success(function (data, status, headers, config) {
+
+                        $scope.consultaModel = data;
+                        
+
+                    }).error(function (data, status, headers, config) {
+                console.log(data);
             });
         };
 

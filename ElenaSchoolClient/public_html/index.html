@@ -12,7 +12,7 @@ and open the template in the editor.
         <link href="css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
     </head>
     <body ng-controller="mainController">
-        <div class="container" ng-init="getEstructuraTablaAction('asignatura')">
+        <div class="container" ng-init="getEstructuraTablaAction('periodo_academico')">
             <div class="row">
                 <div class="col-xs-12">
                     <H2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
@@ -28,7 +28,7 @@ and open the template in the editor.
                             <div class="form-group">
                                 <label>{{item.labelName}}</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" />
+                                    <input ng-model="item" type="text" class="form-control" />
                                     <span class="input-group-addon" ng-click="openLupaAction()">
                                         <img src="images/lupa.png" />
                                     </span>
@@ -38,7 +38,7 @@ and open the template in the editor.
                         <div ng-if="!item.isForeign">
                             <div class="form-group">
                                 <label>{{item.labelName}}</label>
-                                <input class="form-control" />
+                                <input ng-model="item" class="form-control" />
                             </div>
                         </div>
                     </div>
