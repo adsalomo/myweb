@@ -65,17 +65,21 @@ public class ModelDao implements IModelDao {
 
     /**
      * Realiza consulta de una tabla
-     *
      * @param queryModel
      * @return objeto queryModel
      * @throws SQLException
      */
     @Override
     public QueryModel getConsulta(QueryModel queryModel) throws SQLException {
-        preparedStatement = conexion.getDataSource().getConnection().prepareStatement("select * from calendario;");
-        resultSet = preparedStatement.executeQuery();
-        queryModel.setListResult(ModelMapperHelper.mapRersultSetToObject(resultSet));
-        return queryModel;
+        try {
+            preparedStatement = conexion.getDataSource().getConnection().prepareStatement("select * from calendario;");
+            resultSet = preparedStatement.executeQuery();
+            queryModel.setListResult(ModelMapperHelper.mapRersultSetToObject(resultSet));
+            return queryModel;
+        } finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
     }
 
 }
