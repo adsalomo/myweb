@@ -1,52 +1,17 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html ng-app="elenaSchoolApp">
     <head>
         <title>ElenaSchool a&e 1.0</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="css/myStyle.css" rel="stylesheet" type="text/css" />
     </head>
-    <body ng-controller="mainController">
-        <div class="container" ng-init="getEstructuraTablaAction('periodo_academico')">
-            <div class="row">
-                <div class="col-xs-12">
-                    <H2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
-                </div>
-            </div>
-            <div ng-repeat="row in numRow">
-                <div class="row">
-
-                    <div class="col-xs-12 col-md-12 col-lg-3" 
-                         ng-repeat="item in modelEstructura.slice((row === 0 ? row : (row * numColumn)), 
-                                     (row === 0 ? numColumn : ((row * numColumn) + numColumn)))">
-                        <div ng-if="item.isForeign">
-                            <div class="form-group">
-                                <label>{{item.labelName}}</label>
-                                <div class="input-group">
-                                    <input ng-model="item" type="text" class="form-control" />
-                                    <span class="input-group-addon" ng-click="openLupaAction()">
-                                        <img src="images/lupa.png" />
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-if="!item.isForeign">
-                            <div class="form-group">
-                                <label>{{item.labelName}}</label>
-                                <input ng-model="item" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
+    <body ng-controller="mainController">        
+        
+        <div class="container" ng-init="getEstructuraTablaAction('calendario')">
+            <div ng-include="'includes/controls/buttons.html'"></div>
+            <div ng-include="'includes/controls/formulario.html'"></div>
         </div>
 
         <script src="scripts/libs/jquery/jquery-2.2.3.js" type="text/javascript"></script>

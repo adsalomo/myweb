@@ -4,3 +4,12 @@
     Description : Style personalizados de la app
 */
 
+button.btn-transparente{
+    background-color:transparent;
+}
+
+.border-buttons{
+    border:1px solid;
+    border-color: #dcdcdc;
+    padding: 0px;
+}
