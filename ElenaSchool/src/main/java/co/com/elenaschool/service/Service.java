@@ -1,11 +1,9 @@
 package co.com.elenaschool.service;
 
-import co.com.elenaschool.business.LoginBusiness;
-import co.com.elenaschool.business.ModelBusiness;
+import co.com.elenaschoolbusiness.ModelBusiness;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,17 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Service {
     
-    @Autowired
-    LoginBusiness loginBusiness;
-    
-    @Autowired
-    ModelBusiness modelBusiness;
-    
-    @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/web/elenaschool/login", method = RequestMethod.GET, produces = "application/json")
-    public String login(){
-        return loginBusiness.generateToken();
-    }
+    private final ModelBusiness modelBusiness = new ModelBusiness();
     
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.POST, produces = "application/json")
