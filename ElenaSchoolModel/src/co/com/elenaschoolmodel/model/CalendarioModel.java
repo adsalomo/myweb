@@ -1,6 +1,7 @@
 package co.com.elenaschoolmodel.model;
 
 import java.util.Date;
+import org.codehaus.jackson.annotate.JsonSetter;
 
 /**
  * @author AdrianL
@@ -34,6 +35,7 @@ public class CalendarioModel {
     /**
      * @param activo the activo to set
      */
+    @JsonSetter("activo")
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
@@ -48,6 +50,7 @@ public class CalendarioModel {
     /**
      * @param ano the ano to set
      */
+    @JsonSetter("ano")
     public void setAno(int ano) {
         this.ano = ano;
     }
@@ -62,6 +65,7 @@ public class CalendarioModel {
     /**
      * @param codigo the codigo to set
      */
+    @JsonSetter("codigo")
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
@@ -76,6 +80,7 @@ public class CalendarioModel {
     /**
      * @param descripcion the descripcion to set
      */
+    @JsonSetter("descripcion")
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -90,6 +95,7 @@ public class CalendarioModel {
     /**
      * @param fechaCreacion the fechaCreacion to set
      */
+    @JsonSetter("fecha_creacion")
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
@@ -104,6 +110,7 @@ public class CalendarioModel {
     /**
      * @param fechaFin the fechaFin to set
      */
+    @JsonSetter("fecha_fin")
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
@@ -118,6 +125,7 @@ public class CalendarioModel {
     /**
      * @param fechaInicio the fechaInicio to set
      */
+    @JsonSetter("fecha_inicio")
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -132,6 +140,7 @@ public class CalendarioModel {
     /**
      * @param fechaModificacion the fechaModificacion to set
      */
+    @JsonSetter("fecha_modificacion")
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
@@ -146,6 +155,7 @@ public class CalendarioModel {
     /**
      * @param fechaProceso the fechaProceso to set
      */
+    @JsonSetter("fecha_proceso")
     public void setFechaProceso(Date fechaProceso) {
         this.fechaProceso = fechaProceso;
     }
@@ -160,6 +170,7 @@ public class CalendarioModel {
     /**
      * @param id the id to set
      */
+    @JsonSetter("id")
     public void setId(int id) {
         this.id = id;
     }
@@ -174,6 +185,7 @@ public class CalendarioModel {
     /**
      * @param nombre the nombre to set
      */
+    @JsonSetter("nombre")
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -188,6 +200,7 @@ public class CalendarioModel {
     /**
      * @param nombreCorto the nombreCorto to set
      */
+    @JsonSetter("nombre_corto")
     public void setNombreCorto(String nombreCorto) {
         this.nombreCorto = nombreCorto;
     }
@@ -202,6 +215,7 @@ public class CalendarioModel {
     /**
      * @param numeroPeriodos the numeroPeriodos to set
      */
+    @JsonSetter("numero_periodos")
     public void setNumeroPeriodos(int numeroPeriodos) {
         this.numeroPeriodos = numeroPeriodos;
     }
@@ -216,6 +230,7 @@ public class CalendarioModel {
     /**
      * @param usuario the usuario to set
      */
+    @JsonSetter("usuario")
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
