@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12">
-        <H2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
+        <h2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
     </div>
 </div>
 <div ng-repeat="row in numRow">
@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <label>{{item.labelName}}</label>
                     <div class="input-group">
-                        <input ng-model="item" type="text" class="form-control" />
+                        <input ng-model="item.Valor" type="text" class="form-control" />
                         <span class="input-group-addon" ng-click="openLupaAction(item.foreignTableName)">
                             <img src="images/lupa.png" />
                         </span>
@@ -20,7 +20,7 @@
             <div ng-if="!item.isForeign">
                 <div class="form-group">
                     <label>{{item.labelName}}</label>
-                    <input ng-model="item" class="form-control" />
+                    <input ng-model="item.Valor" class="form-control" />
                 </div>
             </div>
         </div>

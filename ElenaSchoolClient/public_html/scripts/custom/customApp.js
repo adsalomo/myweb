@@ -24,7 +24,6 @@ function setListToGrid(gridOptions, list, modelEstructura) {
     };
     gridOptions.columnDefs = columns;
     gridOptions.data = list;
-
 };
 
 /**

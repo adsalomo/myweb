@@ -1,3 +1,8 @@
+/**
+ * @description Obtiene los datos de los atributos de una tabla que son llaves foraneas y los pinta en una grid
+ * @autor AdrianL
+ * @since 21 sep 2016
+ */
 app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableName', '$myService', '$setting', function ($scope, $uibModalInstance, $foreignTableName, $myService, $setting) {
 
         var nombreApp = $setting.varGlobals.nameApp;

@@ -30,7 +30,8 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
 
                         for (var i = 0, l = numRow; i < l; i++) {
                             $scope.numRow[i] = i;
-                        };
+                        }
+                        ;
 
                     }).error(function (data, status, headers, config) {
                 console.log(data);
@@ -50,6 +51,23 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 resolve: {
                     $foreignTableName: function () {
                         return foreignTableName;
+                    }
+                }
+            });
+        };
+
+        /**
+         * Abre ventana modal para realizar consulta
+         */
+        $scope.openQueryTablaAction = function () {
+            $modal.open({
+                templateUrl: 'includes/controls/queryTable.html',
+                backdrop: false,
+                windowClass: 'modal',
+                controller: 'queryTableController',
+                resolve: {
+                    $modelEstructura: function () {
+                        return $scope.modelEstructura;
                     }
                 }
             });

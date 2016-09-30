@@ -79,13 +79,15 @@ public class ModelBusiness {
      */
     private String getQuery(List<Model> listModel) {
         sql = "";
-        query = new Query();
-        query.setQueryTypes(Query.QueryTypes.Select);
         if (listModel != null && listModel.size() > 0) {
-            listModel.stream().forEach(x -> query.addColumn(x.getColumnName()));
+            query = new Query();
+            query.setQueryTypes(Query.QueryTypes.Select);
+            for(Model model : listModel){
+                query.addColumn(model.getColumnName());
+            }
             query.addTable(listModel.get(0).getNameTable());
+            sql = query.getQuery();
         }
-        sql = query.getQuery();
         return sql;
     }
 

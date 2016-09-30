@@ -16,6 +16,8 @@ public class Model {
     private String labelName;
     private Object valor;
     private String foreignTableName;
+    private boolean isOrderDescending;
+    private boolean isOrderAscending;
 
     public String getForeignTableName() {
         return foreignTableName;
@@ -157,6 +159,22 @@ public class Model {
      */
     public void setLabelName(String labelName) {
         this.labelName = labelName;
+    }
+
+    public boolean getIsOrderDescending() {
+        return isOrderDescending;
+    }
+
+    public void setIsOrderDescending(boolean isOrderDescending) {
+        this.isOrderDescending = isOrderDescending;
+    }
+
+    public boolean getIsOrderAscending() {
+        return isOrderAscending;
+    }
+
+    public void setIsOrderAscending(boolean isOrderAscending) {
+        this.isOrderAscending = isOrderAscending;
     }
     
     

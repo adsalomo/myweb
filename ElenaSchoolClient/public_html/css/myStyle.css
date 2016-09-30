@@ -13,3 +13,8 @@ button.btn-transparente{
     border-color: #dcdcdc;
     padding: 0px;
 }
+
+.modal-body-scrollbar{
+    height: 300px;
+    overflow-y: auto
+}
