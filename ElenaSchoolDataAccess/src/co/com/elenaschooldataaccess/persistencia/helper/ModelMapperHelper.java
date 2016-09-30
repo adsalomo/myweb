@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,11 @@ import java.util.Map;
  *
  * @author AdrianL
  */
-public class ModelMapperHelper{
+public class ModelMapperHelper {
 
     /**
      * Mapea el valor a la propiedad del objeto que venga por parametro
+     *
      * @param rs Objeto resultSet obtenido de la ejecución de la consulta
      * @return
      * @throws SQLException
@@ -25,10 +26,10 @@ public class ModelMapperHelper{
         if (rs != null) {
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                Map<String, Object> map = new HashMap<>(); 
-                for (int _iterator = 0; _iterator < rsmd.getColumnCount(); _iterator++) {
-                    String columnName = rsmd.getColumnName(_iterator + 1);
-                    Object columnValue = rs.getObject(_iterator + 1);
+                Map<String, Object> map = new LinkedHashMap<>();
+                for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                    String columnName = rsmd.getColumnName(i + 1);
+                    Object columnValue = rs.getObject(i + 1);
                     map.put(columnName, columnValue);
                 }
                 outputList.add(map);

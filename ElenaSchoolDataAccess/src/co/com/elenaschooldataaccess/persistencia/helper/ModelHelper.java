@@ -34,6 +34,7 @@ public class ModelHelper implements RowMapper<Model>{
         model.setLenght(rs.getInt("Length"));
         model.setNumericPrecision(rs.getInt("NumericPrecision"));
         model.setLabelName(rs.getString("LabelName"));
+        model.setForeignTableName(rs.getString("foreignTableName"));
         return model;
     }
 }

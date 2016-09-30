@@ -15,6 +15,15 @@ public class Model {
     private int numericPrecision;
     private String labelName;
     private Object valor;
+    private String foreignTableName;
+
+    public String getForeignTableName() {
+        return foreignTableName;
+    }
+
+    public void setForeignTableName(String foreignTableName) {
+        this.foreignTableName = foreignTableName;
+    }
 
     public Object getValor() {
         return valor;

@@ -165,7 +165,9 @@ public class Query {
         int cont;
 
         cont = 0;
-        if (columns != null && !columns.isEmpty()) {
+        column = "SELECT * ";
+        
+        if (columns != null && columns.size() > 0) {
             column = "SELECT ";
             for (String col : columns) {
                 column += cont == columns.size() - 1 ? col : col + ", ";
@@ -174,7 +176,7 @@ public class Query {
         }
 
         cont = 0;
-        if (tables != null && !tables.isEmpty()) {
+        if (tables != null && tables.size() > 0) {
             table = " FROM ";
             for (String tab : tables) {
                 table += cont == tables.size() - 1 ? tab : tab + ", ";
@@ -183,7 +185,7 @@ public class Query {
         }
 
         cont = 0;
-        if (conditions != null && !conditions.isEmpty()) {
+        if (conditions != null && conditions.size() > 0) {
             condi = " WHERE ";
             for (String con : conditions) {
                 condi += cont == conditions.size() - 1 ? con : con + " AND ";
@@ -204,12 +206,12 @@ public class Query {
         String values = "";
         int cont;
 
-        if (tables != null && !tables.isEmpty()) {
+        if (tables != null && tables.size() > 0) {
             sql = "INSERT INTO " + tables.get(0) + " ";
         }
 
         cont = 0;
-        if (maps != null && !maps.isEmpty()) {
+        if (maps != null && maps.size() > 0) {
             campos += "(";
             values += " VALUES (";
             for (Map<String, Object> map : maps) {
@@ -236,12 +238,12 @@ public class Query {
         String condi = "";
         int cont;
 
-        if (tables != null && !tables.isEmpty()) {
+        if (tables != null && tables.size() > 0) {
             sql = "UPDATE " + tables.get(0) + " SET ";
         }
 
         cont = 0;
-        if (maps != null && !maps.isEmpty()) {
+        if (maps != null && maps.size() > 0) {
             for (Map<String, Object> map : maps) {
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                     values += cont == maps.size() - 1 ? "" + entry.getKey() + " = " + entry.getValue() + "" : "" + entry.getKey() + " = " + entry.getValue() + ", ";
@@ -251,7 +253,7 @@ public class Query {
         }
 
         cont = 0;
-        if (conditions != null && !conditions.isEmpty()) {
+        if (conditions != null && conditions.size() > 0) {
             condi = " WHERE ";
             for (String con : conditions) {
                 condi += cont == conditions.size() - 1 ? con : con + " AND ";
@@ -272,12 +274,12 @@ public class Query {
         String condi = "";
         int cont;
 
-        if (tables != null && !tables.isEmpty()) {
+        if (tables != null && tables.size() > 0) {
             sql = "DELETE FROM " + tables.get(0) + " ";
         }
 
         cont = 0;
-        if (conditions != null && !conditions.isEmpty()) {
+        if (conditions != null && conditions.size() > 0) {
             condi = " WHERE ";
             for (String con : conditions) {
                 condi += cont == conditions.size() - 1 ? con : con + " AND ";

@@ -4,7 +4,6 @@ import co.com.elenaschooldataaccess.persistencia.helper.ModelMapperHelper;
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.helper.ModelHelper;
 import co.com.elenaschoolmodel.model.Model;
-import co.com.elenaschoolmodel.model.QueryModel;
 import co.com.elenaschooltransverse.util.Conexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +21,7 @@ public class ModelDao implements IModelDao {
     private final Conexion conexion = Conexion.getInstance();
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate(conexion.getDataSource());
 
     /**
      * Consulta para obtener la estructura de una tabla
@@ -42,9 +42,12 @@ public class ModelDao implements IModelDao {
             + "WHERE "
             + "pg.oid = (SELECT c.table_name::regclass::oid) AND "
             + "pg.relname = c.table_name "
-            + ") AS LabelName "
+            + ") AS LabelName, "
+            + "ccu.table_name AS foreignTableName "
             + "FROM information_schema.columns c "
             + "LEFT JOIN information_schema.key_column_usage k ON c.table_name = k.table_name AND c.column_name = k.column_name "
+            + "LEFT JOIN information_schema.table_constraints tc ON K.constraint_name = tc.constraint_name AND tc.constraint_type = 'FOREIGN KEY' "
+            + "LEFT JOIN information_schema.constraint_column_usage ccu ON ccu.constraint_name = tc.constraint_name "
             + "WHERE "
             + "c.table_schema LIKE 'public' "
             + "AND c.table_catalog LIKE 'elenaschool' "
@@ -59,23 +62,21 @@ public class ModelDao implements IModelDao {
      */
     @Override
     public List<Model> getEstructura(Model model) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(conexion.getDataSource());
         return jdbcTemplate.query(sqlSelectEstrutura, new Object[]{model.getNameTable()}, new ModelHelper());
     }
 
     /**
-     * Realiza consulta de una tabla
-     * @param queryModel
+     * Realiza consulta a una tabla
+     * @param query
      * @return objeto queryModel
      * @throws SQLException
      */
     @Override
-    public QueryModel getConsulta(QueryModel queryModel) throws SQLException {
+    public List<Object> getConsulta(String query) throws SQLException {
         try {
-            preparedStatement = conexion.getDataSource().getConnection().prepareStatement("select * from calendario;");
+            preparedStatement = conexion.getDataSource().getConnection().prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
-            queryModel.setListResult(ModelMapperHelper.mapRersultSetToObject(resultSet));
-            return queryModel;
+            return ModelMapperHelper.mapRersultSetToObject(resultSet);
         } finally {
             preparedStatement.close();
             resultSet.close();

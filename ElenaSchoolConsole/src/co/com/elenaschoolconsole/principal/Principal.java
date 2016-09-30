@@ -39,84 +39,58 @@ public class Principal {
     public static void main(String[] args) {
 
         try {
-            readModel();
-            //getConsulta();
+            //readModel();
+            getConsulta();
             //getQuery();
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public static void readModel() {
-        try {
-            ModelBusiness business = new ModelBusiness();
-            Model model = new Model();
-            model.setNameTable("asignatura");
-            List<Model> list = business.getEstructuraTabla(model);
+    public static void getConsulta() throws IOException {
+        ModelBusiness business = new ModelBusiness();
 
-            if (list != null && !list.isEmpty()) {
-                System.out.println(" CAMPO | TABLA ");
-                System.out.println("----------------");
-                list.stream().forEach((Model row) -> {
-                    
-                    System.out.println("" + row.getColumnName() + " " + row.getNameTable());
-                  
-                });
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        Model model = new Model();
+        model.setNameTable("calendario");
+
+        List<Model> list = business.getEstructuraTabla(model);
+        QueryModel queryModel = new QueryModel();
+        queryModel.setListModel(list);
+
+        QueryModel qm = business.getConsulta(queryModel);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String jsonInString2 = mapper.writeValueAsString(list);
+
+        mapper.writeValue(System.out, list);
+
+        String jsonInString = mapper.writeValueAsString(qm.getListResult());
+        List<CalendarioModel> listCal = mapper.readValue(jsonInString, new TypeReference<List<CalendarioModel>>() {});
+
+        if (listCal != null && !listCal.isEmpty()) {
+            System.out.println("si");
         }
     }
-    
-     public static void getConsulta() throws IOException {
-        try {
-            IModelDao iModelDao = new ModelDao();
-            Model model = new Model();
-            QueryModel queryModel = new QueryModel();
-            QueryModel m = iModelDao.getConsulta(queryModel);
-            ObjectMapper mapper = new ObjectMapper();
-            
-            //mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            //mapper.writeValue(new File("c:\\Notacion\\file.json"), m.getListResult());
-            String jsonInString = mapper.writeValueAsString(m.getListResult());
-            
-            List<CalendarioModel> listCal = mapper.readValue(jsonInString, new TypeReference<List<CalendarioModel>>(){});
-            if(listCal != null && !listCal.isEmpty()){
-                System.out.println("si");
-            }
 
-//            if (m.getListResult() != null && !m.getListResult().isEmpty()) {
-//                System.out.println(" CAMPO | TABLA ");
-//                System.out.println("----------------");
-//                m.getListResult().stream().forEach((Object row) -> {
-//                    Map<String, Object> map = (Map<String, Object>) row;
-//                    System.out.println("" + map.get(row) + " " + row);
-//                  
-//                });
-//            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void getQuery() {
+        int val = 1;
+        Query query = new Query();
+        query.addTable("CALENDARIO");
+        query.addTable("PERIODO_ACADEMICO");
+        query.addValuePair("codigo", "0000000001");
+        query.addValuePair("nombre_corto", "'1111'");
+        query.addValuePair("nombre", "'2222'");
+        query.addValuePair("descripcion", "'333'");
+        query.addValuePair("ano", 2016);
+        query.setQueryTypes(Query.QueryTypes.Select);
+//         query.addCondition("id = " + val);
+//         query.addCondition("codigo = " + val);
+        query.addColumn("codigo");
+        query.addColumn("nombre_corto");
+        query.addColumn("nombre");
+        query.addColumn("descripcion");
+        String res = query.getQuery();
+        System.out.println(res);
     }
-     
-     public static void getQuery(){
-         int val = 1;
-         Query query = new Query();
-         query.addTable("CALENDARIO");
-         query.addTable("PERIODO_ACADEMICO");
-         query.addValuePair("codigo", "0000000001");
-         query.addValuePair("nombre_corto", "'1111'");
-         query.addValuePair("nombre", "'2222'");
-         query.addValuePair("descripcion", "'333'");
-         query.addValuePair("ano", 2016);
-         query.setQueryTypes(Query.QueryTypes.Insert);
-         query.addCondition("id = " + val);
-         query.addCondition("codigo = " + val);
-         query.addColumn("codigo");
-         query.addColumn("nombre_corto");
-         query.addColumn("nombre");
-         query.addColumn("descripcion");
-         String res = query.getQuery();
-         System.out.println(res);
-     }
 }

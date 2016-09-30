@@ -1,9 +1,14 @@
-app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableName', '$myService', function ($scope, $uibModalInstance, $foreignTableName, $myService) {
+app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableName', '$myService', '$setting', function ($scope, $uibModalInstance, $foreignTableName, $myService, $setting) {
 
+        var nombreApp = $setting.varGlobals.nameApp;
+
+        /**
+         * Definición de la grid
+         */
         $scope.gridOptionsLupa = {
             enableRowSelection: true,
             enableRowHeaderSelection: false,
-            enableFiltering: true,
+            enableFiltering: false,
             autoResize: true,
             multiSelect: false,
             noUnselect: true,
@@ -41,8 +46,13 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
                         $myService.getConsultaService(queryModel)
                                 .success(function (data, status, headers, config) {
 
-                                    setListToGrid($scope.gridOptionsLupa, data.listResult);
-                            
+                                    if (isArrayNotNull(data.listResult))
+                                        setListToGrid($scope.gridOptionsLupa, data.listResult, $scope.modelEstructura);
+                                    else {
+                                        messageBoxAlert(nombreApp + ' - Lupa', 'No hay datos para mostrar', 'info');
+                                        $uibModalInstance.dismiss('cancel');
+                                    }
+
                                 }).error(function (data, status, headers, config) {
                             console.log(data);
                         });

@@ -4,10 +4,18 @@ import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
+import co.com.elenaschooltransverse.util.Query;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Clase que maneja la lógica de los formularios dinamicos de la APP
@@ -19,8 +27,8 @@ public class ModelBusiness {
 
     private final IModelDao iModelDao;
     private List<Model> models;
-    private QueryModel queryModel;
     private String sql;
+    private Query query;
 
     /**
      * Constructor
@@ -31,6 +39,7 @@ public class ModelBusiness {
 
     /**
      * Obtiene la estructura de una tabla
+     *
      * @param model
      * @return
      */
@@ -39,26 +48,44 @@ public class ModelBusiness {
             models = iModelDao.getEstructura(model);
         } catch (SQLException ex) {
             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
         }
         return models;
     }
-    
-    public QueryModel getConsulta(QueryModel model){
+
+    /**
+     *
+     * @param queryModel
+     * @return
+     */
+    public QueryModel getConsulta(QueryModel queryModel) {
         try {
-            queryModel = iModelDao.getConsulta(model);            
+            List<Object> result = iModelDao.getConsulta(getQuery(queryModel.getListModel()));
+            queryModel.setListResult(result);
         } catch (SQLException ex) {
             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex){
+             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
         }
         return queryModel;
     }
-    
-    private String getQuery(List<Model> listModel){
+
+    /**
+     * Arma query con la estructura de la tabla
+     *
+     * @param listModel
+     * @return
+     */
+    private String getQuery(List<Model> listModel) {
         sql = "";
-        if(listModel != null && !listModel.isEmpty()){
-            for (Model model : listModel) {
-                
-            }
+        query = new Query();
+        query.setQueryTypes(Query.QueryTypes.Select);
+        if (listModel != null && listModel.size() > 0) {
+            listModel.stream().forEach(x -> query.addColumn(x.getColumnName()));
+            query.addTable(listModel.get(0).getNameTable());
         }
+        sql = query.getQuery();
         return sql;
     }
 

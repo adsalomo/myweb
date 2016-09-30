@@ -1,7 +1,6 @@
 package co.com.elenaschooldataaccess.persistencia.contract;
 
 import co.com.elenaschoolmodel.model.Model;
-import co.com.elenaschoolmodel.model.QueryModel;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,5 +12,5 @@ public interface IModelDao {
      
     List<Model> getEstructura(Model model) throws SQLException;
     
-    QueryModel getConsulta(QueryModel queryModel) throws SQLException;
+    List<Object> getConsulta(String sql) throws SQLException;
 }
