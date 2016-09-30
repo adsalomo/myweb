@@ -31,8 +31,6 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         for (var i = 0, l = numRow; i < l; i++) {
                             $scope.numRow[i] = i;
                         };
-                        
-                        $scope.getConsultaAction();
 
                     }).error(function (data, status, headers, config) {
                 console.log(data);
@@ -43,30 +41,17 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * openLupaAction: abre lupa con los registros de los campos q son llaves foraneas
          * @returns {undefined}
          */
-        $scope.openLupaAction = function () {
+        $scope.openLupaAction = function (foreignTableName) {
             $modal.open({
-                templateUrl: 'includes/lupa.html',
+                templateUrl: 'includes/controls/lupa.html',
                 backdrop: false,
                 windowClass: 'modal',
                 controller: 'lupaController',
                 resolve: {
-                    action: function () {
-                        return true;
+                    $foreignTableName: function () {
+                        return foreignTableName;
                     }
                 }
-            });
-        };
-        
-        $scope.getConsultaAction = function () {
-
-            $myService.getConsultaService()
-                    .success(function (data, status, headers, config) {
-
-                        $scope.consultaModel = data;
-                        
-
-                    }).error(function (data, status, headers, config) {
-                console.log(data);
             });
         };
 

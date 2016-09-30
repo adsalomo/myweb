@@ -17,14 +17,14 @@ app.factory('$myService', ['$http', function ($http) {
             });
         },
         
-        getConsultaService: function () {
+        getConsultaService: function (queryModel) {
             return $http({
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
                 },
                 url: 'http://localhost:8081/web/elenaschool/getConsulta',
-                data: { }
+                data: {listModel: queryModel.listModel }
             });
         }
         

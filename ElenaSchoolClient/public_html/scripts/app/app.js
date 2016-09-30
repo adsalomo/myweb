@@ -4,6 +4,19 @@
  * @description definicion app
  */
 
-var app = angular.module('elenaSchoolApp', ['ngRoute', 'ui.bootstrap', 'ngRoute']);
+var app = angular.module('elenaSchoolApp',
+        [
+            'ngRoute',
+            'ui.bootstrap',
+            'ngRoute',
+            'ui.grid',
+            'ui.grid.pagination',
+            'ui.grid.resizeColumns',
+            'ui.grid.autoResize',
+            'ui.grid.selection',
+            'ui.grid.cellNav',
+            'ui.grid.exporter',
+            'ngLoadingSpinner'
+        ]);
 
 
