@@ -1,3 +1,5 @@
+/* global app */
+
 /**
  * @description Obtiene los datos de los atributos de una tabla que son llaves foraneas y los pinta en una grid
  * @autor AdrianL
@@ -43,12 +45,11 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
                     .success(function (data, status, headers, config) {
 
                         $scope.modelEstructura = data;
-                        var queryModel = {listModel: $scope.modelEstructura};
 
                         /**
                          * Request para obtener consulta
                          */
-                        $myService.getConsultaService(queryModel)
+                        $myService.getConsultaService(getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable))
                                 .success(function (data, status, headers, config) {
 
                                     if (isArrayNotNull(data.listResult))

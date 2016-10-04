@@ -16,21 +16,36 @@ public class Model {
     private String labelName;
     private Object valor;
     private String foreignTableName;
-    private boolean isOrderDescending;
-    private boolean isOrderAscending;
+    private boolean isOrder;
 
+    /**
+     * 
+     * @return 
+     */
     public String getForeignTableName() {
         return foreignTableName;
     }
 
+    /**
+     * 
+     * @param foreignTableName 
+     */
     public void setForeignTableName(String foreignTableName) {
         this.foreignTableName = foreignTableName;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Object getValor() {
         return valor;
     }
 
+    /**
+     * 
+     * @param valor 
+     */
     public void setValor(Object valor) {
         this.valor = valor;
     }
@@ -161,20 +176,20 @@ public class Model {
         this.labelName = labelName;
     }
 
-    public boolean getIsOrderDescending() {
-        return isOrderDescending;
+    /**
+     * 
+     * @return 
+     */
+    public boolean isIsOrder() {
+        return isOrder;
     }
 
-    public void setIsOrderDescending(boolean isOrderDescending) {
-        this.isOrderDescending = isOrderDescending;
-    }
-
-    public boolean getIsOrderAscending() {
-        return isOrderAscending;
-    }
-
-    public void setIsOrderAscending(boolean isOrderAscending) {
-        this.isOrderAscending = isOrderAscending;
+    /**
+     * 
+     * @param isOrder 
+     */
+    public void setIsOrder(boolean isOrder) {
+        this.isOrder = isOrder;
     }
     
     

@@ -22,6 +22,8 @@ public class Query {
 
     private final List<Map<String, Object>> maps;
 
+    private String order;
+
     /**
      * Constructor
      */
@@ -30,6 +32,7 @@ public class Query {
         tables = new ArrayList<>();
         conditions = new ArrayList<>();
         maps = new ArrayList<>();
+        order = "";
     }
 
     /**
@@ -58,6 +61,7 @@ public class Query {
 
     /**
      * Enum order
+     *
      * @return
      */
     public SortOrder getSortOrder() {
@@ -88,6 +92,33 @@ public class Query {
     public enum SortOrder {
         Ascending,
         Descending
+    }
+
+    /**
+     * Order Consulta
+     * @param order 
+     */
+    public void addSortOrder(String order) {
+        this.order = order;
+    }
+
+    /**
+     * Order consulta
+     * @param order
+     * @param sortOrder 
+     */
+    public void addSortOrder(String order, SortOrder sortOrder) {
+        switch (sortOrder) {
+            case Ascending:
+                this.order = " ORDER BY " + order + " ASC ";
+                break;
+            case Descending:
+                this.order = " ORDER BY " + order + " DESC ";
+                break;
+            default:
+                this.order = " ORDER BY " + order;
+                break;
+        }
     }
 
     /**
@@ -155,7 +186,8 @@ public class Query {
 
     /**
      * Arma query select
-     * @return 
+     *
+     * @return
      */
     private String getQuerySelect() {
         String sql = "";
@@ -166,7 +198,7 @@ public class Query {
 
         cont = 0;
         column = "SELECT * ";
-        
+
         if (columns != null && columns.size() > 0) {
             column = "SELECT ";
             for (String col : columns) {
@@ -192,13 +224,15 @@ public class Query {
                 cont++;
             }
         }
-        sql = column + table + condi;
+        
+        sql = column + table + condi + order;
         return sql;
     }
 
     /**
      * Arma query insert
-     * @return 
+     *
+     * @return
      */
     private String getQueryInsert() {
         String sql = "";
@@ -230,7 +264,8 @@ public class Query {
 
     /**
      * Arma query update
-     * @return 
+     *
+     * @return
      */
     private String getQueryUpdate() {
         String sql = "";
@@ -266,7 +301,8 @@ public class Query {
 
     /**
      * Arma query delete
-     * @return 
+     *
+     * @return
      */
     private String getQueryDelete() {
         String sql = "";

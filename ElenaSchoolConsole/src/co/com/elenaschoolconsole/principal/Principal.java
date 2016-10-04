@@ -56,10 +56,12 @@ public class Principal {
         List<Model> list = business.getEstructuraTabla(model);
         QueryModel queryModel = new QueryModel();
         queryModel.setListModel(list);
-
-        QueryModel qm = business.getConsulta(queryModel);
-
+        
         ObjectMapper mapper = new ObjectMapper();
+        
+        QueryModel qml = mapper.readValue(new File("C:\\Notacion\\prueba.json"),  QueryModel.class);
+
+        QueryModel qm = business.getConsulta(qml);        
 
         String jsonInString2 = mapper.writeValueAsString(list);
 

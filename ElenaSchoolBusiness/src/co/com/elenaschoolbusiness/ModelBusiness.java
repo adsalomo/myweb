@@ -5,17 +5,10 @@ import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
 import co.com.elenaschooltransverse.util.Query;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Clase que maneja la lógica de los formularios dinamicos de la APP
@@ -55,37 +48,69 @@ public class ModelBusiness {
     }
 
     /**
-     *
+     * Obtiene consulta
      * @param queryModel
      * @return
      */
     public QueryModel getConsulta(QueryModel queryModel) {
         try {
-            List<Object> result = iModelDao.getConsulta(getQuery(queryModel.getListModel()));
+            List<Object> result = iModelDao.getConsulta(getQuery(queryModel.getListModel(), queryModel.getModel(), queryModel.isIsOrderAscending(), queryModel.isIsOrderDescending()));
             queryModel.setListResult(result);
         } catch (SQLException ex) {
             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex){
-             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
         }
         return queryModel;
     }
 
     /**
      * Arma query con la estructura de la tabla
-     *
      * @param listModel
-     * @return
+     * @param table
+     * @param orderAsc
+     * @param orderDesc
+     * @return 
      */
-    private String getQuery(List<Model> listModel) {
+    private String getQuery(List<Model> listModel, String table, boolean orderAsc, boolean orderDesc) {
+        String camposOrder = "";
+        boolean isOrden = false;
         sql = "";
+
         if (listModel != null && listModel.size() > 0) {
             query = new Query();
             query.setQueryTypes(Query.QueryTypes.Select);
-            for(Model model : listModel){
+
+            for (Model model : listModel) {
+                // Add column
                 query.addColumn(model.getColumnName());
+
+                // Add condition
+                if (model.getValor() != null) {
+                    query.addCondition(model.getColumnName() + " " + model.getValor().toString());
+                }
+
+                // Add order
+                if (model.isIsOrder()) {
+                    camposOrder += !isOrden ? model.getColumnName() : ", " + model.getColumnName();
+                    isOrden = true;
+                }
             }
-            query.addTable(listModel.get(0).getNameTable());
+
+            // Add table
+            query.addTable(table);
+
+            // Determina orden
+            if (camposOrder.length() > 0) {
+                if (orderAsc) {
+                    query.addSortOrder(camposOrder, Query.SortOrder.Ascending);
+                } else if (orderDesc) {
+                    query.addSortOrder(camposOrder, Query.SortOrder.Descending);
+                } else {
+                    query.addSortOrder(camposOrder);
+                }
+            }
+
             sql = query.getQuery();
         }
         return sql;

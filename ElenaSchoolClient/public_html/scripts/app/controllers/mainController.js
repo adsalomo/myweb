@@ -1,3 +1,5 @@
+/* global app */
+
 /**
  * @autor AdrianL
  * @since 21 sep 2016
@@ -11,6 +13,16 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.modelEstructura = [];
         $scope.numRow = [];
         $scope.numColumn = $setting.varGlobals.column;
+        $scope.gridFormulario = {
+            enableRowSelection: true,
+            enableRowHeaderSelection: false,
+            enableFiltering: false,
+            autoResize: true,
+            multiSelect: false,
+            noUnselect: true,
+            flatEntityAccess: true
+        };
+        $scope.isActivoGrid = false;
 
         /**
          * Obtiene la estructura de una tabla de la base de datos
@@ -68,9 +80,30 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 resolve: {
                     $modelEstructura: function () {
                         return $scope.modelEstructura;
+                    },
+                    $gridFormulario: function () {
+                        return $scope.gridFormulario;
                     }
                 }
+            }).result.catch(function(){
+                if(isArrayNotNull($scope.gridFormulario.data))
+                    $scope.isActivoGrid = true;
+                else{
+                    $scope.isActivoGrid = false;
+                    messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar', 'info');
+                }
             });
+        };
+        
+        /**
+         * Activa inactiva forma tabla - forma formulario
+         * @returns {undefined}
+         */
+        $scope.openViewFormToTableAction = function (){
+            if($scope.isActivoGrid)
+                $scope.isActivoGrid = false;
+            else
+                $scope.isActivoGrid = true;
         };
 
     }]);

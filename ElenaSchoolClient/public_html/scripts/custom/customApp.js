@@ -14,16 +14,18 @@
 function setListToGrid(gridOptions, list, modelEstructura) {
     var columns = [];
 
-    for (var property in list[0]) {
-        if (list[0].hasOwnProperty(property)) {
-            angular.forEach(modelEstructura, function (value, key){
-                if(value.columnName === property)
-                    columns.push({name: value.labelName, field: property, width: 100});
-            });
+    if (isArrayNotNull(list)) {
+        for (var property in list[0]) {
+            if (list[0].hasOwnProperty(property)) {
+                angular.forEach(modelEstructura, function (value, key) {
+                    if (value.columnName === property)
+                        columns.push({name: value.labelName, field: property, width: 100});
+                });
+            };
         };
+        gridOptions.columnDefs = columns;
+        gridOptions.data = list;
     };
-    gridOptions.columnDefs = columns;
-    gridOptions.data = list;
 };
 
 /**
@@ -47,7 +49,8 @@ function messageBoxConfirm(titulo, contenido, funcionSi, funcionNo) {
         confirm: funcionSi,
         cancel: funcionNo
     });
-};
+}
+;
 
 /**
  * Mensaje info
@@ -74,7 +77,8 @@ function messageBoxAlert(titulo, contenido, tipo) {
             tipoBoton = 'btn btn-warning';
             imagen += 'alert.png';
             break;
-    };
+    }
+    ;
 
     $.alert({
         //icon: imagen,
@@ -86,17 +90,40 @@ function messageBoxAlert(titulo, contenido, tipo) {
         confirm: function () {
         }
     });
-};
+}
+;
 
 /**
  * Valida que una lista no sea nula o vacia
  * @param {type} list
  * @returns {Boolean}
  */
-function isArrayNotNull(list){
-    if(angular.isArray(list) && list.length > 0){
+function isArrayNotNull(list) {
+    if (angular.isArray(list) && list.length > 0) {
         return true;
     }
     return false;
-};
+}
+;
+
+/**
+ * Obtiene objeto queryModel
+ * @param {type} listModel
+ * @param {type} listResult
+ * @param {type} isOrderAscending
+ * @param {type} isOrderDescending
+ * @param {type} model
+ * @returns {getObjectQueryModel.obj}
+ */
+function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDescending, model) {
+    var obj = {
+        listModel: listModel,
+        listResult: listResult,
+        isOrderAscending: isOrderAscending,
+        isOrderDescending: isOrderDescending,
+        model: model
+    };
+   console.log( JSON.stringify(obj));
+    return obj;
+}
 

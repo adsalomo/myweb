@@ -1,54 +1,67 @@
 <!--Header modal-->
 <div class="modal-header">
-    <button type="button"
-            class="close"
-            ng-click="closeQueryTableAction()"
-            data-dissmiss="modal" aria-hidden="true">
-        &times;
-    </button>
+    <!--<button type="button" class="close" ng-click="closeQueryTableAction()" data-dissmiss="modal" aria-hidden="true">&times;</button>-->
     <h3>Consultar tabla <small>{{modelEstructura[0].nameTable}}</small></h3>
 </div>
 <!--Body modal-->
 <div class="modal-body-scrollbar">
-
     <table class="table table-responsive">
         <thead>
             <tr>
+                <th>Descripción</th>
                 <th>Columna</th>
                 <th>Tipo Dato</th>
                 <th>Valor a Consultar</th>
-                <th>Order Asc</th>
-                <th>Order Desc</th>
+                <th>Ordenar</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="row in modelEstructura">
+                <td>{{row.labelName}}</td>
                 <td>{{row.columnName}}</td>
                 <td>{{row.dateType}}</td>
                 <td>
                     <div class="form-group">
-                        <input ng-model="row.Valor" id="{{row.columnName}}" name="{{row.columnName}}" class="form-control input-sm" type="text" />
+                        <input ng-model="row.valor" id="{{row.columnName}}" name="{{row.columnName}}" class="form-control input-sm" type="text" />
                     </div>
                 </td>
-                <th>
-                    <input type="radio" ng-model="row.isOrderAscending" value="1" />
-                </th>
-                <th>
-                    <input type="radio" ng-model="row.isOrderAscending" value="2" />
-                </th>
+                <td>
+                    <input class="form-control" ng-model="row.isOrder" type="checkbox" ng-click="openOrderAction()" />
+                </td>
             </tr>
         </tbody>
     </table>
-
 </div>
 <!--footer modal-->
-<div class="modal-footer">
-    <button type="submit" 
-            ng-click="closeQueryTableAction()" 
-            name="" 
-            class="btn btn-default">Cancelar</button>
-    <button type="submit"  
-            ng-click="prueba()" 
-            name=""
-            class="btn btn-primary">Aceptar</button>
+<div class="modal-footer-queryTable">
+    <div class="row" ng-show="isOpenDivOrder">
+        <div class="col-xs-12">
+            <h5 class="page-header-queryTable">Ordenamiento</h5>
+        </div>
+    </div>
+    <div class="row" ng-show="isOpenDivOrder">
+        <div class="col-xs-12">
+            <div class="radio">
+                <label><input type="radio" ng-model="isTypeOrder" value="1" />Asc</label>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="isOpenDivOrder">
+        <div class="col-xs-12">
+            <div class="radio">
+                <label><input type="radio" ng-model="isTypeOrder" value="2" />Desc</label>
+            </div>    
+        </div>
+    </div>
+    <div class="row" ng-show="isOpenDivOrder">
+        <div class="col-xs-12">
+            <h5 class="page-header-queryTable"></h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="submit" ng-click="closeQueryTableAction()" name="" class="btn btn-default">Cancelar</button>
+            <button type="submit" ng-click="prueba()" name="" class="btn btn-primary">Aceptar</button> 
+        </div>
+    </div>
 </div>

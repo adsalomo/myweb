@@ -9,6 +9,8 @@ import java.util.List;
 public class QueryModel {
     private List<Model> listModel;
     private List<Object> listResult;
+    private boolean isOrderAscending;
+    private boolean isOrderDescending;
     private String model;
 
     /**
@@ -51,6 +53,34 @@ public class QueryModel {
      */
     public void setModel(String model) {
         this.model = model;
+    }
+
+    /**
+     * @return the isOrderAscending
+     */
+    public boolean isIsOrderAscending() {
+        return isOrderAscending;
+    }
+
+    /**
+     * @param isOrderAscending the isOrderAscending to set
+     */
+    public void setIsOrderAscending(boolean isOrderAscending) {
+        this.isOrderAscending = isOrderAscending;
+    }
+
+    /**
+     * @return the isOrderDescending
+     */
+    public boolean isIsOrderDescending() {
+        return isOrderDescending;
+    }
+
+    /**
+     * @param isOrderDescending the isOrderDescending to set
+     */
+    public void setIsOrderDescending(boolean isOrderDescending) {
+        this.isOrderDescending = isOrderDescending;
     }
     
 }

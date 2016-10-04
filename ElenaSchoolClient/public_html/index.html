@@ -10,13 +10,19 @@
         <link href="css/jquery-confirm.css" rel="stylesheet" type="text/css" />
     </head>
     <body ng-controller="mainController">        
-        
+
         <!--Loading-->
         <span us-spinner="{radius:10, width:4, length: 8}"></span>
-        
-        <div class="container" ng-init="getEstructuraTablaAction('calendario')">
+
+        <div class="container" ng-init="getEstructuraTablaAction('grupo_academico')">
             <div ng-include="'includes/controls/buttons.html'"></div>
-            <div ng-include="'includes/controls/formulario.html'"></div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
+                </div>
+            </div>
+            <div ng-include="'includes/controls/formulario.html'" ng-show="!isActivoGrid"></div>
+            <div ng-include="'includes/controls/grid.html'" ng-hide="!isActivoGrid"></div>
         </div>
 
         <script src="scripts/libs/jquery/jquery-2.2.3.js" type="text/javascript"></script>
@@ -41,7 +47,7 @@
 
         <!--Modal-->
         <script src="scripts/libs/angular/ui-bootstrap-tpls-2.0.1.js" type="text/javascript"></script>
-        
+
         <!--loading-->
         <script src="scripts/libs/loading/angular-spinner.min.js" type="text/javascript"></script>
         <script src="scripts/libs/loading/angular-loading-spinner.js" type="text/javascript"></script>
