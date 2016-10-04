@@ -64,7 +64,7 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
                     .success(function (data, status, headers, config) {
 
                         setListToGrid($gridFormulario, data.listResult, $scope.modelEstructura);
-                        $scope.closeQueryTableAction();
+                        $uibModalInstance.dismiss(true);
 
                     }).error(function (data, status, headers, config) {
                 console.log(data);
@@ -75,8 +75,8 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
          * Close modal
          * @returns {undefined}
          */
-        $scope.closeQueryTableAction = function () {
-            $uibModalInstance.dismiss('cancel');
+        $scope.cancelQueryTableAction = function () {
+            $uibModalInstance.dismiss(false);
         };
 
     }]);

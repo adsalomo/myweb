@@ -5,6 +5,7 @@
  * @since 21 sep 2016
  * @description controller principal
  */
+
 app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting', function ($scope, $myService, $modal, $setting) {
 
         /**
@@ -49,7 +50,6 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
                 $scope.rowSelect = row.entity;
             });
-            
         };
 
         /**
@@ -71,7 +71,6 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         for (var i = 0, l = numRow; i < l; i++) {
                             $scope.numRow[i] = i;
                         }
-                        ;
 
                     }).error(function (data, status, headers, config) {
                 console.log(data);
@@ -116,13 +115,14 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         return $scope.gridFormulario;
                     }
                 }
-            }).result.catch(function () {
-                if (isArrayNotNull($scope.gridFormulario.data))
-                    $scope.isActivoGrid = true;
-                else {
-                    $scope.isActivoGrid = false;
-                    messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar', 'info');
-                }
+            }).result.catch(function (resp) {
+                if (resp)
+                    if (isArrayNotNull($scope.gridFormulario.data))
+                        $scope.isActivoGrid = true;
+                    else {
+                        $scope.isActivoGrid = false;
+                        messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar', 'info');
+                    }
             });
         };
 
