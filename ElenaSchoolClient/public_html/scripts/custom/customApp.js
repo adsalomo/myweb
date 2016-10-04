@@ -123,7 +123,6 @@ function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDes
         isOrderDescending: isOrderDescending,
         model: model
     };
-   console.log( JSON.stringify(obj));
     return obj;
 }
 

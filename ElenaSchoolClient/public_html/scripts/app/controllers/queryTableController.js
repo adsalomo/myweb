@@ -5,23 +5,27 @@
  * @autor AdrianL
  * @since 21 sep 2016
  */
-app.controller('queryTableController', ['$scope', '$uibModalInstance', '$modelEstructura', '$myService', '$setting', '$gridFormulario', function ($scope, $uibModalInstance, $modelEstructura, $myService, $setting, $gridFormulario) {
+app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myService', '$setting', '$gridFormulario', '$tableName', function ($scope, $uibModalInstance, $myService, $setting, $gridFormulario, $tableName) {
 
         /**
          * Inicializacion variables
          */
-        $scope.modelEstructura = $modelEstructura;
+        $scope.modelEstructura = [];
         $scope.isTypeOrder = 1;
         $scope.isOpenDivOrder = false;
-        clearValorColumn();
-        
+        getEstructura();
+
         /**
-         * Asigna null a la propiedad valor del objeto model Estructura
+         * Obtiene la estructura de la tabla
          * @returns {undefined}
          */
-        function clearValorColumn(){
-            angular.forEach($scope.modelEstructura, function(value, key){
-                value.valor = null;
+        function getEstructura() {
+            $myService.getEstructuraTablaService($tableName).success(function (data, status, headers, config) {
+
+                $scope.modelEstructura = data;
+
+            }).error(function (data, status, headers, config) {
+                console.log(data);
             });
         }
 
@@ -37,7 +41,11 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$modelEs
             });
         };
 
-        $scope.prueba = function () {
+        /**
+         * Action ejecutar consulta
+         * @returns {undefined}
+         */
+        $scope.consultarAction = function () {
             var isOrderAscending = false;
             var isOrderDescending = false;
 
@@ -47,11 +55,11 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$modelEs
                 else
                     isOrderDescending = true;
             };
-            
+
             $gridFormulario.data = [];
 
             var obj = getObjectQueryModel($scope.modelEstructura, null, isOrderAscending, isOrderDescending, $scope.modelEstructura[0].nameTable);
-            
+
             $myService.getConsultaService(obj)
                     .success(function (data, status, headers, config) {
 

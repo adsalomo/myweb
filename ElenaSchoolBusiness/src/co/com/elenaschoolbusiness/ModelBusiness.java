@@ -86,7 +86,7 @@ public class ModelBusiness {
                 query.addColumn(model.getColumnName());
 
                 // Add condition
-                if (model.getValor() != null) {
+                if (model.getValor() != null && model.getValor().toString().length() > 0) {
                     query.addCondition(model.getColumnName() + " " + model.getValor().toString());
                 }
 

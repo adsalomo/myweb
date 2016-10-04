@@ -5,8 +5,8 @@
                 <div class="form-group">
                     <label>{{item.labelName}}</label>
                     <div class="input-group">
-                        <input ng-model="item.Valor" type="text" class="form-control" />
-                        <span class="input-group-addon" ng-click="openLupaAction(item.foreignTableName)">
+                        <input ng-disabled="true" ng-model="item.valor" type="text" class="form-control" />
+                        <span class="input-group-addon" ng-click="openLupaAction(item)">
                             <img src="images/lupa.png" />
                         </span>
                     </div>
@@ -15,7 +15,7 @@
             <div ng-if="!item.isForeign">
                 <div class="form-group">
                     <label>{{item.labelName}}</label>
-                    <input ng-model="item.Valor" class="form-control" />
+                    <input ng-disabled="item.isPrimary && item.valor" ng-model="item.valor" class="form-control" />
                 </div>
             </div>
         </div>

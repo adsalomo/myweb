@@ -13,6 +13,11 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.modelEstructura = [];
         $scope.numRow = [];
         $scope.numColumn = $setting.varGlobals.column;
+        $scope.isActivoGrid = false;
+
+        /**
+         * Definicion de grid
+         */
         $scope.gridFormulario = {
             enableRowSelection: true,
             enableRowHeaderSelection: false,
@@ -22,7 +27,30 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             noUnselect: true,
             flatEntityAccess: true
         };
-        $scope.isActivoGrid = false;
+
+        /**
+         * Selection changed grid
+         * @param {type} gridApi
+         * @returns {undefined}
+         */
+        $scope.gridFormulario.onRegisterApi = function (gridApi) {
+            $scope.gridApi = gridApi;
+
+            $scope.gridApi.cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
+                if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
+                    $scope.gridApi.selection.selectRow(newRowCol.row.entity);
+                    $scope.rowSelect = newRowCol.row.entity;
+                }
+            });
+
+            /**
+             * Cambio de fila
+             */
+            $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+                $scope.rowSelect = row.entity;
+            });
+            
+        };
 
         /**
          * Obtiene la estructura de una tabla de la base de datos
@@ -54,7 +82,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * openLupaAction: abre lupa con los registros de los campos q son llaves foraneas
          * @returns {undefined}
          */
-        $scope.openLupaAction = function (foreignTableName) {
+        $scope.openLupaAction = function (item) {
             $modal.open({
                 templateUrl: 'includes/controls/lupa.html',
                 backdrop: false,
@@ -62,9 +90,11 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 controller: 'lupaController',
                 resolve: {
                     $foreignTableName: function () {
-                        return foreignTableName;
+                        return item.foreignTableName;
                     }
                 }
+            }).result.catch(function (resp) {
+                item.valor = resp;
             });
         };
 
@@ -78,32 +108,43 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 windowClass: 'modal',
                 controller: 'queryTableController',
                 resolve: {
-                    $modelEstructura: function () {
-                        return $scope.modelEstructura;
+                    $tableName: function () {
+                        if (isArrayNotNull($scope.modelEstructura))
+                            return $scope.modelEstructura[0].nameTable;
                     },
                     $gridFormulario: function () {
                         return $scope.gridFormulario;
                     }
                 }
-            }).result.catch(function(){
-                if(isArrayNotNull($scope.gridFormulario.data))
+            }).result.catch(function () {
+                if (isArrayNotNull($scope.gridFormulario.data))
                     $scope.isActivoGrid = true;
-                else{
+                else {
                     $scope.isActivoGrid = false;
                     messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar', 'info');
                 }
             });
         };
-        
+
         /**
          * Activa inactiva forma tabla - forma formulario
          * @returns {undefined}
          */
-        $scope.openViewFormToTableAction = function (){
-            if($scope.isActivoGrid)
+        $scope.openViewFormToTableAction = function () {
+            if ($scope.isActivoGrid)
                 $scope.isActivoGrid = false;
             else
                 $scope.isActivoGrid = true;
+
+            if (!angular.isUndefined($scope.rowSelect)) {
+                for (var property in $scope.rowSelect) {
+                    if ($scope.rowSelect.hasOwnProperty(property))
+                        angular.forEach($scope.modelEstructura, function (value, key) {
+                            if (value.columnName === property)
+                                value.valor = $scope.rowSelect[property];
+                        });
+                }
+            }
         };
 
     }]);

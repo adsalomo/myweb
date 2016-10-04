@@ -8,6 +8,7 @@
 app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableName', '$myService', '$setting', function ($scope, $uibModalInstance, $foreignTableName, $myService, $setting) {
 
         var nombreApp = $setting.varGlobals.nameApp;
+        var selection = null;
 
         /**
          * Definición de la grid
@@ -19,7 +20,53 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
             autoResize: true,
             multiSelect: false,
             noUnselect: true,
-            flatEntityAccess: true
+            flatEntityAccess: true,
+            rowTemplate: rowTemplate()
+        };
+
+        /**
+         * Row selection
+         * @param {type} gridApi
+         * @returns {undefined}
+         */
+        $scope.gridOptionsLupa.onRegisterApi = function (gridApi) {
+            $scope.gridApi = gridApi;
+
+            $scope.gridApi.cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
+                if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
+                    $scope.gridApi.selection.selectRow(newRowCol.row.entity);
+                    $scope.rowSelect = newRowCol.row.entity;
+                }
+            });
+
+            /**
+             * Cambio de fila
+             */
+            $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+                $scope.rowSelect = row.entity;
+            });
+        };
+
+        /**
+         * Action double click grid
+         * @param {type} row
+         * @returns {undefined}
+         */
+        $scope.doubleClickGridAction = function (row) {
+            var codigo = '';
+            var nombre = '';
+            if (!angular.isUndefined(row)) {
+                for (var property in row.entity) {
+                    if ($scope.rowSelect.hasOwnProperty(property)) {
+                        if (property === 'codigo')
+                            codigo = row.entity[property];
+                        if (property === 'nombre')
+                            nombre = row.entity[property];
+                    }
+                }
+            }
+            selection = codigo + ' - ' + nombre;
+            $scope.closeLupaAction();
         };
 
         getEstructuraTabla();
@@ -29,7 +76,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
          * @returns {undefined}
          */
         $scope.closeLupaAction = function () {
-            $uibModalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss(selection);
         };
 
         /**
@@ -37,15 +84,12 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
          * @returns {undefined}
          */
         function getEstructuraTabla() {
-
             /**
              * Request para obtener estructura
              */
             $myService.getEstructuraTablaService($foreignTableName)
                     .success(function (data, status, headers, config) {
-
                         $scope.modelEstructura = data;
-
                         /**
                          * Request para obtener consulta
                          */
@@ -68,5 +112,15 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
             });
         }
         ;
+
+        /**
+         * Template action double click
+         * @returns {String}
+         */
+        function rowTemplate() {
+            return '<div ng-dblclick="grid.appScope.doubleClickGridAction(row)" ng-class="grid.options.rowStyle(row)" ' +
+                    '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell ui-grid-selection" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell ui-grid-selection></div>' +
+                    '</div>';
+        }
     }]);
 
