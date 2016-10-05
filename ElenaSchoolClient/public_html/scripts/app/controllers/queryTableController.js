@@ -12,7 +12,6 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
          */
         $scope.modelEstructura = [];
         $scope.isTypeOrder = 1;
-        $scope.isOpenDivOrder = false;
         getEstructura();
 
         /**
@@ -30,18 +29,6 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
         }
 
         /**
-         * Check in order
-         * @returns {undefined}
-         */
-        $scope.openOrderAction = function () {
-            $scope.isOpenDivOrder = false;
-            angular.forEach($scope.modelEstructura, function (value, key) {
-                if (value.isOrder)
-                    $scope.isOpenDivOrder = true;
-            });
-        };
-
-        /**
          * Action ejecutar consulta
          * @returns {undefined}
          */
@@ -49,17 +36,18 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
             var isOrderAscending = false;
             var isOrderDescending = false;
 
-            if ($scope.isOpenDivOrder) {
-                if ($scope.isTypeOrder === 1)
-                    isOrderAscending = true;
-                else
-                    isOrderDescending = true;
-            };
+            if ($scope.isTypeOrder === 1)
+                isOrderAscending = true;
+            else
+                isOrderDescending = true;
 
             $gridFormulario.data = [];
 
             var obj = getObjectQueryModel($scope.modelEstructura, null, isOrderAscending, isOrderDescending, $scope.modelEstructura[0].nameTable);
 
+            /**
+             * Request para consultar a tabla
+             */
             $myService.getConsultaService(obj)
                     .success(function (data, status, headers, config) {
 

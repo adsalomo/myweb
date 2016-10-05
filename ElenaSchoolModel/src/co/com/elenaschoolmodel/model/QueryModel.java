@@ -12,7 +12,41 @@ public class QueryModel {
     private boolean isOrderAscending;
     private boolean isOrderDescending;
     private String model;
+    private int count;
+    private int numberPage;
+    
+    /**
+     * 
+     * @return 
+     */
+    public int getNumberPage(){
+        return numberPage;
+    }
+    
+    /**
+     * 
+     * @param numberPage 
+     */
+    public void setNumberPage(int numberPage){
+        this.numberPage = numberPage;
+    }
 
+    /**
+     * 
+     * @return 
+     */
+    public int getCount() {
+        return count;
+    }
+
+    /**
+     * 
+     * @param count 
+     */
+    public void setCount(int count) {
+        this.count = count;
+    }
+    
     /**
      * @return the listModel
      */

@@ -91,12 +91,14 @@ public class Query {
      */
     public enum SortOrder {
         Ascending,
-        Descending
+        Descending,
+        None
     }
 
     /**
      * Order Consulta
-     * @param order 
+     *
+     * @param order
      */
     public void addSortOrder(String order) {
         this.order = order;
@@ -104,19 +106,18 @@ public class Query {
 
     /**
      * Order consulta
-     * @param order
-     * @param sortOrder 
+     * @param sortOrder
      */
-    public void addSortOrder(String order, SortOrder sortOrder) {
+    public void addSortOrder(SortOrder sortOrder) {
         switch (sortOrder) {
             case Ascending:
-                this.order = " ORDER BY " + order + " ASC ";
+                this.order = " ORDER BY ID ASC ";
                 break;
             case Descending:
-                this.order = " ORDER BY " + order + " DESC ";
+                this.order = " ORDER BY ID DESC ";
                 break;
             default:
-                this.order = " ORDER BY " + order;
+                this.order = " ORDER BY ID ";
                 break;
         }
     }
@@ -199,6 +200,10 @@ public class Query {
         cont = 0;
         column = "SELECT * ";
 
+        if (tables == null || tables.isEmpty()) {
+            return sql;
+        }
+
         if (columns != null && columns.size() > 0) {
             column = "SELECT ";
             for (String col : columns) {
@@ -208,12 +213,10 @@ public class Query {
         }
 
         cont = 0;
-        if (tables != null && tables.size() > 0) {
-            table = " FROM ";
-            for (String tab : tables) {
-                table += cont == tables.size() - 1 ? tab : tab + ", ";
-                cont++;
-            }
+        table = " FROM ";
+        for (String tab : tables) {
+            table += cont == tables.size() - 1 ? tab : tab + ", ";
+            cont++;
         }
 
         cont = 0;
@@ -224,7 +227,7 @@ public class Query {
                 cont++;
             }
         }
-        
+
         sql = column + table + condi + order;
         return sql;
     }
@@ -240,24 +243,26 @@ public class Query {
         String values = "";
         int cont;
 
-        if (tables != null && tables.size() > 0) {
-            sql = "INSERT INTO " + tables.get(0) + " ";
+        if (tables == null || tables.isEmpty() || maps == null || maps.isEmpty()) {
+            return sql;
         }
 
+        sql = "INSERT INTO " + tables.get(0) + " ";
+
         cont = 0;
-        if (maps != null && maps.size() > 0) {
-            campos += "(";
-            values += " VALUES (";
-            for (Map<String, Object> map : maps) {
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    campos += cont == maps.size() - 1 ? "" + entry.getKey() + "" : "" + entry.getKey() + ", ";
-                    values += cont == maps.size() - 1 ? "" + entry.getValue() + "" : "" + entry.getValue() + ", ";
-                }
-                cont++;
+
+        campos += "(";
+        values += " VALUES (";
+        for (Map<String, Object> map : maps) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                campos += cont == maps.size() - 1 ? "" + entry.getKey() + "" : "" + entry.getKey() + ", ";
+                values += cont == maps.size() - 1 ? "" + entry.getValue() + "" : "" + entry.getValue() + ", ";
             }
-            campos += ")";
-            values += ")";
+            cont++;
         }
+        campos += ")";
+        values += ")";
+
         sql = sql + campos + values;
         return sql;
     }
@@ -273,18 +278,19 @@ public class Query {
         String condi = "";
         int cont;
 
-        if (tables != null && tables.size() > 0) {
-            sql = "UPDATE " + tables.get(0) + " SET ";
+        if (tables == null || tables.isEmpty() || maps == null || maps.isEmpty()) {
+            return sql;
         }
 
+        sql = "UPDATE " + tables.get(0) + " SET ";
+
         cont = 0;
-        if (maps != null && maps.size() > 0) {
-            for (Map<String, Object> map : maps) {
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    values += cont == maps.size() - 1 ? "" + entry.getKey() + " = " + entry.getValue() + "" : "" + entry.getKey() + " = " + entry.getValue() + ", ";
-                }
-                cont++;
+
+        for (Map<String, Object> map : maps) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                values += cont == maps.size() - 1 ? "" + entry.getKey() + " = " + entry.getValue() + "" : "" + entry.getKey() + " = " + entry.getValue() + ", ";
             }
+            cont++;
         }
 
         cont = 0;
@@ -310,9 +316,11 @@ public class Query {
         String condi = "";
         int cont;
 
-        if (tables != null && tables.size() > 0) {
-            sql = "DELETE FROM " + tables.get(0) + " ";
+        if (tables == null || tables.isEmpty()) {
+            return sql;
         }
+
+        sql = "DELETE FROM " + tables.get(0) + " ";
 
         cont = 0;
         if (conditions != null && conditions.size() > 0) {

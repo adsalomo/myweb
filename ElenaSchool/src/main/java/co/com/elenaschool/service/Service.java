@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,17 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Service {
     
-    private final ModelBusiness modelBusiness = new ModelBusiness();
-    
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public List<Model> getEstructuraTabla(@RequestBody Model model){
+        ModelBusiness modelBusiness = new ModelBusiness();
         return modelBusiness.getEstructuraTabla(model);
     }
     
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getConsulta", method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     public QueryModel getConsulta(@RequestBody QueryModel queryModel){
+        ModelBusiness modelBusiness = new ModelBusiness();
         return modelBusiness.getConsulta(queryModel);
     }
     

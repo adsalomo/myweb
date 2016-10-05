@@ -7,46 +7,46 @@ import javax.sql.DataSource;
 
 /**
  * Clase singleton para obtener conexión
+ *
  * @author AdrianL
  */
-public class Conexion {
+public class Connection {
+
     private static DataSource dataSource;
-    private static Conexion instance;
-    
+    private static Connection instance;
+
     /**
      * constructor
      */
-    private Conexion(){
+    private Connection() {
         setDataSource();
     }
-    
+
     /**
      * Instancia la clase conexión
-     * @return 
+     *
+     * @return
      */
-    public static Conexion getInstance(){
-        if(instance == null){
-            instance = new Conexion();
+    public static Connection getInstance() {
+        if (instance == null) {
+            instance = new Connection();
         }
         return instance;
     }
-    
+
     /**
      * Asigna el objeto datasource
      */
-    private void setDataSource(){
-        try {
-            dataSource = Util.getDataSource();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void setDataSource() {
+        dataSource = Util.getDataSource();
     }
-    
+
     /**
      * Obtiene el objeto datasource
+     *
      * @return dataSource
      */
-    public DataSource getDataSource(){
+    public DataSource getDataSource() {
         return dataSource;
     }
 }

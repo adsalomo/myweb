@@ -49,12 +49,14 @@ public class ModelBusiness {
 
     /**
      * Obtiene consulta
+     *
      * @param queryModel
      * @return
      */
     public QueryModel getConsulta(QueryModel queryModel) {
         try {
             List<Object> result = iModelDao.getConsulta(getQuery(queryModel.getListModel(), queryModel.getModel(), queryModel.isIsOrderAscending(), queryModel.isIsOrderDescending()));
+            queryModel.setCount(result.size());
             queryModel.setListResult(result);
         } catch (SQLException ex) {
             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,18 +65,22 @@ public class ModelBusiness {
         }
         return queryModel;
     }
+    
+    public int getNumberPage(QueryModel queryModel){
+        int count = queryModel.getCount();
+        return 0;
+    }
 
     /**
      * Arma query con la estructura de la tabla
+     *
      * @param listModel
      * @param table
      * @param orderAsc
      * @param orderDesc
-     * @return 
+     * @return
      */
     private String getQuery(List<Model> listModel, String table, boolean orderAsc, boolean orderDesc) {
-        String camposOrder = "";
-        boolean isOrden = false;
         sql = "";
 
         if (listModel != null && listModel.size() > 0) {
@@ -89,26 +95,18 @@ public class ModelBusiness {
                 if (model.getValor() != null && model.getValor().toString().length() > 0) {
                     query.addCondition(model.getColumnName() + " " + model.getValor().toString());
                 }
-
-                // Add order
-                if (model.isIsOrder()) {
-                    camposOrder += !isOrden ? model.getColumnName() : ", " + model.getColumnName();
-                    isOrden = true;
-                }
             }
 
             // Add table
             query.addTable(table);
 
             // Determina orden
-            if (camposOrder.length() > 0) {
-                if (orderAsc) {
-                    query.addSortOrder(camposOrder, Query.SortOrder.Ascending);
-                } else if (orderDesc) {
-                    query.addSortOrder(camposOrder, Query.SortOrder.Descending);
-                } else {
-                    query.addSortOrder(camposOrder);
-                }
+            if (orderAsc) {
+                query.addSortOrder(Query.SortOrder.Ascending);
+            } else if (orderDesc) {
+                query.addSortOrder(Query.SortOrder.Descending);
+            } else {
+                query.addSortOrder(Query.SortOrder.None);
             }
 
             sql = query.getQuery();

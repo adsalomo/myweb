@@ -26,7 +26,8 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             autoResize: true,
             multiSelect: false,
             noUnselect: true,
-            flatEntityAccess: true
+            flatEntityAccess: true,
+            rowNumber: -1
         };
 
         /**
@@ -42,6 +43,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     $scope.gridApi.selection.selectRow(newRowCol.row.entity);
                     $scope.rowSelect = newRowCol.row.entity;
                 }
+                $scope.gridFormulario.rowNumber = $scope.gridFormulario.data.indexOf(newRowCol.row.entity);
             });
 
             /**
@@ -145,6 +147,10 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         });
                 }
             }
+        };
+        
+        $scope.searchPageAction = function () {
+            $scope.isSearchPage = true;
         };
 
     }]);

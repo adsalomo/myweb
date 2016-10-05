@@ -16,7 +16,6 @@ public class Model {
     private String labelName;
     private Object valor;
     private String foreignTableName;
-    private boolean isOrder;
 
     /**
      * 
@@ -175,22 +174,4 @@ public class Model {
     public void setLabelName(String labelName) {
         this.labelName = labelName;
     }
-
-    /**
-     * 
-     * @return 
-     */
-    public boolean isIsOrder() {
-        return isOrder;
-    }
-
-    /**
-     * 
-     * @param isOrder 
-     */
-    public void setIsOrder(boolean isOrder) {
-        this.isOrder = isOrder;
-    }
-    
-    
 }
