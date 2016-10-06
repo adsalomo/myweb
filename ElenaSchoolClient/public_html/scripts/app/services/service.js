@@ -34,7 +34,9 @@ app.factory('$myService', ['$http', function ($http) {
                         listResult: queryModel.listResult,
                         isOrderAscending: queryModel.isOrderAscending,
                         isOrderDescending: queryModel.isOrderDescending,
-                        model: queryModel.model
+                        model: queryModel.model,
+                        page: queryModel.page,
+                        isPagination: queryModel.isPagination
                     }
                 });
             }

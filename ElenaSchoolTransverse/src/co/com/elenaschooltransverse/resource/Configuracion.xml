@@ -4,7 +4,7 @@
   <void property="connectionFilePath">
    <string>C:\Notacion\conexion.xml</string>
   </void>
-  <void property="numberRegisterPage">
+  <void property="numberRegisterXPage">
    <int>5</int>
   </void>
  </object>

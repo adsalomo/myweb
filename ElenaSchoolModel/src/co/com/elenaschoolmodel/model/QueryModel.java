@@ -13,22 +13,56 @@ public class QueryModel {
     private boolean isOrderDescending;
     private String model;
     private int count;
-    private int numberPage;
+    private int numberRegistersXPage;
+    private int page;
+    private boolean isPagination;
     
     /**
-     * 
+     * Propiedad para definir si la consulta es paginada
      * @return 
      */
-    public int getNumberPage(){
-        return numberPage;
+    public boolean getIsPagination(){
+        return isPagination;
+    }
+    
+    /**
+     * setter propiedad isPagination
+     * @param isPagination 
+     */
+    public void setIsPagination(boolean isPagination){
+        this.isPagination = isPagination;
+    }
+    
+    /**
+     * Inicializador desde donde se empezara a mostrar el paginado
+     * @return 
+     */
+    public int getPage(){
+        return page;
     }
     
     /**
      * 
-     * @param numberPage 
+     * @param page 
      */
-    public void setNumberPage(int numberPage){
-        this.numberPage = numberPage;
+    public void setPage(int page){
+        this.page = page;
+    }
+    
+    /**
+     * Numero de registros por pagina
+     * @return 
+     */
+    public int getNumberRegistersXPage(){
+        return numberRegistersXPage;
+    }
+    
+    /**
+     * 
+     * @param numberRegistersXPage 
+     */
+    public void setNumberRegistersXPage(int numberRegistersXPage){
+        this.numberRegistersXPage = numberRegistersXPage;
     }
 
     /**
@@ -76,6 +110,7 @@ public class QueryModel {
     }
 
     /**
+     * Tabla de la base de datos
      * @return the model
      */
     public String getModel() {

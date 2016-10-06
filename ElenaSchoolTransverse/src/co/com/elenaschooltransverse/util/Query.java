@@ -23,6 +23,7 @@ public class Query {
     private final List<Map<String, Object>> maps;
 
     private String order;
+    private String pagination;
 
     /**
      * Constructor
@@ -33,6 +34,7 @@ public class Query {
         conditions = new ArrayList<>();
         maps = new ArrayList<>();
         order = "";
+        pagination = "";
     }
 
     /**
@@ -120,6 +122,15 @@ public class Query {
                 this.order = " ORDER BY ID ";
                 break;
         }
+    }
+    
+    /**
+     * Agrega paginacion a la consulta
+     * @param registerXPage
+     * @param page 
+     */
+    public void addPagination(int registerXPage, int page){
+        pagination = "LIMIT " + registerXPage + " OFFSET " + (registerXPage * page);
     }
 
     /**
@@ -228,7 +239,7 @@ public class Query {
             }
         }
 
-        sql = column + table + condi + order;
+        sql = column + table + condi + order + pagination;
         return sql;
     }
 

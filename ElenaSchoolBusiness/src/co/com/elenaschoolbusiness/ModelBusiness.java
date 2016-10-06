@@ -5,6 +5,7 @@ import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
 import co.com.elenaschooltransverse.util.Query;
+import co.com.elenaschooltransverse.util.Util;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,13 +51,15 @@ public class ModelBusiness {
     /**
      * Obtiene consulta
      *
-     * @param queryModel
+     * @param queryModel Objeto que define la consulta
      * @return
      */
     public QueryModel getConsulta(QueryModel queryModel) {
         try {
-            List<Object> result = iModelDao.getConsulta(getQuery(queryModel.getListModel(), queryModel.getModel(), queryModel.isIsOrderAscending(), queryModel.isIsOrderDescending()));
-            queryModel.setCount(result.size());
+            queryModel.setNumberRegistersXPage(Util.readFileConfiguration().getNumberRegisterXPage());
+            sql = getQuery(queryModel);
+            List<Object> result = iModelDao.getConsulta(sql);
+            queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);
         } catch (SQLException ex) {
             Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,29 +68,37 @@ public class ModelBusiness {
         }
         return queryModel;
     }
-    
-    public int getNumberPage(QueryModel queryModel){
-        int count = queryModel.getCount();
-        return 0;
+
+    /**
+     * Obtiene numero de registros por consulta
+     * @param queryModel
+     * @return
+     * @throws SQLException 
+     */
+    private int getCountTable(String table) throws SQLException {
+        query = new Query();
+        query.setQueryTypes(Query.QueryTypes.Select);
+        // Add table
+        query.addTable(table);
+        List<Object> result = iModelDao.getConsulta(query.getQuery());
+        return result != null ? result.size() : 0;
     }
 
     /**
      * Arma query con la estructura de la tabla
      *
-     * @param listModel
-     * @param table
-     * @param orderAsc
-     * @param orderDesc
+     * @param queryModel Objeto que define la consulta
      * @return
      */
-    private String getQuery(List<Model> listModel, String table, boolean orderAsc, boolean orderDesc) {
+    private String getQuery(QueryModel queryModel) {
         sql = "";
 
-        if (listModel != null && listModel.size() > 0) {
+        if (queryModel.getListModel() != null && queryModel.getListModel().size() > 0) {
             query = new Query();
+            // Definition query
             query.setQueryTypes(Query.QueryTypes.Select);
 
-            for (Model model : listModel) {
+            for (Model model : queryModel.getListModel()) {
                 // Add column
                 query.addColumn(model.getColumnName());
 
@@ -98,15 +109,20 @@ public class ModelBusiness {
             }
 
             // Add table
-            query.addTable(table);
+            query.addTable(queryModel.getModel());
 
             // Determina orden
-            if (orderAsc) {
+            if (queryModel.isIsOrderAscending()) {
                 query.addSortOrder(Query.SortOrder.Ascending);
-            } else if (orderDesc) {
+            } else if (queryModel.isIsOrderDescending()) {
                 query.addSortOrder(Query.SortOrder.Descending);
             } else {
                 query.addSortOrder(Query.SortOrder.None);
+            }
+
+            // Add pagination
+            if (queryModel.getIsPagination()) {
+                query.addPagination(queryModel.getNumberRegistersXPage(), queryModel.getPage());
             }
 
             sql = query.getQuery();

@@ -1,3 +1,5 @@
+/* global app */
+
 /**
  * @autor AdrianL
  * @since 21 sep 2016
@@ -9,6 +11,6 @@ app.factory('$setting', [function () {
                 column: 4, // número columnas en que se dividen los formularios
                 nameApp: 'ElenaSchool' // nombre app
             }
-        }
+        };
     }]);
 

@@ -21,12 +21,16 @@ function setListToGrid(gridOptions, list, modelEstructura) {
                     if (value.columnName === property)
                         columns.push({name: value.labelName, field: property, width: 100});
                 });
-            };
-        };
+            }
+            ;
+        }
+        ;
         gridOptions.columnDefs = columns;
         gridOptions.data = list;
-    };
-};
+    }
+    ;
+}
+;
 
 /**
  * Mensaje confirmacion
@@ -113,16 +117,21 @@ function isArrayNotNull(list) {
  * @param {type} isOrderAscending
  * @param {type} isOrderDescending
  * @param {type} model
+ * @param {type} page
+ * @param {type} isPagination
  * @returns {getObjectQueryModel.obj}
  */
-function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDescending, model) {
+function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDescending, model, page, isPagination) {
     var obj = {
         listModel: listModel,
         listResult: listResult,
         isOrderAscending: isOrderAscending,
         isOrderDescending: isOrderDescending,
-        model: model
+        model: model,
+        page: page,
+        isPagination: isPagination
     };
+    console.log(JSON.stringify(obj));
     return obj;
 }
 

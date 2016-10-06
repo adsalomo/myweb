@@ -43,17 +43,26 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
 
             $gridFormulario.data = [];
 
-            var obj = getObjectQueryModel($scope.modelEstructura, null, isOrderAscending, isOrderDescending, $scope.modelEstructura[0].nameTable);
+            // Arma objero queryModel
+            var obj = getObjectQueryModel($scope.modelEstructura, null, isOrderAscending, isOrderDescending, $scope.modelEstructura[0].nameTable, $gridFormulario.actualPage, $gridFormulario.isPagination);
 
             /**
              * Request para consultar a tabla
              */
             $myService.getConsultaService(obj)
                     .success(function (data, status, headers, config) {
-
+                        $gridFormulario.count = data.count;
+                        
+                        // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                        if($gridFormulario.isPagination)
+                            $gridFormulario.pageSize = data.listResult.length;
+                        else
+                            $gridFormulario.pageSize = data.count;
+                        
+                        // Llena grid con los datos de la consulta
                         setListToGrid($gridFormulario, data.listResult, $scope.modelEstructura);
+                        
                         $uibModalInstance.dismiss(true);
-
                     }).error(function (data, status, headers, config) {
                 console.log(data);
             });

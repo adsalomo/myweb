@@ -5,6 +5,7 @@ import co.com.elenaschoolmodel.model.Configuracion;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -106,9 +107,7 @@ public class Util {
      * @param fileName Nombre archivo XML
      */
     public static void serialize(Object obj, String fileName) {
-        XMLEncoder encoder;
-        try {
-            encoder = new XMLEncoder(new FileOutputStream(fileName));
+        try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)))) {
             encoder.writeObject(obj);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);

@@ -10,21 +10,21 @@ package co.com.elenaschoolmodel.model;
  * @author AdrianL
  */
 public class Configuracion {
-    private int numberRegisterPage;
+    private int numberRegistersXPage;
     private String connectionFilePath;
 
     /**
      * @return the numberRegisterPage
      */
-    public int getNumberRegisterPage() {
-        return numberRegisterPage;
+    public int getNumberRegisterXPage() {
+        return numberRegistersXPage;
     }
 
     /**
-     * @param numberRegisterPage the numberRegisterPage to set
+     * @param numberRegistersXPage the numberRegisterPage to set
      */
-    public void setNumberRegisterPage(int numberRegisterPage) {
-        this.numberRegisterPage = numberRegisterPage;
+    public void setNumberRegisterXPage(int numberRegistersXPage) {
+        this.numberRegistersXPage = numberRegistersXPage;
     }
 
     /**
