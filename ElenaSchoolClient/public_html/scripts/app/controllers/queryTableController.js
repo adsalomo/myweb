@@ -33,18 +33,24 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
          * @returns {undefined}
          */
         $scope.consultarAction = function () {
-            var isOrderAscending = false;
-            var isOrderDescending = false;
 
             if ($scope.isTypeOrder === 1)
-                isOrderAscending = true;
+                $gridFormulario.isOrderAscending = true;
             else
-                isOrderDescending = true;
+                $gridFormulario.isOrderDescending = true;
 
             $gridFormulario.data = [];
 
-            // Arma objero queryModel
-            var obj = getObjectQueryModel($scope.modelEstructura, null, isOrderAscending, isOrderDescending, $scope.modelEstructura[0].nameTable, $gridFormulario.actualPage, $gridFormulario.isPagination);
+            // Arma objeto queryModel
+            var obj = getObjectQueryModel(
+                    $scope.modelEstructura,
+                    null,
+                    $gridFormulario.isOrderAscending,
+                    $gridFormulario.isOrderDescending,
+                    $scope.modelEstructura[0].nameTable,
+                    $gridFormulario.actualPage,
+                    $gridFormulario.isPagination
+                    );
 
             /**
              * Request para consultar a tabla
@@ -52,16 +58,19 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
             $myService.getConsultaService(obj)
                     .success(function (data, status, headers, config) {
                         $gridFormulario.count = data.count;
-                        
+
                         // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                        if($gridFormulario.isPagination)
+                        if ($gridFormulario.isPagination){
                             $gridFormulario.pageSize = data.listResult.length;
-                        else
+                            var resp = $gridFormulario.count % $gridFormulario.pageSize;
+                            $gridFormulario.totalPages = (resp !== 0 ? (Math.floor($gridFormulario.count / $gridFormulario.pageSize) + 1) : ($gridFormulario.count / $gridFormulario.pageSize)) - 1;
+                            $gridFormulario.actualPage = 0;
+                        }else
                             $gridFormulario.pageSize = data.count;
-                        
+
                         // Llena grid con los datos de la consulta
                         setListToGrid($gridFormulario, data.listResult, $scope.modelEstructura);
-                        
+
                         $uibModalInstance.dismiss(true);
                     }).error(function (data, status, headers, config) {
                 console.log(data);

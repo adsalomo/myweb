@@ -15,6 +15,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.numRow = [];
         $scope.numColumn = $setting.varGlobals.column;
         $scope.isActivoGrid = false;
+        $scope.gridApi = {};
 
         /**
          * Definicion de grid
@@ -27,11 +28,14 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             multiSelect: false,
             noUnselect: true,
             flatEntityAccess: true,
-            rowNumber: -1,
-            count: 0,
-            actualPage: 0,
-            pageSize: 0,
-            isPagination: true
+            rowNumber: -1, // Fila actual seleccionada en la grid
+            count: 0, // Total registros consulta
+            actualPage: 0, // Pagina actual
+            totalPages: 0, // Total paginas
+            pageSize: 0, // Numero registros por pagina
+            isPagination: true, // Si la grid es paginada
+            isOrderAscending: false, // Ordenamiento consulta
+            isOrderDescending: false // Ordenamiento consulta
         };
 
         /**
@@ -45,15 +49,13 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             $scope.gridApi['gridFormulario'].cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
                 if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
                     $scope.gridApi['gridFormulario'].selection.selectRow(newRowCol.row.entity);
-                    $scope.rowSelect = newRowCol.row.entity;
+                    //$scope.rowSelect = newRowCol.row.entity;
                 }
                 // Obtiene row index grid selection
                 $scope.gridFormulario.rowNumber = $scope.gridFormulario.data.indexOf(newRowCol.row.entity);
             });
-
-            /**
-             * Cambio de fila
-             */
+            
+            // Selection row
             $scope.gridApi['gridFormulario'].selection.on.rowSelectionChanged($scope, function (row) {
                 $scope.rowSelect = row.entity;
             });
@@ -153,7 +155,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 }
             }
         };
-        
+
         /**
          * Action select por page
          * @returns {undefined}
@@ -161,19 +163,37 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.searchPageAction = function () {
             $scope.isSearchPage = true;
         };
-        
+
         /**
          * *************************************
-         * Definicion eventos grid 
+         * Definicion eventos grid Anterior, siguiente, primera pagina, ultima pagina
          * *************************************
          */
-        
+
         /**
          * Action ir siguiente grid
          * @returns {undefined}
          */
-        $scope.nextGrid = function (){
-            $generalFactory.nextGrid($scope.gridFormulario, $scope, $scope.modelEstructura, $scope.modelEstructura[0].nameTable, 'gridFormulario');
+        $scope.nextGridAction = function () {
+            $generalFactory.nextGrid(
+                    $scope.gridFormulario,
+                    $scope,
+                    $scope.modelEstructura,
+                    $scope.modelEstructura[0].nameTable,
+                    'gridFormulario');
+        };
+
+        /**
+         * 
+         * @returns {undefined}
+         */
+        $scope.previousGridAction = function () {
+            $generalFactory.previousGrid(
+                    $scope.gridFormulario,
+                    $scope,
+                    $scope.modelEstructura,
+                    $scope.modelEstructura[0].nameTable,
+                    'gridFormulario');
         };
 
     }]);
