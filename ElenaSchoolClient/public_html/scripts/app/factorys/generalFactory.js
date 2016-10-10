@@ -5,7 +5,7 @@
  * @since 21 sep 2016
  * @description factory general para funciones globales
  */
-app.factory('$generalFactory', ['$myService', function ($myService) {
+app.factory('$generalFactory', ['$myService', '$setting', function ($myService, $setting) {
         return {
             /**
              * Ir siguiente en grid
@@ -26,43 +26,53 @@ app.factory('$generalFactory', ['$myService', function ($myService) {
                         // Aumentamos en 1 la pagina actual
                         grid.actualPage += 1;
 
-                        // Preguntamos si el total de paginas en mayor o igual que la pagina actual para realizar el request
-                        if (grid.totalPages >= grid.actualPage) {
+                        // Si la pagina supera al total de paginas, la pagina actual es igual al numero de paginas
+                        if (grid.actualPage > grid.totalPages) {
+                            grid.actualPage = grid.totalPages;
+                            messageBoxAlert($setting.varGlobals.nameApp + ' - Grid', 'No hay más datos para mostrar', 'info');
+                            grid.rowNumber = grid.pageSize - 1;
+                        } else {
+                            // Preguntamos si el total de paginas en mayor o igual que la pagina actual para realizar el request
+                            if (grid.totalPages >= grid.actualPage) {
 
-                            // Arma objero queryModel
-                            var obj = getObjectQueryModel(
-                                    structure,
-                                    null,
-                                    grid.isOrderAscending,
-                                    grid.isOrderDescending,
-                                    table,
-                                    grid.actualPage,
-                                    grid.isPagination
-                                    );
+                                // Arma objero queryModel
+                                var obj = getObjectQueryModel(
+                                        structure,
+                                        null,
+                                        grid.isOrderAscending,
+                                        grid.isOrderDescending,
+                                        table,
+                                        grid.actualPage,
+                                        grid.isPagination
+                                        );
 
-                            /**
-                             * Request get consulta
-                             */
-                            $myService.getConsultaService(obj)
-                                    .success(function (data, status, headers, config) {
-                                        grid.count = data.count;
+                                /**
+                                 * Request get consulta
+                                 */
+                                $myService.getConsultaService(obj)
+                                        .success(function (data, status, headers, config) {
+                                            grid.count = data.count;
 
-                                        // Reiniciamos el contador de las filas
-                                        grid.rowNumber = -1;
+                                            // Reiniciamos el contador de las filas
+                                            grid.rowNumber = -1;
 
-                                        // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                                        if (grid.isPagination)
-                                            grid.pageSize = data.listResult.length;
-                                        else
-                                            grid.pageSize = data.count;
+                                            // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                                            if (grid.isPagination)
+                                                grid.pageSize = data.listResult.length;
+                                            else
+                                                grid.pageSize = data.count;
 
-                                        // Llena grid con los datos de la consulta
-                                        setListToGrid(grid, data.listResult, structure);
+                                            // Llena grid con los datos de la consulta
+                                            setListToGrid(grid, data.listResult, structure);
 
-                                    }).error(function (data, status, headers, config) {
-                                console.log(data);
-                            });
+                                        }).error(function (data, status, headers, config) {
+                                    console.log(data);
+                                });
+                            }
                         }
+                    } else {
+                        grid.rowNumber = grid.pageSize - 1;
+                        messageBoxAlert($setting.varGlobals.nameApp + ' - Grid', 'No hay más datos para mostrar', 'info');
                     }
                 } else {
                     scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
@@ -85,22 +95,12 @@ app.factory('$generalFactory', ['$myService', function ($myService) {
                     // Si la grid es paginada
                     if (grid.isPagination) {
 
-                        // Restamos en 1 la pagina actual
-                        grid.actualPage -= 1;
-
-                        // 
-                        if (grid.actualPage > -1) {
+                        // Si la pagina actual es mayor que 0 se le resta una pagina para ir a la anterior
+                        if (grid.actualPage > 0) {
+                            grid.actualPage -= 1;
 
                             // Arma objero queryModel
-                            var obj = getObjectQueryModel(
-                                    structure,
-                                    null,
-                                    grid.isOrderAscending,
-                                    grid.isOrderDescending,
-                                    table,
-                                    grid.actualPage,
-                                    grid.isPagination
-                                    );
+                            var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
 
                             /**
                              * Request get consulta
@@ -124,11 +124,20 @@ app.factory('$generalFactory', ['$myService', function ($myService) {
                                     }).error(function (data, status, headers, config) {
                                 console.log(data);
                             });
+                        } else {
+                            grid.actualPage = 0;
+                            grid.rowNumber = 0;
+                            scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
                         }
                     }
                 } else if (grid.rowNumber < -1) {
-                    grid.rowNumber = grid.pageSize - 1;
-                    scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
+                    if (grid.isPagination) {
+                        grid.rowNumber = grid.pageSize - 1;
+                        scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
+                    } else {
+                        grid.rowNumber = 0;
+                        scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
+                    }
                 } else {
                     scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
                 }
