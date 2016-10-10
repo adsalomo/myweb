@@ -58,7 +58,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
 
                                             // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
                                             if (grid.isPagination)
-                                                grid.pageSize = data.listResult.length;
+                                                grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
                                             else
                                                 grid.pageSize = data.count;
 
@@ -78,6 +78,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                     scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
                 }
             },
+           
             /**
              * Ir Anterior en grid
              * @param {object} grid
@@ -114,7 +115,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
 
                                         // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
                                         if (grid.isPagination)
-                                            grid.pageSize = data.listResult.length;
+                                            grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
                                         else
                                             grid.pageSize = data.count;
 
@@ -141,7 +142,94 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                 } else {
                     scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
                 }
+            },
+            
+            /**
+             * Va a la ultima pagina
+             * @param {type} grid
+             * @param {type} structure
+             * @param {type} table
+             * @returns {undefined}
+             */
+            lastGrid: function (grid, structure, table) {
+                grid.actualPage = grid.totalPages;
+                // Arma objero queryModel
+                var obj = getObjectQueryModel(
+                        structure,
+                        null,
+                        grid.isOrderAscending,
+                        grid.isOrderDescending,
+                        table,
+                        grid.actualPage,
+                        grid.isPagination
+                        );
+                /**
+                 * Request get consulta
+                 */
+                $myService.getConsultaService(obj)
+                        .success(function (data, status, headers, config) {
+                            grid.count = data.count;
+
+                            // Reiniciamos el contador de las filas
+                            grid.rowNumber = -1;
+
+                            // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                            if (grid.isPagination)
+                                grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
+                            else
+                                grid.pageSize = data.count;
+
+                            // Llena grid con los datos de la consulta
+                            setListToGrid(grid, data.listResult, structure);
+
+                        }).error(function (data, status, headers, config) {
+                    console.log(data);
+                });
+            },
+            
+            /**
+             * Va a la primera pagina
+             * @param {type} grid
+             * @param {type} structure
+             * @param {type} table
+             * @returns {undefined}
+             */
+            firtsGrid: function (grid, structure, table) {
+                grid.actualPage = 0;
+                // Arma objero queryModel
+                var obj = getObjectQueryModel(
+                        structure,
+                        null,
+                        grid.isOrderAscending,
+                        grid.isOrderDescending,
+                        table,
+                        grid.actualPage,
+                        grid.isPagination
+                        );
+                /**
+                 * Request get consulta
+                 */
+                $myService.getConsultaService(obj)
+                        .success(function (data, status, headers, config) {
+                            grid.count = data.count;
+
+                            // Reiniciamos el contador de las filas
+                            grid.rowNumber = -1;
+
+                            // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                            if (grid.isPagination)
+                                grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
+                            else
+                                grid.pageSize = data.count;
+
+                            // Llena grid con los datos de la consulta
+                            setListToGrid(grid, data.listResult, structure);
+
+                        }).error(function (data, status, headers, config) {
+                    console.log(data);
+                });
             }
+            
         };
     }]);
 

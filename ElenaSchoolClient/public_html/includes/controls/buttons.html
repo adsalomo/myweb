@@ -1,15 +1,15 @@
 <div class="top well-lg border-buttons" >
         <div class="btn-group-xs">
-            <button class="btn btn-transparente btn-xs" ng-click="" title="Primero">
+            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid" title="Primero">
                 <img src="images/firts.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" title="Anterior">
+            <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" ng-disabled="!isActivoGrid" title="Anterior">
                 <img src="images/previous.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" title="Siguiente">
+            <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" ng-disabled="!isActivoGrid" title="Siguiente">
                 <img src="images/next.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="" title="Último">
+            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid" title="Último">
                 <img src="images/last.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-click="" title="Agregar">

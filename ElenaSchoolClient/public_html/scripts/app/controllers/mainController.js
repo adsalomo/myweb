@@ -49,12 +49,12 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             $scope.gridApi['gridFormulario'].cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
                 if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
                     $scope.gridApi['gridFormulario'].selection.selectRow(newRowCol.row.entity);
-                    //$scope.rowSelect = newRowCol.row.entity;
+                    $scope.rowSelect = newRowCol.row.entity;
                 }
                 // Obtiene row index grid selection
                 $scope.gridFormulario.rowNumber = $scope.gridFormulario.data.indexOf(newRowCol.row.entity);
             });
-            
+
             // Selection row
             $scope.gridApi['gridFormulario'].selection.on.rowSelectionChanged($scope, function (row) {
                 $scope.rowSelect = row.entity;
@@ -144,16 +144,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 $scope.isActivoGrid = false;
             else
                 $scope.isActivoGrid = true;
-
-            if (!angular.isUndefined($scope.rowSelect)) {
-                for (var property in $scope.rowSelect) {
-                    if ($scope.rowSelect.hasOwnProperty(property))
-                        angular.forEach($scope.modelEstructura, function (value, key) {
-                            if (value.columnName === property)
-                                value.valor = $scope.rowSelect[property];
-                        });
-                }
-            }
+            setValueStructure($scope.rowSelect, $scope.modelEstructura);
         };
 
         /**
@@ -175,6 +166,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.nextGridAction = function () {
+            clearValueStructure($scope.modelEstructura);
             $generalFactory.nextGrid(
                     $scope.gridFormulario,
                     $scope,
@@ -184,7 +176,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         };
 
         /**
-         * 
+         * Action ir anterior
          * @returns {undefined}
          */
         $scope.previousGridAction = function () {
@@ -194,6 +186,22 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     $scope.modelEstructura,
                     $scope.modelEstructura[0].nameTable,
                     'gridFormulario');
+        };
+        
+        /**
+         * Action ir ultima pagina grid
+         * @returns {undefined}
+         */
+        $scope.lastGridAction = function () {
+            $generalFactory.lastGrid($scope.gridFormulario, $scope.modelEstructura, $scope.modelEstructura[0].nameTable);
+        };
+        
+        /**
+         * Action ir primera pagina
+         * @returns {undefined}
+         */
+        $scope.firtsGridAction = function () {
+            $generalFactory.firtsGrid($scope.gridFormulario, $scope.modelEstructura, $scope.modelEstructura[0].nameTable);
         };
 
     }]);

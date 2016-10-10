@@ -134,4 +134,38 @@ function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDes
     //console.log(JSON.stringify(obj));
     return obj;
 }
+;
+
+/**
+ * 
+ * @param {type} rowSelect
+ * @param {type} modelEstructura
+ * @returns {undefined}
+ */
+function setValueStructure(rowSelect, modelEstructura) {
+    if (!angular.isUndefined(rowSelect)) {
+        for (var property in rowSelect) {
+            if (rowSelect.hasOwnProperty(property)) {
+                angular.forEach(modelEstructura, function (value, key) {
+                    if (value.columnName === property)
+                        value.valor = rowSelect[property];
+                });
+            }
+        }
+    }
+}
+;
+
+/**
+ * Limpia la propiedad valor del objeto structure
+ * @param {type} structure
+ * @returns {undefined}
+ */
+function clearValueStructure(structure) {
+    if (!angular.isUndefined(structure) && isArrayNotNull(structure))
+        angular.forEach(structure, function (value, key) {
+            value.valor = null;
+        });
+}
+;
 
