@@ -9,9 +9,7 @@ package co.com.pruebaconcepto;
  *
  * @author AdrianL
  */
-public class Pelicula extends Largometraje{
-   
-    protected void prueba(){
-        
-    }
+public class MyThread extends Thread{
+ 
+    
 }
