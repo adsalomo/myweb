@@ -67,22 +67,21 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.getEstructuraTablaAction = function (nameTable) {
+            // Request para obtener la estructura
+            $myService.getEstructuraTablaService(nameTable).success(function (data, status, headers, config) {
+                $scope.modelEstructura = data;
+                var numRow = Math.floor($scope.modelEstructura.length / $setting.varGlobals.column);
+                var resto = ($scope.modelEstructura.length % $setting.varGlobals.column);
+                if (resto !== 0)
+                    numRow++;
 
-            $myService.getEstructuraTablaService(nameTable)
-                    .success(function (data, status, headers, config) {
+                for (var i = 0, l = numRow; i < l; i++) {
+                    $scope.numRow[i] = i;
+                }
 
-                        $scope.modelEstructura = data;
-                        var numRow = Math.floor($scope.modelEstructura.length / $setting.varGlobals.column);
-                        var resto = ($scope.modelEstructura.length % $setting.varGlobals.column);
-                        if (resto !== 0)
-                            numRow++;
-
-                        for (var i = 0, l = numRow; i < l; i++) {
-                            $scope.numRow[i] = i;
-                        }
-
-                    }).error(function (data, status, headers, config) {
+            }).error(function (data, status, headers, config) {
                 console.log(data);
+                messageBoxAlert('Obtener estructura', 'Ocurrión un error al procesar la solicitud', 'error');
             });
         };
 
@@ -187,7 +186,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     $scope.modelEstructura[0].nameTable,
                     'gridFormulario');
         };
-        
+
         /**
          * Action ir ultima pagina grid
          * @returns {undefined}
@@ -195,7 +194,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.lastGridAction = function () {
             $generalFactory.lastGrid($scope.gridFormulario, $scope.modelEstructura, $scope.modelEstructura[0].nameTable);
         };
-        
+
         /**
          * Action ir primera pagina
          * @returns {undefined}

@@ -39,7 +39,7 @@ import org.codehaus.jackson.type.TypeReference;
 public class Principal {
 
     public static void main(String[] args) {
-
+getQuery();
         //serialize();
         Util.readFileConfiguration();
 
@@ -104,9 +104,9 @@ public class Principal {
         query.addValuePair("nombre", "'2222'");
         query.addValuePair("descripcion", "'333'");
         query.addValuePair("ano", 2016);
-        query.setQueryTypes(Query.QueryTypes.Select);
-//         query.addCondition("id = " + val);
-//         query.addCondition("codigo = " + val);
+        query.setQueryTypes(Query.QueryTypes.Delete);
+         query.addCondition("id = " + val);
+         query.addCondition("codigo = " + val);
         query.addColumn("codigo");
         query.addColumn("nombre_corto");
         query.addColumn("nombre");

@@ -68,6 +68,7 @@ public class ModelBusiness {
         }
         return queryModel;
     }
+    
 
     /**
      * Obtiene numero de registros por consulta

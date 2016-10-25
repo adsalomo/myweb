@@ -1,6 +1,6 @@
 <div class="top well-lg border-buttons" >
         <div class="btn-group-xs">
-            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid" title="Primero">
+            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === 0" title="Primero">
                 <img src="images/firts.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" ng-disabled="!isActivoGrid" title="Anterior">
@@ -9,7 +9,7 @@
             <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" ng-disabled="!isActivoGrid" title="Siguiente">
                 <img src="images/next.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid" title="Último">
+            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === gridFormulario.totalPages" title="Último">
                 <img src="images/last.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-click="" title="Agregar">

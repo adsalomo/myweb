@@ -202,45 +202,49 @@ public class Query {
      * @return
      */
     private String getQuerySelect() {
-        String sql = "";
-        String condi = "";
-        String table = "";
-        String column = "";
+        StringBuilder sql = new StringBuilder();
+        StringBuilder condi = new StringBuilder();
+        StringBuilder table = new StringBuilder();
+        StringBuilder column = new StringBuilder();
         int cont;
 
         cont = 0;
-        column = "SELECT * ";
+        column.append("SELECT * ");
 
         if (tables == null || tables.isEmpty()) {
-            return sql;
+            return sql.append("").toString();
         }
 
         if (columns != null && columns.size() > 0) {
-            column = "SELECT ";
+            column.append("SELECT ");
             for (String col : columns) {
-                column += cont == columns.size() - 1 ? col : col + ", ";
+                column.append(cont == columns.size() - 1 ? col : col + ", ");
                 cont++;
             }
         }
 
         cont = 0;
-        table = " FROM ";
+        table.append(" FROM ");
         for (String tab : tables) {
-            table += cont == tables.size() - 1 ? tab : tab + ", ";
+            table.append(cont == tables.size() - 1 ? tab : tab + ", ");
             cont++;
         }
 
         cont = 0;
         if (conditions != null && conditions.size() > 0) {
-            condi = " WHERE ";
+            condi.append(" WHERE ");
             for (String con : conditions) {
-                condi += cont == conditions.size() - 1 ? con : con + " AND ";
+                condi.append(cont == conditions.size() - 1 ? con : con + " AND ");
                 cont++;
             }
         }
 
-        sql = column + table + condi + order + pagination;
-        return sql;
+        sql.append(column.toString()); 
+        sql.append(table.toString()); 
+        sql.append(condi.toString());
+        sql.append(order);
+        sql.append(pagination);
+        return sql.toString();
     }
 
     /**
@@ -249,33 +253,37 @@ public class Query {
      * @return
      */
     private String getQueryInsert() {
-        String sql = "";
-        String campos = "";
-        String values = "";
+        StringBuilder sql = new StringBuilder();
+        StringBuilder campos = new StringBuilder();
+        StringBuilder values = new StringBuilder();
         int cont;
 
         if (tables == null || tables.isEmpty() || maps == null || maps.isEmpty()) {
-            return sql;
+            return sql.append("").toString();
         }
 
-        sql = "INSERT INTO " + tables.get(0) + " ";
+        sql.append("INSERT INTO "); 
+        sql.append(tables.get(0)); 
+        sql.append(" ");
 
         cont = 0;
 
-        campos += "(";
-        values += " VALUES (";
+        campos.append("(");
+        values.append(" VALUES (");
         for (Map<String, Object> map : maps) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                campos += cont == maps.size() - 1 ? "" + entry.getKey() + "" : "" + entry.getKey() + ", ";
-                values += cont == maps.size() - 1 ? "" + entry.getValue() + "" : "" + entry.getValue() + ", ";
+                campos.append(cont == maps.size() - 1 ? "" + entry.getKey() + "" : "" + entry.getKey() + ", ");
+                values.append(cont == maps.size() - 1 ? "" + entry.getValue() + "" : "" + entry.getValue() + ", ");
             }
             cont++;
         }
-        campos += ")";
-        values += ")";
+        campos.append(")");
+        values.append(")");
 
-        sql = sql + campos + values;
-        return sql;
+        sql.append(campos); 
+        sql.append(values);
+        
+        return sql.toString();
     }
 
     /**
@@ -284,36 +292,41 @@ public class Query {
      * @return
      */
     private String getQueryUpdate() {
-        String sql = "";
-        String values = "";
-        String condi = "";
+        StringBuilder sql = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        StringBuilder condi = new StringBuilder();
         int cont;
 
         if (tables == null || tables.isEmpty() || maps == null || maps.isEmpty()) {
-            return sql;
+            return sql.append("").toString();
         }
 
-        sql = "UPDATE " + tables.get(0) + " SET ";
+        sql.append("UPDATE "); 
+        sql.append(tables.get(0)); 
+        sql.append(" SET ");
 
         cont = 0;
 
         for (Map<String, Object> map : maps) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                values += cont == maps.size() - 1 ? "" + entry.getKey() + " = " + entry.getValue() + "" : "" + entry.getKey() + " = " + entry.getValue() + ", ";
+                values.append(cont == maps.size() - 1 ? "" + entry.getKey() + " = " + entry.getValue() + "" : "" + entry.getKey() + " = " + entry.getValue() + ", ");
             }
             cont++;
         }
 
         cont = 0;
         if (conditions != null && conditions.size() > 0) {
-            condi = " WHERE ";
+            condi.append(" WHERE ");
             for (String con : conditions) {
-                condi += cont == conditions.size() - 1 ? con : con + " AND ";
+                condi.append(cont == (conditions.size() - 1) ? con : con + " AND ");
+                cont++;
             }
         }
 
-        sql = sql + values + condi;
-        return sql;
+        sql.append(values);
+        sql.append(condi);
+        
+        return sql.toString();
     }
 
     /**
@@ -322,27 +335,30 @@ public class Query {
      * @return
      */
     private String getQueryDelete() {
-        String sql = "";
-        String values = "";
-        String condi = "";
+        StringBuilder sql = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        StringBuilder condi = new StringBuilder();
         int cont;
 
         if (tables == null || tables.isEmpty()) {
-            return sql;
+            return sql.toString();
         }
 
-        sql = "DELETE FROM " + tables.get(0) + " ";
+        sql.append("DELETE FROM "); 
+        sql.append(tables.get(0)); 
+        sql.append(" ");
 
         cont = 0;
         if (conditions != null && conditions.size() > 0) {
-            condi = " WHERE ";
+            condi.append(" WHERE ");
             for (String con : conditions) {
-                condi += cont == conditions.size() - 1 ? con : con + " AND ";
+                condi.append(cont == conditions.size() - 1 ? con : con + " AND ");
                 cont++;
             }
         }
 
-        sql = sql + values + condi;
-        return sql;
+        sql.append(values);
+        sql.append(condi);
+        return sql.toString();
     }
 }

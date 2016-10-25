@@ -1,4 +1,5 @@
 package co.com.elenaschooltransverse.util;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
@@ -6,15 +7,15 @@ import javax.sql.DataSource;
  *
  * @author AdrianL
  */
-public class Connection {
+public class ConnectionSingleton {
 
     private static DataSource dataSource;
-    private static Connection instance;
+    private static ConnectionSingleton instance;
 
     /**
      * constructor
      */
-    private Connection() {
+    private ConnectionSingleton() {
         setDataSource();
     }
 
@@ -22,10 +23,13 @@ public class Connection {
      * Instancia la clase conexión
      *
      * @return
+     * @throws java.sql.SQLException
      */
-    public static Connection getInstance() {
+    public static ConnectionSingleton getInstance() throws SQLException {
         if (instance == null) {
-            instance = new Connection();
+            instance = new ConnectionSingleton();
+        } else if(instance.getDataSource().getConnection().isClosed()){
+            instance = new ConnectionSingleton();
         }
         return instance;
     }

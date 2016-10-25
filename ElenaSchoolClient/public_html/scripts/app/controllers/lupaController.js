@@ -9,6 +9,8 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
 
         var nombreApp = $setting.varGlobals.nameApp;
         var selection = null;
+        $scope.gridApi = {};
+        getEstructuraTabla();
 
         /**
          * Definición de la grid
@@ -30,11 +32,11 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
          * @returns {undefined}
          */
         $scope.gridOptionsLupa.onRegisterApi = function (gridApi) {
-            $scope.gridApi = gridApi;
+            $scope.gridApi['gridOptionsLupa'] = gridApi;
 
-            $scope.gridApi.cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
+            $scope.gridApi['gridOptionsLupa'].cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
                 if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
-                    $scope.gridApi.selection.selectRow(newRowCol.row.entity);
+                    $scope.gridApi['gridOptionsLupa'].selection.selectRow(newRowCol.row.entity);
                     $scope.rowSelect = newRowCol.row.entity;
                 }
             });
@@ -42,7 +44,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
             /**
              * Cambio de fila
              */
-            $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+            $scope.gridApi['gridOptionsLupa'].selection.on.rowSelectionChanged($scope, function (row) {
                 $scope.rowSelect = row.entity;
             });
         };
@@ -69,8 +71,6 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
             $scope.closeLupaAction();
         };
 
-        getEstructuraTabla();
-
         /**
          * Action close modal
          * @returns {undefined}
@@ -84,31 +84,32 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
          * @returns {undefined}
          */
         function getEstructuraTabla() {
-            /**
-             * Request para obtener estructura
-             */
-            $myService.getEstructuraTablaService($foreignTableName)
-                    .success(function (data, status, headers, config) {
-                        $scope.modelEstructura = data;
-                        /**
-                         * Request para obtener consulta
-                         */
-                        $myService.getConsultaService(getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable))
-                                .success(function (data, status, headers, config) {
-
-                                    if (isArrayNotNull(data.listResult))
-                                        setListToGrid($scope.gridOptionsLupa, data.listResult, $scope.modelEstructura);
-                                    else {
-                                        messageBoxAlert(nombreApp + ' - Lupa', 'No hay datos para mostrar', 'info');
-                                        $uibModalInstance.dismiss('cancel');
-                                    }
-
-                                }).error(function (data, status, headers, config) {
-                            console.log(data);
-                        });
-
+            // Request para obtener estructura
+            $myService.getEstructuraTablaService($foreignTableName).success(function (data, status, headers, config) {
+                $scope.modelEstructura = data;
+                // Si la estructura es un array
+                if (isArrayNotNull($scope.modelEstructura)) {
+                    // Request para obtener consulta
+                    $myService.getConsultaService(getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable)).success(function (data, status, headers, config) {
+                        if (isArrayNotNull(data.listResult))
+                            setListToGrid($scope.gridOptionsLupa, data.listResult, $scope.modelEstructura);
+                        else {
+                            messageBoxAlert(nombreApp + ' - Lupa', 'No hay datos para mostrar', 'info');
+                            $uibModalInstance.dismiss(null);
+                        }
                     }).error(function (data, status, headers, config) {
+                        console.log(data);
+                        messageBoxAlert(nombreApp + ' - Lupa', 'Ocurrió un error al procesar la solicitud', 'error');
+                        $uibModalInstance.dismiss(null);
+                    });
+                } else {
+                    messageBoxAlert(nombreApp + ' - Lupa', 'No hay datos para mostrar', 'info');
+                    $uibModalInstance.dismiss(null);
+                }
+            }).error(function (data, status, headers, config) {
                 console.log(data);
+                messageBoxAlert(nombreApp + ' - Lupa', 'Ocurrió un error al procesar la solicitud', 'error');
+                $uibModalInstance.dismiss(null);
             });
         }
         ;
@@ -122,5 +123,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
                     '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell ui-grid-selection" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell ui-grid-selection></div>' +
                     '</div>';
         }
+        ;
+
     }]);
 
