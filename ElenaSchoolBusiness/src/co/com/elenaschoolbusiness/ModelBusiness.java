@@ -21,7 +21,6 @@ public class ModelBusiness {
 
     private final IModelDao iModelDao;
     private List<Model> models;
-    private String sql;
     private Query query;
 
     /**
@@ -57,8 +56,7 @@ public class ModelBusiness {
     public QueryModel getConsulta(QueryModel queryModel) {
         try {
             queryModel.setNumberRegistersXPage(Util.readFileConfiguration().getNumberRegisterXPage());
-            sql = getQuery(queryModel);
-            List<Object> result = iModelDao.getConsulta(sql);
+            List<Object> result = iModelDao.getConsulta(getQuery(queryModel));
             queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);
         } catch (SQLException ex) {
@@ -68,13 +66,13 @@ public class ModelBusiness {
         }
         return queryModel;
     }
-    
 
     /**
      * Obtiene numero de registros por consulta
+     *
      * @param queryModel
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     private int getCountTable(String table) throws SQLException {
         query = new Query();
@@ -92,8 +90,6 @@ public class ModelBusiness {
      * @return
      */
     private String getQuery(QueryModel queryModel) {
-        sql = "";
-
         if (queryModel.getListModel() != null && queryModel.getListModel().size() > 0) {
             query = new Query();
             // Definition query
@@ -125,10 +121,62 @@ public class ModelBusiness {
             if (queryModel.getIsPagination()) {
                 query.addPagination(queryModel.getNumberRegistersXPage(), queryModel.getPage());
             }
-
-            sql = query.getQuery();
+            return query.getQuery();
         }
-        return sql;
+        return "";
+    }
+
+    /**
+     * Realiza insert a una entidad de la base de datos
+     * @param queryModel
+     * @return 
+     */
+    public boolean insertModel(QueryModel queryModel) {
+        try {
+            return iModelDao.insertModel(getQueryInsert(queryModel));
+        } catch (SQLException ex) {
+            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    /**
+     * Obtiene el query para realizar el insert
+     * @param queryModel
+     * @return 
+     */
+    private String getQueryInsert(QueryModel queryModel) {
+        if (queryModel.getListModel() != null && queryModel.getListModel().size() > 0) {
+            query = new Query();
+            
+            // Definition query
+            query.setQueryTypes(Query.QueryTypes.Insert);
+
+            for (Model model : queryModel.getListModel()) {
+                query.addValuePair(model.getColumnName(), getValueXDataType(model));
+            }
+
+            // Add table
+            query.addTable(queryModel.getModel());
+
+            return query.getQuery();
+        }
+        return "";
+    }
+    
+    /**
+     * Define el tipo de valor si es CADENA o NUMERICO
+     * @param model
+     * @return 
+     */
+    private String getValueXDataType(Model model){
+        if(model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying") 
+                || model.getDataType().equalsIgnoreCase("date"))
+            return "'" + model.getValor() + "'";
+        else
+            return "" + model.getValor() + "";
     }
 
 }

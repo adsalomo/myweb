@@ -21,7 +21,7 @@
                 <td>{{row.dateType}}</td>
                 <td>
                     <div class="form-group">
-                        <input ng-model="row.valor" id="{{row.columnName}}" name="{{row.columnName}}" class="form-control input-sm" type="text" />
+                        <input ng-model="row.valor" id="{{row.columnName}}" name="{{row.columnName}}" class="form-control input-sm" type="text" data-toggle="tooltip" title="Recuerde colocar el operador (=, <, >, between, etc.) antes del valor por el cual va a buscar"  />
                     </div>
                 </td>
             </tr>

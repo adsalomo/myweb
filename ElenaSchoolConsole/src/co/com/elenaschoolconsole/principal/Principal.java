@@ -14,6 +14,7 @@ import co.com.elenaschoolmodel.model.Configuracion;
 import co.com.elenaschoolmodel.model.GrupoAcademicoModel;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
+import co.com.elenaschooltransverse.util.Logging;
 import co.com.elenaschooltransverse.util.Query;
 import co.com.elenaschooltransverse.util.Util;
 import java.io.File;
@@ -39,24 +40,27 @@ import org.codehaus.jackson.type.TypeReference;
 public class Principal {
 
     public static void main(String[] args) {
-getQuery();
-        //serialize();
-        Util.readFileConfiguration();
-
-        try {
-            //readModel();
-            getConsulta();
-            //getQuery();
-        } catch (Exception ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        System.out.println("Clase: " + stackTrace[1].getClassName() + "\n" + "Método: " + stackTrace[1].getMethodName());
+        Logging.writeError("Esto es una prueba", stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+//        getQuery();
+//        //serialize();
+//        Util.readFileConfiguration();
+//
+//        try {
+//            //readModel();
+//            getConsulta();
+//            //getQuery();
+//        } catch (Exception ex) {
+//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public static void getConsulta() throws IOException {
         ModelBusiness business = new ModelBusiness();
 
         Model model = new Model();
-        model.setNameTable("calendario");
+        model.setNameTable("calendario2");
 
         List<Model> list = business.getEstructuraTabla(model);
         QueryModel queryModel = new QueryModel();
@@ -69,6 +73,7 @@ getQuery();
         qml.setIsPagination(true);
 
         QueryModel qm = business.getConsulta(qml);
+        business.insertModel(qml);
 
         String jsonInString2 = mapper.writeValueAsString(list);
 
@@ -104,7 +109,7 @@ getQuery();
         query.addValuePair("nombre", "'2222'");
         query.addValuePair("descripcion", "'333'");
         query.addValuePair("ano", 2016);
-        query.setQueryTypes(Query.QueryTypes.Delete);
+        query.setQueryTypes(Query.QueryTypes.Select);
          query.addCondition("id = " + val);
          query.addCondition("codigo = " + val);
         query.addColumn("codigo");

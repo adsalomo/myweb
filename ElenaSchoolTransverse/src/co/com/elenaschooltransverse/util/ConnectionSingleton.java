@@ -49,4 +49,13 @@ public class ConnectionSingleton {
     public DataSource getDataSource() {
         return dataSource;
     }
+    
+    /**
+     * Cierra la conexion
+     * @throws SQLException 
+     */
+    public void CloseConnection() throws SQLException{
+        if(instance != null && instance.getDataSource() != null && !instance.getDataSource().getConnection().isClosed())
+            instance.getDataSource().getConnection().close();
+    }
 }

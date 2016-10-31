@@ -32,12 +32,13 @@ public class ModelHelper {
             model.setColumnName(rs.getString("ColumnName"));
             model.setIsPrimary(rs.getBoolean("IsPrimary"));
             model.setIsForeign(rs.getBoolean("IsForeign"));
-            model.setDateType(rs.getString("DataType"));
+            model.setDataType(rs.getString("DataType"));
             model.setIsNullable(rs.getBoolean("IsNullable"));
             model.setLenght(rs.getInt("Length"));
             model.setNumericPrecision(rs.getInt("NumericPrecision"));
             model.setLabelName(rs.getString("LabelName"));
             model.setForeignTableName(rs.getString("foreignTableName"));
+            model.setIsSecuence(rs.getBoolean("IsSecuence"));
             models.add(model);
         }
         return models;

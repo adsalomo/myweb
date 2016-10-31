@@ -9,13 +9,14 @@ public class Model {
     private String columnName;
     private boolean isPrimary;
     private boolean isForeign;
-    private String dateType;
+    private String dataType;
     private boolean isNullable;
     private int lenght;
     private int numericPrecision;
     private String labelName;
     private Object valor;
     private String foreignTableName;
+    private boolean isSecuence;
 
     /**
      * 
@@ -108,15 +109,15 @@ public class Model {
     /**
      * @return the dateType
      */
-    public String getDateType() {
-        return dateType;
+    public String getDataType() {
+        return dataType;
     }
 
     /**
      * @param dateType the dateType to set
      */
-    public void setDateType(String dateType) {
-        this.dateType = dateType;
+    public void setDataType(String dateType) {
+        this.dataType = dateType;
     }
 
     /**
@@ -173,5 +174,19 @@ public class Model {
      */
     public void setLabelName(String labelName) {
         this.labelName = labelName;
+    }
+
+    /**
+     * @return the isSecuence
+     */
+    public boolean getIsSecuence() {
+        return isSecuence;
+    }
+
+    /**
+     * @param isSecuence the isSecuence to set
+     */
+    public void setIsSecuence(boolean isSecuence) {
+        this.isSecuence = isSecuence;
     }
 }

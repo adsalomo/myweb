@@ -24,7 +24,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  * @Created 21-sep-2016 08:38:26
  */
 public class Util {
-
+    
     /**
      * Obtiene datasource para la conexión a la base de datos
      *
@@ -136,7 +136,8 @@ public class Util {
             + "pg.oid = (SELECT c.table_name::regclass::oid) AND "
             + "pg.relname = c.table_name "
             + ") AS LabelName, "
-            + "ccu.table_name AS foreignTableName "
+            + "ccu.table_name AS foreignTableName, "
+            + "(CASE WHEN c.column_default != '' THEN '1'::bit ELSE '0'::bit END) AS IsSecuence "
             + "FROM information_schema.columns c "
             + "LEFT JOIN information_schema.key_column_usage k ON c.table_name = k.table_name AND c.column_name = k.column_name "
             + "LEFT JOIN information_schema.table_constraints tc ON K.constraint_name = tc.constraint_name AND tc.constraint_type = 'FOREIGN KEY' "

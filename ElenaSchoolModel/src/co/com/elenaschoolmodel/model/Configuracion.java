@@ -12,19 +12,20 @@ package co.com.elenaschoolmodel.model;
 public class Configuracion {
     private int numberRegistersXPage;
     private String connectionFilePath;
+    private String loggingFilePath;
 
     /**
      * @return the numberRegisterPage
      */
     public int getNumberRegisterXPage() {
-        return numberRegistersXPage;
+        return getNumberRegistersXPage();
     }
 
     /**
      * @param numberRegistersXPage the numberRegisterPage to set
      */
     public void setNumberRegisterXPage(int numberRegistersXPage) {
-        this.numberRegistersXPage = numberRegistersXPage;
+        this.setNumberRegistersXPage(numberRegistersXPage);
     }
 
     /**
@@ -39,6 +40,34 @@ public class Configuracion {
      */
     public void setConnectionFilePath(String connectionFilePath) {
         this.connectionFilePath = connectionFilePath;
+    }
+
+    /**
+     * @return the numberRegistersXPage
+     */
+    public int getNumberRegistersXPage() {
+        return numberRegistersXPage;
+    }
+
+    /**
+     * @param numberRegistersXPage the numberRegistersXPage to set
+     */
+    public void setNumberRegistersXPage(int numberRegistersXPage) {
+        this.numberRegistersXPage = numberRegistersXPage;
+    }
+
+    /**
+     * @return the loggingFilePath
+     */
+    public String getLoggingFilePath() {
+        return loggingFilePath;
+    }
+
+    /**
+     * @param loggingFilePath the loggingFilePath to set
+     */
+    public void setLoggingFilePath(String loggingFilePath) {
+        this.loggingFilePath = loggingFilePath;
     }
     
     

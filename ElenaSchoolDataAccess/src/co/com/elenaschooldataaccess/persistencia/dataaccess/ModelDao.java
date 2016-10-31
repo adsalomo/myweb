@@ -30,8 +30,8 @@ public class ModelDao implements IModelDao {
      */
     @Override
     public List<Model> getEstructura(Model model) throws SQLException {
-        conexion = ConnectionSingleton.getInstance();
         try{
+            conexion = ConnectionSingleton.getInstance();
             preparedStatement = conexion.getDataSource().getConnection().prepareStatement(Util.SQL_ESTRUCTURA);
             preparedStatement.setString(1, model.getNameTable());
             resultSet = preparedStatement.executeQuery();
@@ -39,27 +39,46 @@ public class ModelDao implements IModelDao {
         } finally {
             preparedStatement.close();
             resultSet.close();
-            conexion.getDataSource().getConnection().close();
+            conexion.CloseConnection();
         }
     }
 
     /**
-     * Realiza consulta a una tabla
+     * Realiza consulta a una tabla X
      * @param query
      * @return objeto queryModel
      * @throws SQLException
      */
     @Override
     public List<Object> getConsulta(String query) throws SQLException {
-        conexion = ConnectionSingleton.getInstance();
         try {
+            conexion = ConnectionSingleton.getInstance();
             preparedStatement = conexion.getDataSource().getConnection().prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
             return ModelMapperHelper.mapRersultSetToObject(resultSet);
         } finally {
             preparedStatement.close();
             resultSet.close();
-            conexion.getDataSource().getConnection().close();
+            conexion.CloseConnection();
+        }
+    }
+
+    /**
+     * Inserta un registro en una tabla x
+     * @param query
+     * @return
+     * @throws SQLException 
+     */
+    @Override
+    public boolean insertModel(String query) throws SQLException {
+        try{
+            conexion = ConnectionSingleton.getInstance();
+            preparedStatement = conexion.getDataSource().getConnection().prepareStatement(query);
+            return preparedStatement.execute();
+        } finally{
+            preparedStatement.close();
+            resultSet.close();
+            conexion.CloseConnection();
         }
     }
 

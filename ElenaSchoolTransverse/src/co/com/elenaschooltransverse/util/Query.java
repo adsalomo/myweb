@@ -108,6 +108,7 @@ public class Query {
 
     /**
      * Order consulta
+     *
      * @param sortOrder
      */
     public void addSortOrder(SortOrder sortOrder) {
@@ -123,13 +124,14 @@ public class Query {
                 break;
         }
     }
-    
+
     /**
      * Agrega paginacion a la consulta
+     *
      * @param registerXPage
-     * @param page 
+     * @param page
      */
-    public void addPagination(int registerXPage, int page){
+    public void addPagination(int registerXPage, int page) {
         pagination = "LIMIT " + registerXPage + " OFFSET " + (registerXPage * page);
     }
 
@@ -209,10 +211,9 @@ public class Query {
         int cont;
 
         cont = 0;
-        column.append("SELECT * ");
 
         if (tables == null || tables.isEmpty()) {
-            return sql.append("").toString();
+            return "";
         }
 
         if (columns != null && columns.size() > 0) {
@@ -221,6 +222,8 @@ public class Query {
                 column.append(cont == columns.size() - 1 ? col : col + ", ");
                 cont++;
             }
+        } else {
+            column.append("SELECT * ");
         }
 
         cont = 0;
@@ -239,8 +242,8 @@ public class Query {
             }
         }
 
-        sql.append(column.toString()); 
-        sql.append(table.toString()); 
+        sql.append(column.toString());
+        sql.append(table.toString());
         sql.append(condi.toString());
         sql.append(order);
         sql.append(pagination);
@@ -262,8 +265,8 @@ public class Query {
             return sql.append("").toString();
         }
 
-        sql.append("INSERT INTO "); 
-        sql.append(tables.get(0)); 
+        sql.append("INSERT INTO ");
+        sql.append(tables.get(0));
         sql.append(" ");
 
         cont = 0;
@@ -280,9 +283,9 @@ public class Query {
         campos.append(")");
         values.append(")");
 
-        sql.append(campos); 
+        sql.append(campos);
         sql.append(values);
-        
+
         return sql.toString();
     }
 
@@ -301,8 +304,8 @@ public class Query {
             return sql.append("").toString();
         }
 
-        sql.append("UPDATE "); 
-        sql.append(tables.get(0)); 
+        sql.append("UPDATE ");
+        sql.append(tables.get(0));
         sql.append(" SET ");
 
         cont = 0;
@@ -325,7 +328,7 @@ public class Query {
 
         sql.append(values);
         sql.append(condi);
-        
+
         return sql.toString();
     }
 
@@ -344,8 +347,8 @@ public class Query {
             return sql.toString();
         }
 
-        sql.append("DELETE FROM "); 
-        sql.append(tables.get(0)); 
+        sql.append("DELETE FROM ");
+        sql.append(tables.get(0));
         sql.append(" ");
 
         cont = 0;
