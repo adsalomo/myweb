@@ -1,7 +1,7 @@
 package co.com.elenaschooltransverse.util;
 
 import co.com.elenaschoolmodel.model.ConexionModel;
-import co.com.elenaschoolmodel.model.Configuracion;
+import co.com.elenaschoolmodel.model.Configuration;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -11,8 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -24,7 +22,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  * @Created 21-sep-2016 08:38:26
  */
 public class Util {
-    
+
+    private static StackTraceElement[] stackTrace;
+
     /**
      * Obtiene datasource para la conexión a la base de datos
      *
@@ -32,7 +32,7 @@ public class Util {
      */
     public static DataSource getDataSource() {
         // Lee archivo configuracion
-        Configuracion configuracion = readFileConfiguration();
+        Configuration configuracion = readFileConfiguration();
 
         // Asigna la ruta
         String ruta = configuracion.getConnectionFilePath();
@@ -46,7 +46,7 @@ public class Util {
         }
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        
+
         if (conexionModel != null) {
             dataSource.setDriverClassName(conexionModel.getDriverClassName());
             dataSource.setUrl(conexionModel.getUrl());
@@ -61,10 +61,10 @@ public class Util {
      *
      * @return
      */
-    public static Configuracion readFileConfiguration() {
-        Configuracion configuracion = null;
+    public static Configuration readFileConfiguration() {
+        Configuration configuracion = null;
         InputStream resp = Util.class.getClassLoader().getResourceAsStream("co/com/elenaschooltransverse/resource/Configuracion.xml");
-        configuracion = (Configuracion) deserialize(resp);
+        configuracion = (Configuration) deserialize(resp);
         return configuracion;
     }
 
@@ -76,13 +76,14 @@ public class Util {
      */
     public static Object deserialize(String fileName) {
         Object obj = null;
+        stackTrace = Thread.currentThread().getStackTrace();
         try {
             XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
             obj = decoder.readObject();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
         return obj;
     }
@@ -107,12 +108,13 @@ public class Util {
      * @param fileName Nombre archivo XML
      */
     public static void serialize(Object obj, String fileName) {
+        stackTrace = Thread.currentThread().getStackTrace();
         try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)))) {
             encoder.writeObject(obj);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
     }
 

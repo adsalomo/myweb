@@ -2,14 +2,14 @@ package co.com.elenaschoolbusiness;
 
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
+import co.com.elenaschoolmodel.model.Configuration;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
+import co.com.elenaschooltransverse.util.Logging;
 import co.com.elenaschooltransverse.util.Query;
 import co.com.elenaschooltransverse.util.Util;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Clase que maneja la lógica de los formularios dinamicos de la APP
@@ -22,6 +22,7 @@ public class ModelBusiness {
     private final IModelDao iModelDao;
     private List<Model> models;
     private Query query;
+    private StackTraceElement[] stackTrace;
 
     /**
      * Constructor
@@ -37,12 +38,13 @@ public class ModelBusiness {
      * @return
      */
     public List<Model> getEstructuraTabla(Model model) {
+        stackTrace = Thread.currentThread().getStackTrace();
         try {
             models = iModelDao.getEstructura(model);
         } catch (SQLException ex) {
-            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
-            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
         return models;
     }
@@ -54,15 +56,24 @@ public class ModelBusiness {
      * @return
      */
     public QueryModel getConsulta(QueryModel queryModel) {
+        stackTrace = Thread.currentThread().getStackTrace();
         try {
-            queryModel.setNumberRegistersXPage(Util.readFileConfiguration().getNumberRegisterXPage());
-            List<Object> result = iModelDao.getConsulta(getQuery(queryModel));
+            String sql = getQuery(queryModel);
+            Configuration config = Util.readFileConfiguration();
+
+            // Esta activo el parametro de guardar Sentencia sql?
+            if (config.getIsActiveLogSql()) {
+                Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            }
+
+            queryModel.setNumberRegistersXPage(config.getNumberRegisterXPage());
+            List<Object> result = iModelDao.getConsulta(sql);
             queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);
         } catch (SQLException ex) {
-            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
-            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
         return queryModel;
     }
@@ -128,29 +139,39 @@ public class ModelBusiness {
 
     /**
      * Realiza insert a una entidad de la base de datos
+     *
      * @param queryModel
-     * @return 
+     * @return
      */
     public boolean insertModel(QueryModel queryModel) {
+        stackTrace = Thread.currentThread().getStackTrace();
         try {
-            return iModelDao.insertModel(getQueryInsert(queryModel));
+            String sql = getQueryInsert(queryModel);
+            Configuration config = Util.readFileConfiguration();
+
+            if (config.getIsActiveLogSql()) {
+                Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            }
+
+            return iModelDao.insertModel(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
-            Logger.getLogger(ModelBusiness.class.getName()).log(Level.SEVERE, null, ex);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
         return false;
     }
 
     /**
      * Obtiene el query para realizar el insert
+     *
      * @param queryModel
-     * @return 
+     * @return
      */
     private String getQueryInsert(QueryModel queryModel) {
         if (queryModel.getListModel() != null && queryModel.getListModel().size() > 0) {
             query = new Query();
-            
+
             // Definition query
             query.setQueryTypes(Query.QueryTypes.Insert);
 
@@ -165,18 +186,20 @@ public class ModelBusiness {
         }
         return "";
     }
-    
+
     /**
      * Define el tipo de valor si es CADENA o NUMERICO
+     *
      * @param model
-     * @return 
+     * @return
      */
-    private String getValueXDataType(Model model){
-        if(model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying") 
-                || model.getDataType().equalsIgnoreCase("date"))
+    private String getValueXDataType(Model model) {
+        if (model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying")
+                || model.getDataType().equalsIgnoreCase("date")) {
             return "'" + model.getValor() + "'";
-        else
+        } else {
             return "" + model.getValor() + "";
+        }
     }
 
 }

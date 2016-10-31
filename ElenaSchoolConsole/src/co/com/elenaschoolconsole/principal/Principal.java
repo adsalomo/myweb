@@ -10,7 +10,7 @@ import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
 import co.com.elenaschoolmodel.model.CalendarioModel;
 import co.com.elenaschoolmodel.model.ConexionModel;
-import co.com.elenaschoolmodel.model.Configuracion;
+import co.com.elenaschoolmodel.model.Configuration;
 import co.com.elenaschoolmodel.model.GrupoAcademicoModel;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
@@ -40,20 +40,21 @@ import org.codehaus.jackson.type.TypeReference;
 public class Principal {
 
     public static void main(String[] args) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        System.out.println("Clase: " + stackTrace[1].getClassName() + "\n" + "Método: " + stackTrace[1].getMethodName());
-        Logging.writeError("Esto es una prueba", stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-//        getQuery();
-//        //serialize();
-//        Util.readFileConfiguration();
-//
-//        try {
-//            //readModel();
-//            getConsulta();
-//            //getQuery();
-//        } catch (Exception ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        //Logging.writeSQL("sss", "ffff", "fffsss");
+        try {
+            //getQuery();
+            //serialize();
+            //Util.readFileConfiguration();
+
+            
+            //readModel();
+            getConsulta();
+            //getQuery();
+        } catch (Exception ex) {
+            
+        }
+       
+            
     }
 
     public static void getConsulta() throws IOException {
@@ -89,13 +90,16 @@ public class Principal {
     }
 
     public static void serialize() {
-        Configuracion c = new Configuracion();
+        Configuration c = new Configuration();
         c.setConnectionFilePath("C:\\Notacion\\Conexion.xml");
         c.setNumberRegisterXPage(5);
+        c.setLoggingFilePath("C:\\Notacion\\Conexion.xml");
+        c.setLoggingSqlFilePath("C:\\Notacion\\Conexion.xml");
+        c.setIsActiveLogSql(true);
 
         Util.serialize(c, "C:\\Notacion\\Configuracion.xml");
 
-        c = (Configuracion) Util.deserialize("C:\\Notacion\\Configuracion.xml");
+        c = (Configuration) Util.deserialize("C:\\Notacion\\Configuracion.xml");
 
     }
 

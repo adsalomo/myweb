@@ -9,10 +9,12 @@ package co.com.elenaschoolmodel.model;
  *
  * @author AdrianL
  */
-public class Configuracion {
+public class Configuration {
     private int numberRegistersXPage;
     private String connectionFilePath;
     private String loggingFilePath;
+    private boolean isActiveLogSql;
+    private String loggingSqlFilePath;
 
     /**
      * @return the numberRegisterPage
@@ -68,6 +70,34 @@ public class Configuracion {
      */
     public void setLoggingFilePath(String loggingFilePath) {
         this.loggingFilePath = loggingFilePath;
+    }
+
+    /**
+     * @return the isActiveLogSql
+     */
+    public boolean getIsActiveLogSql() {
+        return isActiveLogSql;
+    }
+
+    /**
+     * @param isActiveLogSql the isActiveLogSql to set
+     */
+    public void setIsActiveLogSql(boolean isActiveLogSql) {
+        this.isActiveLogSql = isActiveLogSql;
+    }
+
+    /**
+     * @return the loggingSqlFilePath
+     */
+    public String getLoggingSqlFilePath() {
+        return loggingSqlFilePath;
+    }
+
+    /**
+     * @param loggingSqlFilePath the loggingSqlFilePath to set
+     */
+    public void setLoggingSqlFilePath(String loggingSqlFilePath) {
+        this.loggingSqlFilePath = loggingSqlFilePath;
     }
     
     
