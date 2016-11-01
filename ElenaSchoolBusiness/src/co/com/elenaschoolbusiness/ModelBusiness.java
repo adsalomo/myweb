@@ -58,15 +58,15 @@ public class ModelBusiness {
     public QueryModel getConsulta(QueryModel queryModel) {
         stackTrace = Thread.currentThread().getStackTrace();
         try {
-            String sql = getQuery(queryModel);
             Configuration config = Util.readFileConfiguration();
+            queryModel.setNumberRegistersXPage(config.getNumberRegisterXPage());
+            String sql = getQuery(queryModel);
 
             // Esta activo el parametro de guardar Sentencia sql?
             if (config.getIsActiveLogSql()) {
                 Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
             }
-
-            queryModel.setNumberRegistersXPage(config.getNumberRegisterXPage());
+            
             List<Object> result = iModelDao.getConsulta(sql);
             queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);

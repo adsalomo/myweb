@@ -24,7 +24,7 @@
             <button class="btn btn-transparente btn-xs" ng-click="" title="Cancelar">
                 <img src="images/cancel.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="openViewFormToTableAction()" title="Tabla">
+            <button class="btn btn-transparente btn-xs" ng-disabled="gridFormulario.data.length === 0" ng-click="openViewFormToTableAction()" title="Tabla">
                 <img src="images/table.png" />
             </button> 
             <button class="btn btn-transparente btn-xs" ng-click="openQueryTablaAction()" title="Consultar Tabla">

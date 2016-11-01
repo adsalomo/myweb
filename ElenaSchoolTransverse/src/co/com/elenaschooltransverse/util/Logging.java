@@ -13,8 +13,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- *
+ * Clase para gestionar todos los log del sistema
  * @author AdrianL
+ * @since 1 de Noviembre 2016
  */
 public class Logging {
 

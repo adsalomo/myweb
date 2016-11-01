@@ -19,20 +19,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Service {
     
+    private ModelBusiness modelBusiness;
+    
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public List<Model> getEstructuraTabla(@RequestBody Model model){
-        ModelBusiness modelBusiness = new ModelBusiness();
+        modelBusiness = new ModelBusiness();
         return modelBusiness.getEstructuraTabla(model);
     }
     
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getConsulta", method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     public QueryModel getConsulta(@RequestBody QueryModel queryModel){
-        ModelBusiness modelBusiness = new ModelBusiness();
+        modelBusiness = new ModelBusiness();
         return modelBusiness.getConsulta(queryModel);
     }
     
-    
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/web/elenaschool/insertModel", method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public boolean insertModel(@RequestBody QueryModel queryModel){
+        modelBusiness = new ModelBusiness();
+        return modelBusiness.insertModel(queryModel);
+    }
     
 }
