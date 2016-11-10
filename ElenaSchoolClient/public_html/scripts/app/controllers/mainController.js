@@ -16,6 +16,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.numColumn = $setting.varGlobals.column;
         $scope.isActivoGrid = false;
         $scope.gridApi = {};
+        $scope.isModeInsert = false;
 
         /**
          * Definicion de grid
@@ -81,8 +82,29 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
 
             }).error(function (data, status, headers, config) {
                 console.log(data);
-                messageBoxAlert('Obtener estructura', 'Ocurrión un error al procesar la solicitud', 'error');
+                messageBoxAlert('Obtener estructura', 'Ocurrión un error al procesar la solicitud.', 'error');
             });
+        };
+        
+        /**
+         * Action agregar nuevo registro a una entidad
+         * @returns {undefined}
+         */
+        $scope.insertModelAction = function (){
+            var queryModel = getObjectQueryModel($scope.modelEstructura);
+            $myService.insertModelService(queryModel).success(function (data, status, headers, config) {
+                if(data)
+                    messageBoxAlert('Registro', 'Operación completada con éxito.', 'info');
+                else
+                    messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
+            }).error(function (data, status, headers, config) {
+                console.log(data);
+                messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
+            });
+        };
+        
+        $scope.activeModeInsertAction = function (){
+            $scope.isModeInsert = true;
         };
 
         /**
@@ -129,7 +151,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         $scope.isActivoGrid = true;
                     else {
                         $scope.isActivoGrid = false;
-                        messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar', 'info');
+                        messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar.', 'info');
                     }
             });
         };

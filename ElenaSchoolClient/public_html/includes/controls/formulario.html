@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label>{{item.labelName}}</label>
                     <div class="input-group">
-                        <input ng-disabled="true" ng-model="item.valor" type="text" class="form-control" />
+                        <input ng-disabled="true" ng-model="item.valor" type="text" class="form-control" required />
                         <span class="input-group-addon" ng-click="openLupaAction(item)">
                             <img src="images/lupa.png" />
                         </span>
@@ -15,7 +15,7 @@
             <div ng-if="!item.isForeign">
                 <div class="form-group">
                     <label>{{item.labelName}}</label>
-                    <input ng-disabled="item.isPrimary" ng-model="item.valor" class="form-control" />
+                    <input ng-disabled="item.isPrimary" ng-model="item.valor" class="form-control" required />
                 </div>
             </div>
         </div>

@@ -15,14 +15,16 @@
         <span us-spinner="{radius:10, width:4, length: 8}"></span>
 
         <div class="container-fluid" ng-init="getEstructuraTablaAction('grupo_academico')">
-            <div ng-include="'includes/controls/buttons.html'"></div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
+            <form name="formModel" novalidate>
+                <div ng-include="'includes/controls/buttons.html'"></div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
+                    </div>
                 </div>
-            </div>
-            <div ng-include="'includes/controls/formulario.html'" ng-show="!isActivoGrid"></div>
-            <div ng-include="'includes/controls/grid.html'" ng-hide="!isActivoGrid"></div>
+                <div ng-include="'includes/controls/formulario.html'" ng-show="!isActivoGrid"></div>
+                <div ng-include="'includes/controls/grid.html'" ng-hide="!isActivoGrid"></div>
+            </form>
         </div>
 
         <script src="scripts/libs/jquery/jquery-2.2.3.js" type="text/javascript"></script>
