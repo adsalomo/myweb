@@ -1,0 +1,32 @@
+
+<!--Header modal-->
+<div class="modal-header">
+    <!--<button type="button"
+            class="close"
+            ng-click="closeLupaAction()"
+            data-dissmiss="modal" aria-hidden="true">
+        &times;
+    </button>-->
+    <h4>Listado de valores</h4>
+</div>
+
+<!--Body modal-->
+<div class="modal-body">
+
+    <div ui-i18n="{{lenguaje}}">
+        <div id="grid" ui-grid="gridOptionsLupa" ui-grid-pagination ui-grid-cellNav ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ui-grid-exporter class="grid"></div>
+    </div>
+
+</div>
+<!--footer modal-->
+<div class="modal-footer">
+    <button type="submit" 
+            ng-click="closeLupaAction()" 
+            name="" 
+            class="btn btn-default">Cancelar</button>
+    <button type="submit"  
+            ng-click="" 
+            name=""
+            class="btn btn-primary">Enviar</button>
+</div>
+
