@@ -32,6 +32,10 @@ function setListToGrid(gridOptions, list, modelEstructura) {
 }
 ;
 
+function closeWindows() {
+    close();
+};
+
 /**
  * Mensaje confirmacion
  * @param {type} titulo

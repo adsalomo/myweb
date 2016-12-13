@@ -1,0 +1,142 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13-dic-2016, 12:25:00
+    Author     : AdrianL
+*/
+
+#header{
+    background: #931313;
+}
+
+#logo-group span#activity, .btn-header>:first-child>a {
+    background-color: #931313;
+    background-image: -moz-linear-gradient(top,#931313,#931313);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#931313),to(#931313));
+    background-image: -webkit-linear-gradient(top,#931313,#931313);
+    background-image: -o-linear-gradient(top,#931313,#931313);
+    background-image: linear-gradient(to bottom,#931313,#931313);
+    color: #fff!important;
+    border: 1px solid #801111;
+    border-top-color: #801111;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-right-color: #801111;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-color: #801111;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color: #801111;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    text-shadow: #931313 0 -1px;
+}
+
+#ribbon .breadcrumb, #ribbon .breadcrumb a {
+    color: #BBB!important;
+    text-decoration: none!Important;
+}
+
+#ribbon {
+    background: #fff;
+}
+
+#ribbon .breadcrumb li:last-child, #ribbon .breadcrumb>.active {
+    color: #5F5F5F;
+}
+
+.page-footer, .superbox-show {
+    background: #3D3B39;
+}
+
+/* Color iconos */  
+nav>ul>li>a>i {
+    color: #931313; /*#058dc7;*/
+    font-size: 13px;
+    font-family: Arial,sans-serif;
+}
+
+.login-info span {
+    border-bottom: none;
+}
+
+.login-info a span {
+    color: #444!important;
+}
+
+.minified nav ul li a, .minified nav ul li.open>a, .minified nav ul li.open>a b {
+    color: #fff!important;
+}
+
+.minified nav>ul>li {
+    border-bottom: 1px solid #E9E4E4;
+    border-top: 1px solid #FFF;
+}
+
+nav ul li.active>a:before {
+    color: #bbb;
+}
+
+nav ul .active>a {
+    color: #444!important;
+    position: relative;
+}
+
+nav>ul>li>a {
+    border-bottom: 1px solid #ccc;
+}
+
+nav ul li a:hover {
+    background: rgba(0,0,0,.05)!important;
+}
+
+nav ul ul li>a {
+    font-size: 13px;
+}
+
+nav ul li.active>a {
+    font-weight: 700;
+}
+
+nav ul li a, nav ul li.open>a, nav ul li.open>a b {
+    color: #444!important;
+    font-family: Arial,sans-serif;
+    font-size:13px;
+}
+
+nav ul ul {
+    background: 0 0;
+    background-image: initial;
+    background-position-x: 0px;
+    background-position-y: 0px;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}
+
+aside {
+    background: #f2f2f2;
+    border-right: 2px solid #ccc;
+}
+
+nav ul li a:hover {
+    background: rgba(0,0,0,.05)!important;
+}
+
+body {
+    font-family: Arial,sans-serif;
+}
+

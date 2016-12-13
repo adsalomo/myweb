@@ -20,17 +20,14 @@ button.btn-transparente{
 }
 
 .modal-footer-queryTable {
-  padding: 15px;
-  text-align: left;
-  border-top: 1px solid #e5e5e5;
+    padding: 15px;
+    text-align: left;
+    border-top: 1px solid #e5e5e5;
 }
 
 .page-header-queryTable {
-  padding-bottom: 3px;
-  margin: 5px 0 5px;
-  border-bottom: 1px solid #eee;
+    padding-bottom: 3px;
+    margin: 5px 0 5px;
+    border-bottom: 1px solid #eee;
 }
 
-#header{
-    background: #FFF;
-}
