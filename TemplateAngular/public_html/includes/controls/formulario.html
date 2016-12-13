@@ -1,0 +1,23 @@
+<div ng-repeat="row in numRow">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-3" ng-repeat="item in modelEstructura.slice((row === 0 ? row : (row * numColumn)), (row === 0 ? numColumn : ((row * numColumn) + numColumn)))">
+            <div ng-if="item.isForeign">
+                <div class="form-group">
+                    <label>{{item.labelName}}</label>
+                    <div class="input-group">
+                        <input ng-disabled="true" ng-model="item.valor" type="text" class="form-control" required />
+                        <span class="input-group-addon" ng-click="openLupaAction(item)">
+                            <img src="images/lupa.png" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="!item.isForeign">
+                <div class="form-group">
+                    <label>{{item.labelName}}</label>
+                    <input ng-disabled="item.isPrimary" ng-model="item.valor" class="form-control" required />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

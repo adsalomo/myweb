@@ -1,0 +1,34 @@
+<div class="top well-lg border-buttons" >
+        <div class="btn-group-xs">
+            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === 0" data-toggle="tooltip" data-placement="top" title="Primero">
+                <img src="images/firts.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" ng-disabled="!isActivoGrid" data-toggle="tooltip" data-placement="top" title="Anterior">
+                <img src="images/previous.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" ng-disabled="!isActivoGrid" data-toggle="tooltip" data-placement="top" title="Siguiente">
+                <img src="images/next.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === gridFormulario.totalPages" data-toggle="tooltip" data-placement="top" title="Último">
+                <img src="images/last.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-disabled="" ng-click="activeModeInsertAction();" data-toggle="tooltip" data-placement="top" title="Agregar">
+                <img src="images/add.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="" data-toggle="tooltip" data-placement="top" data-toggle="tooltip" data-placement="top" title="Editar">
+                <img src="images/pencil.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-disabled="formModel.$invalid || !isModeInsert" ng-click="insertModelAction();" data-toggle="tooltip" data-placement="top" title="Guardar">
+                <img src="images/success.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="" data-toggle="tooltip" data-placement="top" title="Cancelar">
+                <img src="images/cancel.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-disabled="gridFormulario.data.length === 0" ng-click="openViewFormToTableAction()" data-toggle="tooltip" data-placement="top" title="Tabla">
+                <img src="images/table.png" />
+            </button> 
+            <button class="btn btn-transparente btn-xs" ng-click="openQueryTablaAction()" data-toggle="tooltip" data-placement="top" title="Consultar Tabla">
+                <img src="images/queryTable.png" />
+            </button> 
+        </div>
+</div>
