@@ -1,0 +1,63 @@
+<!--Header modal-->
+<div class="modal-header">
+    <!--<button type="button" class="close" ng-click="closeQueryTableAction()" data-dissmiss="modal" aria-hidden="true">&times;</button>-->
+    <h3>Consultar tabla <small>{{modelEstructura[0].nameTable}}</small></h3>
+</div>
+<!--Body modal-->
+<div class="modal-body-scrollbar">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Columna</th>
+                <th>Tipo Dato</th>
+                <th>Valor a Consultar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in modelEstructura">
+                <td>{{row.labelName}}</td>
+                <td>{{row.columnName}}</td>
+                <td>{{row.dateType}}</td>
+                <td>
+                    <div class="form-group">
+                        <input ng-model="row.valor" id="{{row.columnName}}" name="{{row.columnName}}" class="form-control input-sm" type="text" data-toggle="tooltip" title="Recuerde colocar el operador (=, <, >, between, etc.) antes del valor por el cual va a buscar"  />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--footer modal-->
+<div class="modal-footer-queryTable">
+    <div class="row">
+        <div class="col-xs-12">
+            <h5 class="page-header-queryTable">Ordenamiento</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="radio">
+                <label><input type="radio" ng-model="isTypeOrder" value="1" />Asc</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="radio">
+                <label><input type="radio" ng-model="isTypeOrder" value="2" />Desc</label>
+            </div>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h5 class="page-header-queryTable"></h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="submit" ng-click="cancelQueryTableAction()" name="" class="btn btn-default">Cancelar</button>
+            <button type="submit" ng-click="consultarAction()" name="" class="btn btn-primary">Aceptar</button> 
+        </div>
+    </div>
+</div>

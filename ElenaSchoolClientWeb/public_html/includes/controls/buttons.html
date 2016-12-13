@@ -1,0 +1,39 @@
+<div class="top well-lg border-buttons" >
+        <div class="btn-group-xs">
+            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === 0" data-toggle="tooltip" data-placement="top" title="Primero">
+                <img src="img/imgElenaSchool/imgPrimero.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" ng-disabled="!isActivoGrid" data-toggle="tooltip" data-placement="top" title="Anterior">
+                <img src="img/imgElenaSchool/imgAnterior.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" ng-disabled="!isActivoGrid" data-toggle="tooltip" data-placement="top" title="Siguiente">
+                <img src="img/imgElenaSchool/imgSiguiente.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === gridFormulario.totalPages" data-toggle="tooltip" data-placement="top" title="Último">
+                <img src="img/imgElenaSchool/imgUltimo.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-disabled="" ng-click="activeModeInsertAction();" 
+                    data-toggle="tooltip" data-placement="top" title="Agregar">
+                <img src="img/imgElenaSchool/imgNuevo.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="" data-toggle="tooltip" data-placement="top" 
+                    data-toggle="tooltip" data-placement="top" title="Editar">
+                <img src="img/imgElenaSchool/imgEditar.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-disabled="formModel.$invalid || !isModeInsert" 
+                    ng-click="insertModelAction();" data-toggle="tooltip" data-placement="top" title="Guardar">
+                <img src="img/imgElenaSchool/imgAplicar.png" />
+            </button>
+            <button class="btn btn-transparente btn-xs" ng-click="" data-toggle="tooltip" data-placement="top" title="Cancelar">
+                <img src="img/imgElenaSchool/imgCancelar.png" />
+            </button>
+            <!--<button class="btn btn-transparente btn-xs" ng-disabled="gridFormulario.data.length === 0" 
+                    ng-click="openViewFormToTableAction()" data-toggle="tooltip" data-placement="top" title="Tabla">
+                <img src="imgElenaSchool" />
+            </button> 
+            <button class="btn btn-transparente btn-xs" ng-click="openQueryTablaAction()" 
+                    data-toggle="tooltip" data-placement="top" title="Consultar Tabla">
+                <img src="imgElenaSchool" />
+            </button>-->
+        </div>
+</div>

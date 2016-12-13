@@ -1,0 +1,32 @@
+/* 
+    Created on : 02-ago-2016, 16:06:08
+    Author     : AdrianL
+    Description : Style personalizados de la app
+*/
+
+button.btn-transparente{
+    background-color:transparent;
+}
+
+.border-buttons{
+    border:1px solid;
+    border-color: #dcdcdc;
+    padding: 0px;
+}
+
+.modal-body-scrollbar{
+    height: 300px;
+    overflow-y: auto
+}
+
+.modal-footer-queryTable {
+    padding: 15px;
+    text-align: left;
+    border-top: 1px solid #e5e5e5;
+}
+
+.page-header-queryTable {
+    padding-bottom: 3px;
+    margin: 5px 0 5px;
+    border-bottom: 1px solid #eee;
+}
