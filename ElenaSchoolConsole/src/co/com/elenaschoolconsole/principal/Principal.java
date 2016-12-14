@@ -61,7 +61,7 @@ public class Principal {
         ModelBusiness business = new ModelBusiness();
 
         Model model = new Model();
-        model.setNameTable("calendario2");
+        model.setNameTable("grupo_academico");
 
         List<Model> list = business.getEstructuraTabla(model);
         QueryModel queryModel = new QueryModel();
