@@ -32,14 +32,14 @@ public class ModelDao implements IModelDao {
     public List<Model> getEstructura(Model model) throws SQLException {
         try{
             conexion = ConnectionSingleton.getInstance();
-            preparedStatement = conexion.getDataSource().getConnection().prepareStatement(Util.SQL_ESTRUCTURA);
+            preparedStatement = conexion.getConnection().prepareStatement(Util.SQL_ESTRUCTURA);
             preparedStatement.setString(1, model.getNameTable());
             resultSet = preparedStatement.executeQuery();
             return ModelHelper.getEstructura(resultSet);
         } finally {
             preparedStatement.close();
             resultSet.close();
-            conexion.CloseConnection();
+            conexion.closeConnection();
         }
     }
 
@@ -53,13 +53,13 @@ public class ModelDao implements IModelDao {
     public List<Object> getConsulta(String query) throws SQLException {
         try {
             conexion = ConnectionSingleton.getInstance();
-            preparedStatement = conexion.getDataSource().getConnection().prepareStatement(query);
+            preparedStatement = conexion.getConnection().prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
             return ModelMapperHelper.mapRersultSetToObject(resultSet);
         } finally {
             preparedStatement.close();
             resultSet.close();
-            conexion.CloseConnection();
+            conexion.closeConnection();
         }
     }
 
@@ -73,12 +73,12 @@ public class ModelDao implements IModelDao {
     public boolean insertModel(String query) throws SQLException {
         try{
             conexion = ConnectionSingleton.getInstance();
-            preparedStatement = conexion.getDataSource().getConnection().prepareStatement(query);
+            preparedStatement = conexion.getConnection().prepareStatement(query);
             return preparedStatement.execute();
         } finally{
             preparedStatement.close();
             resultSet.close();
-            conexion.CloseConnection();
+            conexion.closeConnection();
         }
     }
 
