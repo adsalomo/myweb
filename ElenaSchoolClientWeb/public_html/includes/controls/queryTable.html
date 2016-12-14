@@ -1,7 +1,7 @@
 <!--Header modal-->
 <div class="modal-header">
-    <!--<button type="button" class="close" ng-click="closeQueryTableAction()" data-dissmiss="modal" aria-hidden="true">&times;</button>-->
-    <h3>Consultar tabla <small>{{modelEstructura[0].nameTable}}</small></h3>
+    <button type="button" class="close" ng-click="cancelQueryTableAction();" data-dissmiss="modal" aria-hidden="true">&times;</button>
+    <h3 class="fontTitleStyle">Consultar tabla <small class="fontTitleStyle">{{modelEstructura[0].nameTable}}</small></h3>
 </div>
 <!--Body modal-->
 <div class="modal-body-scrollbar">
@@ -18,7 +18,7 @@
             <tr ng-repeat="row in modelEstructura">
                 <td>{{row.labelName}}</td>
                 <td>{{row.columnName}}</td>
-                <td>{{row.dateType}}</td>
+                <td>{{row.dataType}}</td>
                 <td>
                     <div class="form-group">
                         <input ng-model="row.valor" id="{{row.columnName}}" name="{{row.columnName}}" class="form-control input-sm" type="text" data-toggle="tooltip" title="Recuerde colocar el operador (=, <, >, between, etc.) antes del valor por el cual va a buscar"  />

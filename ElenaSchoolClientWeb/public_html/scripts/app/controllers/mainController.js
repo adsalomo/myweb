@@ -17,6 +17,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.isActivoGrid = false;
         $scope.gridApi = {};
         $scope.isModeInsert = false;
+        $scope.isModeEdit = false;
 
         /**
          * Definicion de grid
@@ -24,7 +25,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.gridFormulario = {
             enableRowSelection: true,
             enableRowHeaderSelection: false,
-            enableFiltering: false,
+            enableFiltering: true,
             autoResize: true,
             multiSelect: false,
             noUnselect: true,
@@ -60,6 +61,18 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             $scope.gridApi['gridFormulario'].selection.on.rowSelectionChanged($scope, function (row) {
                 $scope.rowSelect = row.entity;
             });
+
+            gridApi.core.registerColumnsProcessor(hideIdColumn);
+
+            function hideIdColumn(columns) {
+                columns.forEach(function (column) {
+                    if (column.field === 'usuario' || column.field === 'id' || column.field === 'fecha_creacion'
+                            || column.field === 'fecha_modificacion' || column.field === 'fecha_proceso') {
+                        column.visible = false;
+                    }
+                });
+                return columns;
+            }
         };
 
         /**
@@ -85,15 +98,15 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 messageBoxAlert('Obtener estructura', 'Ocurrión un error al procesar la solicitud.', 'error');
             });
         };
-        
+
         /**
          * Action agregar nuevo registro a una entidad
          * @returns {undefined}
          */
-        $scope.insertModelAction = function (){
+        $scope.insertModelAction = function () {
             var queryModel = getObjectQueryModel($scope.modelEstructura);
             $myService.insertModelService(queryModel).success(function (data, status, headers, config) {
-                if(data)
+                if (data)
                     messageBoxAlert('Registro', 'Operación completada con éxito.', 'info');
                 else
                     messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
@@ -102,13 +115,41 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
             });
         };
-        
-        $scope.activeModeInsertAction = function (){
+
+        /**
+         * Activa el modo de nuevo registro
+         * @returns {undefined}
+         */
+        $scope.activateModeInsertAction = function () {
             $scope.isModeInsert = true;
         };
 
         /**
+         * Cancela modo edicion / nuevo registro
+         * @returns {undefined}
+         */
+        $scope.cancelEditionModelAction = function () {
+            $scope.isModeInsert = false;
+            $scope.isModeEdit = false;
+            $scope.isActivoGrid = false;
+            $scope.rowSelect = undefined;
+            clearValueStructure($scope.modelEstructura);
+            $scope.formOperation.$setPristine();
+        };
+
+        /**
+         * Activa modo edicion del modelo
+         * @returns {undefined}
+         */
+        $scope.activateModeEditAction = function () {
+            setValueStructure($scope.rowSelect, $scope.modelEstructura);
+            $scope.openViewFormToTableAction();
+            $scope.isModeEdit = true;
+        };
+
+        /**
          * openLupaAction: abre lupa con los registros de los campos q son llaves foraneas
+         * @param {type} item
          * @returns {undefined}
          */
         $scope.openLupaAction = function (item) {
@@ -146,13 +187,16 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     }
                 }
             }).result.catch(function (resp) {
-                if (resp)
+                if (resp) {
                     if (isArrayNotNull($scope.gridFormulario.data))
                         $scope.isActivoGrid = true;
                     else {
                         $scope.isActivoGrid = false;
                         messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar.', 'info');
                     }
+                } else {
+                    $scope.cancelEditionModelAction();
+                }
             });
         };
 
@@ -165,15 +209,6 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 $scope.isActivoGrid = false;
             else
                 $scope.isActivoGrid = true;
-            setValueStructure($scope.rowSelect, $scope.modelEstructura);
-        };
-
-        /**
-         * Action select por page
-         * @returns {undefined}
-         */
-        $scope.searchPageAction = function () {
-            $scope.isSearchPage = true;
         };
 
         /**

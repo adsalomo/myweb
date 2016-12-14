@@ -1,20 +1,17 @@
 
 <!--Header modal-->
 <div class="modal-header">
-    <!--<button type="button"
-            class="close"
-            ng-click="closeLupaAction()"
-            data-dissmiss="modal" aria-hidden="true">
+    <button type="button" class="close" ng-click="closeLupaAction()" data-dissmiss="modal" aria-hidden="true">
         &times;
-    </button>-->
-    <h4>Listado de valores</h4>
+    </button>
+    <h4 class="fontTitleStyle">Listado de valores</h4>
 </div>
 
 <!--Body modal-->
 <div class="modal-body">
 
     <div ui-i18n="{{lenguaje}}">
-        <div id="grid" ui-grid="gridOptionsLupa" ui-grid-pagination ui-grid-cellNav ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ui-grid-exporter class="grid"></div>
+        <div id="grid" ui-grid="gridOptionsLupa" ui-grid-cellNav ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ui-grid-exporter class="grid"></div>
     </div>
 
 </div>

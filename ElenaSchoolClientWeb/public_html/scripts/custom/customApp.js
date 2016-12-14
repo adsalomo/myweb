@@ -19,18 +19,18 @@ function setListToGrid(gridOptions, list, modelEstructura) {
             if (list[0].hasOwnProperty(property)) {
                 angular.forEach(modelEstructura, function (value, key) {
                     if (value.columnName === property)
-                        columns.push({name: value.labelName, field: property, width: 100});
+                        if(property === 'descripcion' || property === 'nombre')
+                            columns.push({name: value.labelName, field: property, width: 200});
+                        else
+                            columns.push({name: value.labelName, field: property, width: 100});
+                            
                 });
             }
-            ;
-        }
-        ;
+        }        
         gridOptions.columnDefs = columns;
         gridOptions.data = list;
     }
-    ;
-}
-;
+};
 
 function closeWindows() {
     close();

@@ -3,13 +3,46 @@
 - @autor Adrian Lopez
 - @since 13 dic 2016
 -->
-<form name="formModel" novalidate ng-init="getEstructuraTablaAction('grupo_academico')">
-    <div ng-include="'includes/controls/buttons.html'"></div>
+<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+<div ng-init="getEstructuraTablaAction('grupo_academico')">
     <div class="row">
-        <div class="col-xs-12">
-            <h2 class="page-header">Formulario dinámico tabla <small>{{modelEstructura[0].nameTable}}</small></h2>
-        </div>
+        <section id="widget-grid" class="col-xs-12">
+            <div class="row">
+                <article class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="jarviswidget" id="wid-id-3" data-widget-editbutton="false" data-widget-custombutton="false">
+                                <header style="background: #2C3742; border: 1px #030405 solid;">
+                                    <span class="widget-icon"><i class="fa fa-edit" style="color: #FFF"></i></span>
+                                    <h2 style="color: #FFF">Registro {{modelEstructura[0].nameTable}}</h2>				
+                                </header>
+                                <div>
+                                    <div class="jarviswidget-editbox">
+                                    </div>
+                                    <div class="widget-body no-padding">
+                                        <form name="formOperation" id="order-form" class="smart-form" novalidate="novalidate">
+                                            <!--Botonera-->
+                                            <div ng-include="'includes/controls/buttons.html'"></div>
+
+                                            <header>
+                                                {{modelEstructura[0].nameTable}}
+                                            </header>
+                                            
+                                            <!--Formulario-->
+                                            <div ng-include="'includes/controls/form.html'" ng-show="!isActivoGrid"></div>
+                                            
+                                            <!--Grid-->
+                                            <div ng-include="'includes/controls/grid.html'" ng-show="isActivoGrid"></div>
+                                            <footer>
+                                            </footer>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
     </div>
-    <div ng-include="'includes/controls/formulario.html'" ng-show="!isActivoGrid"></div>
-    <div ng-include="'includes/controls/grid.html'" ng-hide="!isActivoGrid"></div>
-</form>
+</div>

@@ -9,28 +9,41 @@ and open the template in the editor.
 */
 
 #header{
-    background: #931313;
+    background: #2C3742;
+}
+
+.modal-header .close {
+    color: #FFF;
+}
+
+.modal-header {
+    background: /*#931313*/ #2C3742;
+    border: 1px #030405 solid;
+}
+
+.modal-footer {
+    background: rgba(248,248,248,.9);
 }
 
 #logo-group span#activity, .btn-header>:first-child>a {
-    background-color: #931313;
-    background-image: -moz-linear-gradient(top,#931313,#931313);
-    background-image: -webkit-gradient(linear,0 0,0 100%,from(#931313),to(#931313));
-    background-image: -webkit-linear-gradient(top,#931313,#931313);
-    background-image: -o-linear-gradient(top,#931313,#931313);
-    background-image: linear-gradient(to bottom,#931313,#931313);
+    background-color: #2C3742;
+    background-image: -moz-linear-gradient(top,#2C3742,#2C3742);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#2C3742),to(#2C3742));
+    background-image: -webkit-linear-gradient(top,#2C3742,#2C3742);
+    background-image: -o-linear-gradient(top,#2C3742,#2C3742);
+    background-image: linear-gradient(to bottom,#2C3742,#2C3742);
     color: #fff!important;
-    border: 1px solid #801111;
-    border-top-color: #801111;
+    border: 1px solid #030405;
+    border-top-color: #030405;
     border-top-style: solid;
     border-top-width: 1px;
-    border-right-color: #801111;
+    border-right-color: #030405;
     border-right-style: solid;
     border-right-width: 1px;
-    border-bottom-color: #801111;
+    border-bottom-color: #030405;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-left-color: #801111;
+    border-left-color: #030405;
     border-left-style: solid;
     border-left-width: 1px;
     border-image-source: initial;
@@ -38,7 +51,7 @@ and open the template in the editor.
     border-image-width: initial;
     border-image-outset: initial;
     border-image-repeat: initial;
-    text-shadow: #931313 0 -1px;
+    text-shadow: #030405 0 -1px;
 }
 
 #ribbon .breadcrumb, #ribbon .breadcrumb a {
@@ -55,12 +68,12 @@ and open the template in the editor.
 }
 
 .page-footer, .superbox-show {
-    background: #3D3B39;
+    background: #2C3742;
 }
 
 /* Color iconos */  
 nav>ul>li>a>i {
-    color: #931313; /*#058dc7;*/
+    color: #2C3742; /*#931313; /*#058dc7;*/
     font-size: 13px;
     font-family: Arial,sans-serif;
 }
@@ -156,5 +169,24 @@ body {
     width: 100%;
     margin: 0!important;
     border-bottom: 1px solid #ccc;
+}
+
+.col-12{
+    width:100%;
+}
+
+.invalid {
+    color: #D56161;
+}
+
+.smart-form .checkbox.state-error i, .smart-form .radio.state-error i, .smart-form .state-error input, .smart-form .state-error select, .smart-form .state-error textarea, .smart-form .toggle.state-error i {
+    background: #fff0f0;
+    border-color: #A90329;
+}
+
+/* Border debajo de los botones */
+.btn {
+   
+    -webkit-box-shadow: none;
 }
 

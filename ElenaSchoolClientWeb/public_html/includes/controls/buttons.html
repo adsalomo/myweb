@@ -1,4 +1,4 @@
-<div class="top well-lg border-buttons" >
+<div class="top well-lg" style="padding:5px; margin-bottom: 10px;" >
         <div class="btn-group-xs">
             <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === 0" data-toggle="tooltip" data-placement="top" title="Primero">
                 <img src="img/imgElenaSchool/imgPrimero.png" />
@@ -12,28 +12,29 @@
             <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === gridFormulario.totalPages" data-toggle="tooltip" data-placement="top" title="Último">
                 <img src="img/imgElenaSchool/imgUltimo.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-disabled="" ng-click="activeModeInsertAction();" 
+            <button class="btn btn-transparente btn-xs" ng-disabled="((isModeEdit || isActivoGrid) && !isModeInsert) || isModeInsert" ng-click="activateModeInsertAction();" 
                     data-toggle="tooltip" data-placement="top" title="Agregar">
                 <img src="img/imgElenaSchool/imgNuevo.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="" data-toggle="tooltip" data-placement="top" 
-                    data-toggle="tooltip" data-placement="top" title="Editar">
+            <button class="btn btn-transparente btn-xs" ng-click="activateModeEditAction();" data-toggle="tooltip" data-placement="top" 
+                    ng-disabled="!rowSelect || isModeEdit" data-toggle="tooltip" data-placement="top" title="Editar">
                 <img src="img/imgElenaSchool/imgEditar.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-disabled="formModel.$invalid || !isModeInsert" 
+            <button class="btn btn-transparente btn-xs" ng-disabled="((!isModeInsert || !isModeEdit) && formOperation.$invalid) || isActivoGrid" 
                     ng-click="insertModelAction();" data-toggle="tooltip" data-placement="top" title="Guardar">
                 <img src="img/imgElenaSchool/imgAplicar.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="" data-toggle="tooltip" data-placement="top" title="Cancelar">
+            <button class="btn btn-transparente btn-xs" ng-click="cancelEditionModelAction();" data-toggle="tooltip" 
+                    ng-disabled="!isModeInsert && !isModeEdit" data-placement="top" title="Cancelar">
                 <img src="img/imgElenaSchool/imgCancelar.png" />
             </button>
             <!--<button class="btn btn-transparente btn-xs" ng-disabled="gridFormulario.data.length === 0" 
                     ng-click="openViewFormToTableAction()" data-toggle="tooltip" data-placement="top" title="Tabla">
-                <img src="imgElenaSchool" />
-            </button> 
+                <img src="img/imgElenaSchool/imgFormTable.png" />
+            </button> -->
             <button class="btn btn-transparente btn-xs" ng-click="openQueryTablaAction()" 
                     data-toggle="tooltip" data-placement="top" title="Consultar Tabla">
-                <img src="imgElenaSchool" />
-            </button>-->
+                <img src="img/imgElenaSchool/imgQuery.png" />
+            </button>
         </div>
 </div>
