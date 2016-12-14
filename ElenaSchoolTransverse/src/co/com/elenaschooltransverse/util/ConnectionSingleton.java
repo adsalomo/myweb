@@ -1,4 +1,6 @@
 package co.com.elenaschooltransverse.util;
+
+import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
@@ -11,11 +13,12 @@ public class ConnectionSingleton {
 
     private static DataSource dataSource;
     private static ConnectionSingleton instance;
+    private static Connection connection;
 
     /**
      * constructor
      */
-    private ConnectionSingleton() {
+    private ConnectionSingleton() throws SQLException{
         setDataSource();
     }
 
@@ -28,34 +31,43 @@ public class ConnectionSingleton {
     public static ConnectionSingleton getInstance() throws SQLException {
         if (instance == null) {
             instance = new ConnectionSingleton();
-        } else if(instance.getDataSource().getConnection().isClosed()){
-            instance = new ConnectionSingleton();
         }
         return instance;
+    }
+    
+    /**
+     * setea el datasource
+     */
+    private void setDataSource(){
+        dataSource = Util.getDataSource();
     }
 
     /**
      * Asigna el objeto datasource
      */
-    private void setDataSource() {
-        dataSource = Util.getDataSource();
+    private void setConnection() throws SQLException{
+        connection = dataSource.getConnection();
     }
 
     /**
-     * Obtiene el objeto datasource
+     *Obtiene objeto connection
      *
      * @return dataSource
+     * @throws java.sql.SQLException
      */
-    public DataSource getDataSource() {
-        return dataSource;
+    public Connection getConnection() throws SQLException{
+        setConnection();
+        return connection;
     }
-    
+
     /**
      * Cierra la conexion
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
-    public void CloseConnection() throws SQLException{
-        if(instance != null && instance.getDataSource() != null && !instance.getDataSource().getConnection().isClosed())
-            instance.getDataSource().getConnection().close();
+    public void closeConnection() throws SQLException {
+        if (connection != null) {
+            connection.close();
+        }
     }
 }
