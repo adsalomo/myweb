@@ -12,29 +12,33 @@
  */
 app.factory('$myService', ['$http', function ($http) {
         return {
-            
             /**
              * Peticion http para obtener la estructura de una tabla
-             * @param {type} nameTable
+             * @param {type} actionRequest
              * @returns {unresolved}
              */
-            getEstructuraTablaService: function (nameTable) {
+            getEstructuraTablaService: function (actionRequest) {
                 return $http({
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
                     url: 'http://localhost:8081/web/elenaschool/getEstructuraTabla',
-                    data: {nameTable: nameTable}
+                    data: {
+                        user: actionRequest.user,
+                        password: actionRequest.password,
+                        credentials: actionRequest.credentials,
+                        request: actionRequest.request,
+                        token: actionRequest.token
+                    }
                 });
             },
-            
             /**
              * Peticion http para realizar una consulta sobre una tabla
-             * @param {type} queryModel
+             * @param {type} actionRequest
              * @returns {unresolved}
              */
-            getConsultaService: function (queryModel) {
+            getConsultaService: function (actionRequest) {
                 return $http({
                     method: 'POST',
                     headers: {
@@ -42,32 +46,32 @@ app.factory('$myService', ['$http', function ($http) {
                     },
                     url: 'http://localhost:8081/web/elenaschool/getConsulta',
                     data: {
-                        listModel: queryModel.listModel,
-                        listResult: queryModel.listResult,
-                        isOrderAscending: queryModel.isOrderAscending,
-                        isOrderDescending: queryModel.isOrderDescending,
-                        model: queryModel.model,
-                        page: queryModel.page,
-                        isPagination: queryModel.isPagination
+                        user: actionRequest.user,
+                        password: actionRequest.password,
+                        credentials: actionRequest.credentials,
+                        request: actionRequest.request,
+                        token: actionRequest.token
                     }
                 });
             },
-            
             /**
              * Peticion http para insertar un registro en una tabla
-             * @param {type} queryModel
+             * @param {type} actionRequest
              * @returns {unresolved}
              */
-            insertModelService: function (queryModel) {
+            insertModelService: function (actionRequest) {
                 return $http({
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
-                    url: 'http://localhost:8081/web/elenaschool/insertModel',
+                    url: 'http://localhost:8081/web/elenaschool/updateModel',
                     data: {
-                        listModel: queryModel.listModel,
-                        model: queryModel.model
+                        user: actionRequest.user,
+                        password: actionRequest.password,
+                        credentials: actionRequest.credentials,
+                        request: actionRequest.request,
+                        token: actionRequest.token
                     }
                 });
             }

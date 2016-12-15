@@ -16,6 +16,8 @@ public class QueryModel {
     private int numberRegistersXPage;
     private int page;
     private boolean isPagination;
+    private boolean isInsert;
+    private boolean isUpdate;
     
     /**
      * Propiedad para definir si la consulta es paginada
@@ -150,6 +152,34 @@ public class QueryModel {
      */
     public void setIsOrderDescending(boolean isOrderDescending) {
         this.isOrderDescending = isOrderDescending;
+    }
+
+    /**
+     * @return the isInsert
+     */
+    public boolean getIsInsert() {
+        return isInsert;
+    }
+
+    /**
+     * @param isInsert the isInsert to set
+     */
+    public void setIsInsert(boolean isInsert) {
+        this.isInsert = isInsert;
+    }
+
+    /**
+     * @return the isUpdate
+     */
+    public boolean getIsUpdate() {
+        return isUpdate;
+    }
+
+    /**
+     * @param isUpdate the isUpdate to set
+     */
+    public void setIsUpdate(boolean isUpdate) {
+        this.isUpdate = isUpdate;
     }
     
 }

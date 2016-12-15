@@ -3,7 +3,6 @@
 - @autor Adrian Lopez
 - @since 13 dic 2016
 -->
-<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
 <div ng-init="getEstructuraTablaAction('grupo_academico')">
     <div class="row">
         <section id="widget-grid" class="col-xs-12">
@@ -25,7 +24,7 @@
                                             <div ng-include="'includes/controls/buttons.html'"></div>
 
                                             <header>
-                                                {{modelEstructura[0].nameTable}}
+                                                Formulario <small>{{modelEstructura[0].nameTable}}</small>
                                             </header>
                                             
                                             <!--Formulario-->

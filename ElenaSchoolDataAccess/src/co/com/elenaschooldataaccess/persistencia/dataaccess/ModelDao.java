@@ -64,13 +64,13 @@ public class ModelDao implements IModelDao {
     }
 
     /**
-     * Inserta un registro en una tabla x
+     * Realiza operacion de actualizacion de una tabla
      * @param query
      * @return
      * @throws SQLException 
      */
     @Override
-    public boolean insertModel(String query) throws SQLException {
+    public boolean updateModel(String query) throws SQLException {
         try{
             conexion = ConnectionSingleton.getInstance();
             preparedStatement = conexion.getConnection().prepareStatement(query);

@@ -81,7 +81,7 @@ public class Model {
     /**
      * @return the isPrimary
      */
-    public boolean isIsPrimary() {
+    public boolean getIsPrimary() {
         return isPrimary;
     }
 

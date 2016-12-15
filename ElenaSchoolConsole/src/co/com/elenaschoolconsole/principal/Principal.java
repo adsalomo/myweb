@@ -8,6 +8,8 @@ package co.com.elenaschoolconsole.principal;
 import co.com.elenaschoolbusiness.ModelBusiness;
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
+import co.com.elenaschoolmodel.model.ActionRequest;
+import co.com.elenaschoolmodel.model.ActionResponse;
 import co.com.elenaschoolmodel.model.CalendarioModel;
 import co.com.elenaschoolmodel.model.ConexionModel;
 import co.com.elenaschoolmodel.model.Configuration;
@@ -46,47 +48,49 @@ public class Principal {
             //serialize();
             //Util.readFileConfiguration();
 
-            
             //readModel();
             getConsulta();
             //getQuery();
         } catch (Exception ex) {
-            
+
         }
-       
-            
+
     }
 
     public static void getConsulta() throws IOException {
-        ModelBusiness business = new ModelBusiness();
-
-        Model model = new Model();
-        model.setNameTable("grupo_academico");
-
-        List<Model> list = business.getEstructuraTabla(model);
-        QueryModel queryModel = new QueryModel();
-        queryModel.setListModel(list);
-
         ObjectMapper mapper = new ObjectMapper();
+        ModelBusiness business = new ModelBusiness();
+        Model model = new Model();
+        model.setNameTable("www");
+        
+        ActionRequest actionRequest = new ActionRequest();
+        actionRequest.setRequest(mapper.writeValueAsString(model));
+        
 
-        QueryModel qml = mapper.readValue(new File("C:\\Notacion\\prueba.json"), QueryModel.class);
-        qml.setPage(0);
-        qml.setIsPagination(true);
-
-        QueryModel qm = business.getConsulta(qml);
-        business.insertModel(qml);
-
-        String jsonInString2 = mapper.writeValueAsString(list);
-
-        mapper.writeValue(System.out, list);
-
-        String jsonInString = mapper.writeValueAsString(qm.getListResult());
-        List<GrupoAcademicoModel> listCal = mapper.readValue(jsonInString, new TypeReference<List<GrupoAcademicoModel>>() {
-        });
-
-        if (listCal != null && !listCal.isEmpty()) {
-            System.out.println("si");
-        }
+        ActionResponse actionResponse = business.getEstructuraTabla(actionRequest);
+        List<Model> listModel = mapper.readValue(actionResponse.getResponse(), new TypeReference<List<Model>>() {});
+        System.out.println("OK");
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        QueryModel qml = mapper.readValue(new File("C:\\Notacion\\prueba.json"), QueryModel.class);
+//        qml.setPage(0);
+//        qml.setIsPagination(true);
+//
+//        QueryModel qm = business.getConsulta(qml);
+//        business.insertModel(qml);
+//
+//        String jsonInString2 = mapper.writeValueAsString(list);
+//
+//        mapper.writeValue(System.out, list);
+//
+//        String jsonInString = mapper.writeValueAsString(qm.getListResult());
+//        List<GrupoAcademicoModel> listCal = mapper.readValue(jsonInString, new TypeReference<List<GrupoAcademicoModel>>() {
+//        });
+//
+//        if (listCal != null && !listCal.isEmpty()) {
+//            System.out.println("si");
+//        }
     }
 
     public static void serialize() {
@@ -114,8 +118,8 @@ public class Principal {
         query.addValuePair("descripcion", "'333'");
         query.addValuePair("ano", 2016);
         query.setQueryTypes(Query.QueryTypes.Select);
-         query.addCondition("id = " + val);
-         query.addCondition("codigo = " + val);
+        query.addCondition("id = " + val);
+        query.addCondition("codigo = " + val);
         query.addColumn("codigo");
         query.addColumn("nombre_corto");
         query.addColumn("nombre");

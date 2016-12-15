@@ -1,6 +1,8 @@
 package co.com.elenaschool.service;
 
 import co.com.elenaschoolbusiness.ModelBusiness;
+import co.com.elenaschoolmodel.model.ActionRequest;
+import co.com.elenaschoolmodel.model.ActionResponse;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
 import java.util.List;
@@ -23,23 +25,23 @@ public class Service {
     
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getEstructuraTabla", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    public List<Model> getEstructuraTabla(@RequestBody Model model){
+    public ActionResponse getEstructuraTabla(@RequestBody ActionRequest actionRequest){
         modelBusiness = new ModelBusiness();
-        return modelBusiness.getEstructuraTabla(model);
+        return modelBusiness.getEstructuraTabla(actionRequest);
     }
     
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/web/elenaschool/getConsulta", method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public QueryModel getConsulta(@RequestBody QueryModel queryModel){
+    public ActionResponse getConsulta(@RequestBody ActionRequest actionRequest){
         modelBusiness = new ModelBusiness();
-        return modelBusiness.getConsulta(queryModel);
+        return modelBusiness.getConsulta(actionRequest);
     }
     
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/web/elenaschool/insertModel", method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public boolean insertModel(@RequestBody QueryModel queryModel){
+    @RequestMapping(value = "/web/elenaschool/updateModel", method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ActionResponse updateModel(@RequestBody ActionRequest actionRequest){
         modelBusiness = new ModelBusiness();
-        return modelBusiness.insertModel(queryModel);
+        return modelBusiness.updateModel(actionRequest);
     }
     
 }

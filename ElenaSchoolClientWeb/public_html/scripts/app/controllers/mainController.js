@@ -81,9 +81,22 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.getEstructuraTablaAction = function (nameTable) {
+            var model = {nameTable: nameTable};
+            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
+
             // Request para obtener la estructura
-            $myService.getEstructuraTablaService(nameTable).success(function (data, status, headers, config) {
-                $scope.modelEstructura = data;
+            $myService.getEstructuraTablaService(actionRequest).success(function (data, status, headers, config) {
+                // Valida la respuesta del servicio
+                if(!isValidResponseService(data))
+                    return;
+                
+                var response = JSON.parse(data.response);
+                if(!isArrayNotNull(response)){
+                    messageBoxAlert('Obtener estructura', 'No existe estructura para la tabla ' + nameTable + '.', 'info');
+                    return;
+                }
+                
+                $scope.modelEstructura = response;
                 var numRow = Math.floor($scope.modelEstructura.length / $setting.varGlobals.column);
                 var resto = ($scope.modelEstructura.length % $setting.varGlobals.column);
                 if (resto !== 0)
@@ -92,7 +105,6 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 for (var i = 0, l = numRow; i < l; i++) {
                     $scope.numRow[i] = i;
                 }
-
             }).error(function (data, status, headers, config) {
                 console.log(data);
                 messageBoxAlert('Obtener estructura', 'Ocurrión un error al procesar la solicitud.', 'error');
@@ -100,16 +112,21 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         };
 
         /**
-         * Action agregar nuevo registro a una entidad
+         * Action actualizar tabla 
          * @returns {undefined}
          */
-        $scope.insertModelAction = function () {
-            var queryModel = getObjectQueryModel($scope.modelEstructura);
-            $myService.insertModelService(queryModel).success(function (data, status, headers, config) {
-                if (data)
-                    messageBoxAlert('Registro', 'Operación completada con éxito.', 'info');
-                else
-                    messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
+        $scope.updateModelAction = function () {
+            var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
+            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+            
+            // Request para realizar la actualizacion del modelo
+            $myService.insertModelService(actionRequest).success(function (data, status, headers, config) {
+                // Valida la respuesta del servicio
+                if(!isValidResponseService(data))
+                    return;
+                
+                messageBoxAlert('Registro', data.response, 'info');
+                $scope.cancelEditionModelAction();
             }).error(function (data, status, headers, config) {
                 console.log(data);
                 messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');

@@ -14,5 +14,5 @@ public interface IModelDao {
     
     List<Object> getConsulta(String query) throws SQLException;
     
-    boolean insertModel(String query) throws SQLException;
+    boolean updateModel(String query) throws SQLException;
 }

@@ -59,11 +59,12 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/ElenaSchoolBusiness.jar</systemPath>
         </dependency>
-      
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>jacksonElenaSchool</groupId>
+            <artifactId>jacksonElenaSchool</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/jackson-all-1.7.4.jar</systemPath>
         </dependency>
         
     </dependencies>

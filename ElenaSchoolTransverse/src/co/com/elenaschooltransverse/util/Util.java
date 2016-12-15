@@ -1,7 +1,9 @@
 package co.com.elenaschooltransverse.util;
 
+import co.com.elenaschoolmodel.model.ActionResponse;
 import co.com.elenaschoolmodel.model.ConexionModel;
 import co.com.elenaschoolmodel.model.Configuration;
+import co.com.elenaschoolmodel.model.ErrorRequest;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -54,6 +56,22 @@ public class Util {
             dataSource.setPassword(conexionModel.getPassword());
         }
         return dataSource;
+    }
+    
+    /**
+     * Obtiene el error
+     * @param message
+     * @param errorCode
+     * @return 
+     */
+    public static ActionResponse getError(String message, int errorCode){
+        ActionResponse actionResponse = new ActionResponse();
+        ErrorRequest error = new ErrorRequest();
+        error.setMessage(message);
+        error.setErrorCode(errorCode);
+        actionResponse.setStatus(false);
+        actionResponse.setError(error);
+        return actionResponse;
     }
 
     /**

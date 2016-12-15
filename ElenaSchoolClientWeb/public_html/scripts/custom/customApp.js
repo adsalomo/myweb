@@ -19,22 +19,18 @@ function setListToGrid(gridOptions, list, modelEstructura) {
             if (list[0].hasOwnProperty(property)) {
                 angular.forEach(modelEstructura, function (value, key) {
                     if (value.columnName === property)
-                        if(property === 'descripcion' || property === 'nombre')
+                        if (property === 'descripcion' || property === 'nombre')
                             columns.push({name: value.labelName, field: property, width: 200});
                         else
                             columns.push({name: value.labelName, field: property, width: 100});
-                            
+
                 });
             }
-        }        
+        }
         gridOptions.columnDefs = columns;
         gridOptions.data = list;
     }
-};
-
-function closeWindows() {
-    close();
-};
+}
 
 /**
  * Mensaje confirmacion
@@ -58,7 +54,6 @@ function messageBoxConfirm(titulo, contenido, funcionSi, funcionNo) {
         cancel: funcionNo
     });
 }
-;
 
 /**
  * Mensaje info
@@ -86,7 +81,6 @@ function messageBoxAlert(titulo, contenido, tipo) {
             imagen += 'alert.png';
             break;
     }
-    ;
 
     $.alert({
         //icon: imagen,
@@ -99,7 +93,6 @@ function messageBoxAlert(titulo, contenido, tipo) {
         }
     });
 }
-;
 
 /**
  * Valida que una lista no sea nula o vacia
@@ -107,12 +100,11 @@ function messageBoxAlert(titulo, contenido, tipo) {
  * @returns {Boolean}
  */
 function isArrayNotNull(list) {
-    if (angular.isArray(list) && list.length > 0) {
+    if (angular.isDefined(list) && angular.isArray(list) && list.length > 0) {
         return true;
     }
     return false;
 }
-;
 
 /**
  * Obtiene objeto queryModel
@@ -123,9 +115,11 @@ function isArrayNotNull(list) {
  * @param {type} model
  * @param {type} page
  * @param {type} isPagination
+ * @param {type} isInsert
+ * @param {type} isUpdate
  * @returns {getObjectQueryModel.obj}
  */
-function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDescending, model, page, isPagination) {
+function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDescending, model, page, isPagination, isInsert, isUpdate) {
     var obj = {
         listModel: listModel,
         listResult: listResult,
@@ -133,12 +127,13 @@ function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDes
         isOrderDescending: isOrderDescending,
         model: model,
         page: page,
-        isPagination: isPagination
+        isPagination: isPagination,
+        isInsert: isInsert,
+        isUpdate: isUpdate
     };
     //console.log(JSON.stringify(obj));
     return obj;
 }
-;
 
 /**
  * 
@@ -158,7 +153,6 @@ function setValueStructure(rowSelect, modelEstructura) {
         }
     }
 }
-;
 
 /**
  * Limpia la propiedad valor del objeto structure
@@ -171,5 +165,25 @@ function clearValueStructure(structure) {
             value.valor = null;
         });
 }
-;
+
+/**
+ * Valida la respuesta del servicio
+ * @param {type} data
+ * @returns {Boolean}
+ */
+function isValidResponseService(data) {
+    if (angular.isDefined(data) && data !== null) {
+        if(!data.status){
+            if(angular.isDefined(data.error) && data.error !== null){
+                messageBoxAlert('Solicitud', data.error.message, 'error');
+            }else
+                messageBoxAlert('Solicitud', 'Ocurrión un error al procesar la solicitud.', 'error');
+            return false;
+        }
+        return true;
+    } else {
+        messageBoxAlert('Solicitud', 'Ocurrión un error al procesar la solicitud.', 'error');
+        return false;
+    }
+}
 

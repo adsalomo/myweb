@@ -13,7 +13,7 @@
                 <img src="img/imgElenaSchool/imgUltimo.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-disabled="((isModeEdit || isActivoGrid) && !isModeInsert) || isModeInsert" ng-click="activateModeInsertAction();" 
-                    data-toggle="tooltip" data-placement="top" title="Agregar">
+                    data-toggle="tooltip" data-placement="top" title="Nuevo Registro">
                 <img src="img/imgElenaSchool/imgNuevo.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-click="activateModeEditAction();" data-toggle="tooltip" data-placement="top" 
@@ -21,7 +21,7 @@
                 <img src="img/imgElenaSchool/imgEditar.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-disabled="((!isModeInsert || !isModeEdit) && formOperation.$invalid) || isActivoGrid" 
-                    ng-click="insertModelAction();" data-toggle="tooltip" data-placement="top" title="Guardar">
+                    ng-click="updateModelAction();" data-toggle="tooltip" data-placement="top" title="Guardar">
                 <img src="img/imgElenaSchool/imgAplicar.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-click="cancelEditionModelAction();" data-toggle="tooltip" 

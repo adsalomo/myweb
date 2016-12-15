@@ -19,8 +19,13 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
          * @returns {undefined}
          */
         function getEstructura() {
-            $myService.getEstructuraTablaService($tableName).success(function (data, status, headers, config) {
-                $scope.modelEstructura = data;
+            var model = {nameTable: $tableName};
+            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
+            $myService.getEstructuraTablaService(actionRequest).success(function (data, status, headers, config) {
+                // Valida la respuesta del servicio
+                if (!isValidResponseService(data))
+                    return;
+                $scope.modelEstructura = JSON.parse(data.response);
             }).error(function (data, status, headers, config) {
                 console.log(data);
                 messageBoxAlert('Consulta Tabla', 'Ocurrió un error al procesar su solicitud', 'error');
@@ -33,7 +38,7 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
          * @returns {undefined}
          */
         $scope.consultarAction = function () {
-
+            // Define tipo de ordenamiento
             if ($scope.isTypeOrder === 1)
                 $gridFormulario.isOrderAscending = true;
             else
@@ -42,35 +47,30 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
             $gridFormulario.data = [];
 
             // Arma objeto queryModel
-            var obj = getObjectQueryModel(
-                    $scope.modelEstructura,
-                    null,
-                    $gridFormulario.isOrderAscending,
-                    $gridFormulario.isOrderDescending,
-                    $scope.modelEstructura[0].nameTable,
-                    $gridFormulario.actualPage,
-                    $gridFormulario.isPagination
-                    );
+            var queryModel = getObjectQueryModel($scope.modelEstructura, null, $gridFormulario.isOrderAscending, $gridFormulario.isOrderDescending, $scope.modelEstructura[0].nameTable, $gridFormulario.actualPage, $gridFormulario.isPagination);
+            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+            
+            // Request para obtener la consulta
+            $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                // Valida la respuesta del servicio
+                if (!isValidResponseService(data))
+                    return;
+                
+                var response = JSON.parse(data.response);
+                $gridFormulario.count = response.count;
 
-            /**
-             * Request para consultar a tabla
-             */
-            $myService.getConsultaService(obj).success(function (data, status, headers, config) {
-                $gridFormulario.count = data.count;
-
-                if (isArrayNotNull(data.listResult)) {
+                if (isArrayNotNull(response.listResult)) {
                     // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
                     if ($gridFormulario.isPagination) {
-                        $gridFormulario.pageSize = data.listResult.length;
-                        var resp = $gridFormulario.count % $gridFormulario.pageSize;
+                        $gridFormulario.pageSize = response.listResult.length;
+                        var resp = ($gridFormulario.count % $gridFormulario.pageSize);
                         $gridFormulario.totalPages = (resp !== 0 ? (Math.floor($gridFormulario.count / $gridFormulario.pageSize) + 1) : ($gridFormulario.count / $gridFormulario.pageSize)) - 1;
                         $gridFormulario.actualPage = 0;
                     } else
-                        $gridFormulario.pageSize = data.count;
+                        $gridFormulario.pageSize = response.count;
 
                     // Llena grid con los datos de la consulta
-                    setListToGrid($gridFormulario, data.listResult, $scope.modelEstructura);
-                    
+                    setListToGrid($gridFormulario, response.listResult, $scope.modelEstructura);
                     $uibModalInstance.dismiss(true);
                 } else{
                     messageBoxAlert('Consulta Tabla', 'No hay datos para mostrar', 'info');

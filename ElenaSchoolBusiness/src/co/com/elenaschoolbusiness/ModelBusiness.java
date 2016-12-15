@@ -2,14 +2,19 @@ package co.com.elenaschoolbusiness;
 
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.dataaccess.ModelDao;
+import co.com.elenaschoolmodel.model.ActionRequest;
+import co.com.elenaschoolmodel.model.ActionResponse;
 import co.com.elenaschoolmodel.model.Configuration;
 import co.com.elenaschoolmodel.model.Model;
 import co.com.elenaschoolmodel.model.QueryModel;
 import co.com.elenaschooltransverse.util.Logging;
 import co.com.elenaschooltransverse.util.Query;
 import co.com.elenaschooltransverse.util.Util;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 /**
  * Clase que maneja la lógica de los formularios dinamicos de la APP
@@ -20,62 +25,100 @@ import java.util.List;
 public class ModelBusiness {
 
     private final IModelDao iModelDao;
-    private List<Model> models;
     private Query query;
     private StackTraceElement[] stackTrace;
+    private final ObjectMapper mapper;
 
     /**
      * Constructor
      */
     public ModelBusiness() {
         iModelDao = new ModelDao();
+        mapper = new ObjectMapper();
     }
 
     /**
      * Obtiene la estructura de una tabla
      *
-     * @param model
+     * @param actionRequest
      * @return
      */
-    public List<Model> getEstructuraTabla(Model model) {
+    public ActionResponse getEstructuraTabla(ActionRequest actionRequest) {
         stackTrace = Thread.currentThread().getStackTrace();
+        ActionResponse actionResponse = new ActionResponse();
+
         try {
-            models = iModelDao.getEstructura(model);
+            // Obtenemos el objeto que viene en el request
+            Model model = mapper.readValue(actionRequest.getRequest(), new TypeReference<Model>() {
+            });
+
+            // Obtenemos la estructura y la serializamos
+            List<Model> listModel = iModelDao.getEstructura(model);
+            actionResponse.setResponse(mapper.writeValueAsString(listModel));
+
+            actionResponse.setError(null);
+            actionResponse.setStatus(true);
         } catch (SQLException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+        } catch (IOException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
-        return models;
+        return actionResponse;
     }
 
     /**
-     * Obtiene consulta
+     * Obtiene la consulta dinamicamente por tabla
      *
-     * @param queryModel Objeto que define la consulta
+     * @param actionRequest
      * @return
      */
-    public QueryModel getConsulta(QueryModel queryModel) {
+    public ActionResponse getConsulta(ActionRequest actionRequest) {
         stackTrace = Thread.currentThread().getStackTrace();
+        ActionResponse actionResponse = new ActionResponse();
+
         try {
+            // Obtenemos el objeto que viene en el request
+            QueryModel queryModel = mapper.readValue(actionRequest.getRequest(), new TypeReference<QueryModel>() {
+            });
+
+            // Leemos el archivo configuracion
             Configuration config = Util.readFileConfiguration();
+
             queryModel.setNumberRegistersXPage(config.getNumberRegisterXPage());
+
+            // Obtenemos el sql
             String sql = getQuery(queryModel);
 
             // Esta activo el parametro de guardar Sentencia sql?
             if (config.getIsActiveLogSql()) {
                 Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
             }
-            
+
+            // Ejecutamos el metodo para traer la consulta
             List<Object> result = iModelDao.getConsulta(sql);
             queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);
+
+            // Serializamos el objeto queryModel
+            actionResponse.setResponse(mapper.writeValueAsString(queryModel));
+            actionResponse.setError(null);
+            actionResponse.setStatus(true);
         } catch (SQLException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+        } catch (IOException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
-        return queryModel;
+        return actionResponse;
     }
 
     /**
@@ -138,28 +181,47 @@ public class ModelBusiness {
     }
 
     /**
-     * Realiza insert a una entidad de la base de datos
+     * Realiza actualizacion a una entidad de la base de datos
      *
-     * @param queryModel
+     * @param actionRequest
      * @return
      */
-    public boolean insertModel(QueryModel queryModel) {
+    public ActionResponse updateModel(ActionRequest actionRequest) {
         stackTrace = Thread.currentThread().getStackTrace();
-        try {
-            String sql = getQueryInsert(queryModel);
-            Configuration config = Util.readFileConfiguration();
+        ActionResponse actionResponse = new ActionResponse();
 
+        try {
+            // Obtenemos el objeto que viene en el request
+            QueryModel queryModel = mapper.readValue(actionRequest.getRequest(), new TypeReference<QueryModel>() {
+            });
+            String sql = "";
+
+            // Define el tipo de query
+            if (queryModel.getIsInsert()) {
+                sql = getQueryInsert(queryModel);
+            } else if (queryModel.getIsUpdate()) {
+                sql = getQueryUpdate(queryModel);
+            }
+
+            Configuration config = Util.readFileConfiguration();
             if (config.getIsActiveLogSql()) {
                 Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
             }
 
-            return iModelDao.insertModel(sql);
+            actionResponse.setError(null);
+            actionResponse.setStatus(iModelDao.updateModel(sql));
+            actionResponse.setResponse("Operación Completada con Éxito.");
         } catch (SQLException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+        } catch (IOException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
         }
-        return false;
+        return actionResponse;
     }
 
     /**
@@ -179,6 +241,34 @@ public class ModelBusiness {
                 query.addValuePair(model.getColumnName(), getValueXDataType(model));
             }
 
+            // Add table
+            query.addTable(queryModel.getModel());
+
+            return query.getQuery();
+        }
+        return "";
+    }
+
+    /**
+     * Obtiene el query que realiza el update
+     *
+     * @param queryModel
+     * @return
+     */
+    private String getQueryUpdate(QueryModel queryModel) {
+        if (queryModel.getListModel() != null && queryModel.getListModel().size() > 0) {
+            query = new Query();
+
+            // Definition query
+            query.setQueryTypes(Query.QueryTypes.Update);
+
+            for (Model model : queryModel.getListModel()) {
+                if (model.getIsPrimary()) {
+                    query.addCondition("" + model.getColumnName() + " = " + getValueXDataType(model) + "");
+                } else {
+                    query.addValuePair(model.getColumnName(), getValueXDataType(model));
+                }
+            }
             // Add table
             query.addTable(queryModel.getModel());
 
