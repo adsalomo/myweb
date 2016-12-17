@@ -37,8 +37,8 @@ public class ModelDao implements IModelDao {
             resultSet = preparedStatement.executeQuery();
             return ModelHelper.getEstructura(resultSet);
         } finally {
-            preparedStatement.close();
-            resultSet.close();
+            Util.closePreparedStatement(preparedStatement);
+            Util.closeResultSet(resultSet);
             conexion.closeConnection();
         }
     }
@@ -57,8 +57,8 @@ public class ModelDao implements IModelDao {
             resultSet = preparedStatement.executeQuery();
             return ModelMapperHelper.mapRersultSetToObject(resultSet);
         } finally {
-            preparedStatement.close();
-            resultSet.close();
+            Util.closePreparedStatement(preparedStatement);
+            Util.closeResultSet(resultSet);
             conexion.closeConnection();
         }
     }
@@ -77,7 +77,7 @@ public class ModelDao implements IModelDao {
             preparedStatement.execute();
             return true;
         } finally {
-            preparedStatement.close();
+            Util.closePreparedStatement(preparedStatement);
             conexion.closeConnection();
         }
     }

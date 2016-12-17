@@ -12,6 +12,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -27,8 +30,27 @@ public class Util {
     private static StackTraceElement[] stackTrace;
 
     /**
+     * Cierra el objeto preparedStatement
+     * @param statement
+     * @throws SQLException 
+     */
+    public static void closePreparedStatement(PreparedStatement statement) throws SQLException{
+        if(statement != null)
+            statement.close();
+    }
+    
+    /**
+     * Cierra el objeto resultSet
+     * @param resultSet
+     * @throws SQLException 
+     */
+    public static void closeResultSet(ResultSet resultSet) throws SQLException{
+        if(resultSet != null)
+            resultSet.close();
+    }
+    
+    /**
      * Obtiene datasource para la conexión a la base de datos
-     *
      * @return DataSource
      */
     public static DataSource getDataSource() {
