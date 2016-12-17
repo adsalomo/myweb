@@ -284,9 +284,15 @@ public class ModelBusiness {
      * @return
      */
     private String getValueXDataType(Model model) {
-        if (model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying")
-                || model.getDataType().equalsIgnoreCase("date")) {
+        if (model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying") || model.getDataType().equalsIgnoreCase("date")) {
             return "'" + model.getValor() + "'";
+        } else if (model.getDataType().equalsIgnoreCase("bit")) {
+            boolean valor = (boolean) model.getValor();
+            if (valor) {
+                return "'1'";
+            } else{
+                return "'0'";
+            }
         } else {
             return "" + model.getValor() + "";
         }
