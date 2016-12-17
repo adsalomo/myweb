@@ -76,9 +76,8 @@ public class ModelDao implements IModelDao {
             preparedStatement = conexion.getConnection().prepareStatement(query);
             preparedStatement.execute();
             return true;
-        } finally{
+        } finally {
             preparedStatement.close();
-            resultSet.close();
             conexion.closeConnection();
         }
     }

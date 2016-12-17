@@ -22,17 +22,18 @@ public class Logging {
     /**
      * Escribe un error ocurrido por una excepción de la app
      * @param message Mensaje generado por el error
+     * @param lineNumber Lugar error
      * @param className Clase donde ocurre el error
      * @param methodName Metodo donde ocurre el error
      */
-    public static void writeError(String message, String className, String methodName) {
+    public static void writeError(String message, int lineNumber, String className, String methodName) {
         Configuration configuracion = Util.readFileConfiguration();
         try {
             FileHandler handler = new FileHandler(configuracion.getLoggingFilePath(), true);
             Logger logger = Logger.getLogger("Logging ElenaSchool");
             handler.setFormatter(new SimpleFormatter());
             logger.addHandler(handler);
-            logger.log(Level.WARNING, "Error en {0}  Metodo: {1} Mensaje error: {2}", new Object[]{className, methodName, message + "\n"});
+            logger.log(Level.WARNING, "Error en {0}  Metodo: {1} Linea: {2} Mensaje error: {3}", new Object[]{className, methodName, lineNumber, message + "\n"});
             handler.close();
         } catch (IOException | SecurityException ex) {
         }

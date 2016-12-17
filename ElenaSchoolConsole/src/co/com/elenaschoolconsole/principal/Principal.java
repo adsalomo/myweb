@@ -54,43 +54,86 @@ public class Principal {
         } catch (Exception ex) {
 
         }
-
     }
 
     public static void getConsulta() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ModelBusiness business = new ModelBusiness();
         Model model = new Model();
-        model.setNameTable("www");
-        
+        model.setNameTable("grupo_academico");
+
         ActionRequest actionRequest = new ActionRequest();
         actionRequest.setRequest(mapper.writeValueAsString(model));
-        
 
+        // Obtenemos la estrucura
         ActionResponse actionResponse = business.getEstructuraTabla(actionRequest);
-        List<Model> listModel = mapper.readValue(actionResponse.getResponse(), new TypeReference<List<Model>>() {});
-        System.out.println("OK");
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        QueryModel qml = mapper.readValue(new File("C:\\Notacion\\prueba.json"), QueryModel.class);
-//        qml.setPage(0);
-//        qml.setIsPagination(true);
-//
-//        QueryModel qm = business.getConsulta(qml);
-//        business.insertModel(qml);
-//
-//        String jsonInString2 = mapper.writeValueAsString(list);
-//
-//        mapper.writeValue(System.out, list);
-//
-//        String jsonInString = mapper.writeValueAsString(qm.getListResult());
-//        List<GrupoAcademicoModel> listCal = mapper.readValue(jsonInString, new TypeReference<List<GrupoAcademicoModel>>() {
-//        });
-//
-//        if (listCal != null && !listCal.isEmpty()) {
-//            System.out.println("si");
-//        }
+        List<Model> listModel = mapper.readValue(actionResponse.getResponse(), new TypeReference<List<Model>>() {
+        });
+
+        // Obtenemos la consulta
+        QueryModel queryModel = new QueryModel();
+        queryModel.setModel("grupo_academico");
+        queryModel.setListModel(listModel);
+        actionRequest.setRequest(mapper.writeValueAsString(queryModel));
+        actionResponse = business.getConsulta(actionRequest);
+        queryModel = mapper.readValue(actionResponse.getResponse(), new TypeReference<QueryModel>() {
+        });
+        System.out.print(queryModel);
+
+        //UPDATE grupo_academico SET id = 3, nombre_corto = 'INGENIERA', nombre = 'INGENIERA GRUPO 11', 
+        //descripcion = 'GRUPO 11 DE INGENIERIA SISTEMAS', codigo_grado = '0000000001', calendario = '0000000002', 
+        //persona_responsable = 'SANDRIC   ', activo = '1', usuario = 'adsalomo', fecha_creacion = '2016-10-04', 
+        //fecha_modificacion = '2016-10-04', fecha_proceso = '2016-10-04' WHERE codigo = '0000000011'
+        if (listModel != null && listModel.size() > 0) {
+            for (Model row : listModel) {
+                if (row.getColumnName().equals("fecha_creacion")) {
+                    row.setValor("2016-10-04");
+                }
+                if (row.getColumnName().equals("fecha_modificacion")) {
+                    row.setValor("2016-10-04");
+                }
+                if (row.getColumnName().equals("fecha_proceso")) {
+                    row.setValor("2016-10-04");
+                }
+                if (row.getColumnName().equals("id")) {
+                    row.setValor("3");
+                }
+                if (row.getColumnName().equals("nombre")) {
+                    row.setValor("INGENIERIA GRUPO 11");
+                }
+                if (row.getColumnName().equals("descripcion")) {
+                    row.setValor("GRUPO 11 DE INGENIERIA SISTEMAS");
+                }
+                if (row.getColumnName().equals("codigo_grado")) {
+                    row.setValor("0000000001");
+                }
+                if (row.getColumnName().equals("calendario")) {
+                    row.setValor("0000000002");
+                }
+                if (row.getColumnName().equals("persona_responsable")) {
+                    row.setValor("SANDRIC");
+                }
+                if (row.getColumnName().equals("usuario")) {
+                    row.setValor("adsalomo");
+                }
+                if (row.getColumnName().equals("codigo")) {
+                    row.setValor("0000000011");
+                }
+                if (row.getColumnName().equals("nombre_corto")) {
+                    row.setValor("prueba");
+                }
+            }
+        }
+        queryModel = new QueryModel();
+        queryModel.setIsUpdate(true);
+        queryModel.setModel("grupo_academico");
+        queryModel.setListModel(listModel);
+        actionRequest.setRequest(mapper.writeValueAsString(queryModel));
+        actionResponse = business.updateModel(actionRequest);
+        if (actionResponse.getStatus()) {
+            System.out.println("");
+        }
+
     }
 
     public static void serialize() {

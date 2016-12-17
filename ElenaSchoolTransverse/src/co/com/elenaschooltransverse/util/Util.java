@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -35,20 +34,12 @@ public class Util {
     public static DataSource getDataSource() {
         // Lee archivo configuracion
         Configuration configuracion = readFileConfiguration();
-
         // Asigna la ruta
         String ruta = configuracion.getConnectionFilePath();
-
-        List<ConexionModel> list = null;
-        list = (List<ConexionModel>) deserialize(ruta);
-        ConexionModel conexionModel = new ConexionModel();
-
-        if (list != null && list.size() > 0) {
-            conexionModel = list.get(0);
-        }
-
+        // Lee el archivo conexion
+        ConexionModel conexionModel = (ConexionModel)deserialize(ruta);
+        // Crea el datasource
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
         if (conexionModel != null) {
             dataSource.setDriverClassName(conexionModel.getDriverClassName());
             dataSource.setUrl(conexionModel.getUrl());
@@ -99,9 +90,7 @@ public class Util {
             XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
             obj = decoder.readObject();
         } catch (FileNotFoundException ex) {
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (Exception ex) {
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
         }
         return obj;
     }
@@ -130,9 +119,7 @@ public class Util {
         try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)))) {
             encoder.writeObject(obj);
         } catch (FileNotFoundException ex) {
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (Exception ex) {
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
         }
     }
 

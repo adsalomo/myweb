@@ -58,15 +58,9 @@ public class ModelBusiness {
 
             actionResponse.setError(null);
             actionResponse.setStatus(true);
-        } catch (SQLException ex) {
+        } catch (SQLException | IOException ex) {
             actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (IOException ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (Exception ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
         }
         return actionResponse;
     }
@@ -108,15 +102,9 @@ public class ModelBusiness {
             actionResponse.setResponse(mapper.writeValueAsString(queryModel));
             actionResponse.setError(null);
             actionResponse.setStatus(true);
-        } catch (SQLException ex) {
+        } catch (SQLException | IOException ex) {
             actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (IOException ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (Exception ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
         }
         return actionResponse;
     }
@@ -209,17 +197,12 @@ public class ModelBusiness {
             }
 
             actionResponse.setError(null);
-            actionResponse.setStatus(iModelDao.updateModel(sql));
+            boolean resp = iModelDao.updateModel(sql);
+            actionResponse.setStatus(resp);
             actionResponse.setResponse("Operación Completada con Éxito.");
-        } catch (SQLException ex) {
+        } catch (SQLException | IOException ex) {
             actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (IOException ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-        } catch (Exception ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
         }
         return actionResponse;
     }
@@ -284,18 +267,20 @@ public class ModelBusiness {
      * @return
      */
     private String getValueXDataType(Model model) {
+        String value = "";
         if (model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying") || model.getDataType().equalsIgnoreCase("date")) {
-            return "'" + model.getValor() + "'";
+            value = "'" + model.getValor() + "'";
         } else if (model.getDataType().equalsIgnoreCase("bit")) {
-            boolean valor = (boolean) model.getValor();
+            boolean valor = model.getValor() != null ? (boolean) model.getValor() : false;
             if (valor) {
-                return "'1'";
+                value = "'1'";
             } else{
-                return "'0'";
+                value = "'0'";
             }
         } else {
-            return "" + model.getValor() + "";
+            value = "" + model.getValor() + "";
         }
+        return value;
     }
 
 }
