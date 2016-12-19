@@ -18,7 +18,7 @@ public class ConnectionSingleton {
     /**
      * constructor
      */
-    private ConnectionSingleton() throws SQLException{
+    private ConnectionSingleton() throws SQLException {
         setDataSource();
     }
 
@@ -38,7 +38,7 @@ public class ConnectionSingleton {
     /**
      * setea el datasource
      */
-    private void setDataSource(){
+    private void setDataSource() {
         dataSource = Util.getDataSource();
     }
 

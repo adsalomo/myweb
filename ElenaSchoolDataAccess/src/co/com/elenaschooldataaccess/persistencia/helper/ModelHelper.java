@@ -10,18 +10,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
  * @author AdrianL
  */
-public class ModelHelper {
+public class ModelHelper implements RowMapper<Model> {
 
     /**
      * Obtiene la estructura de una tabla
+     *
      * @param rs
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public static List<Model> getEstructura(ResultSet rs) throws SQLException {
         List<Model> models = new ArrayList<>();
@@ -42,5 +44,23 @@ public class ModelHelper {
             models.add(model);
         }
         return models;
+    }
+
+    @Override
+    public Model mapRow(ResultSet rs, int row) throws SQLException {
+        Model model = new Model();
+        model = new Model();
+        model.setNameTable(rs.getString("NameTable"));
+        model.setColumnName(rs.getString("ColumnName"));
+        model.setIsPrimary(rs.getBoolean("IsPrimary"));
+        model.setIsForeign(rs.getBoolean("IsForeign"));
+        model.setDataType(rs.getString("DataType"));
+        model.setIsNullable(rs.getBoolean("IsNullable"));
+        model.setLenght(rs.getInt("Length"));
+        model.setNumericPrecision(rs.getInt("NumericPrecision"));
+        model.setLabelName(rs.getString("LabelName"));
+        model.setForeignTableName(rs.getString("foreignTableName"));
+        model.setIsSecuence(rs.getBoolean("IsSecuence"));
+        return model;
     }
 }

@@ -27,41 +27,44 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  */
 public class Util {
 
-    private static StackTraceElement[] stackTrace;
-
     /**
      * Cierra el objeto preparedStatement
+     *
      * @param statement
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public static void closePreparedStatement(PreparedStatement statement) throws SQLException{
-        if(statement != null)
+    public static void closePreparedStatement(PreparedStatement statement) throws SQLException {
+        if (statement != null) {
             statement.close();
+        }
     }
-    
+
     /**
      * Cierra el objeto resultSet
+     *
      * @param resultSet
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public static void closeResultSet(ResultSet resultSet) throws SQLException{
-        if(resultSet != null)
+    public static void closeResultSet(ResultSet resultSet) throws SQLException {
+        if (resultSet != null) {
             resultSet.close();
+        }
     }
-    
+
     /**
      * Obtiene datasource para la conexión a la base de datos
      * @return DataSource
      */
-    public static DataSource getDataSource() {
+    public static DataSource getDataSource(){
+        // Crea el datasource
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         // Lee archivo configuracion
         Configuration configuracion = readFileConfiguration();
         // Asigna la ruta
         String ruta = configuracion.getConnectionFilePath();
         // Lee el archivo conexion
-        ConexionModel conexionModel = (ConexionModel)deserialize(ruta);
-        // Crea el datasource
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        ConexionModel conexionModel = (ConexionModel) deserialize(ruta);
+
         if (conexionModel != null) {
             dataSource.setDriverClassName(conexionModel.getDriverClassName());
             dataSource.setUrl(conexionModel.getUrl());
@@ -70,14 +73,15 @@ public class Util {
         }
         return dataSource;
     }
-    
+
     /**
      * Obtiene el error
+     *
      * @param message
      * @param errorCode
-     * @return 
+     * @return
      */
-    public static ActionResponse getError(String message, int errorCode){
+    public static ActionResponse getError(String message, int errorCode) {
         ActionResponse actionResponse = new ActionResponse();
         ErrorRequest error = new ErrorRequest();
         error.setMessage(message);
@@ -107,7 +111,6 @@ public class Util {
      */
     public static Object deserialize(String fileName) {
         Object obj = null;
-        stackTrace = Thread.currentThread().getStackTrace();
         try {
             XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
             obj = decoder.readObject();
@@ -137,7 +140,6 @@ public class Util {
      * @param fileName Nombre archivo XML
      */
     public static void serialize(Object obj, String fileName) {
-        stackTrace = Thread.currentThread().getStackTrace();
         try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)))) {
             encoder.writeObject(obj);
         } catch (FileNotFoundException ex) {

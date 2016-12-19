@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
  * @author AdrianL
  */
-public class ModelMapperHelper {
+public class DynamicMapperHelper implements RowMapper<Object> {
 
     /**
      * Mapea el valor a la propiedad del objeto que venga por parametro
@@ -36,5 +37,17 @@ public class ModelMapperHelper {
             }
         }
         return outputList;
+    }
+
+    @Override
+    public Object mapRow(ResultSet rs, int i) throws SQLException {
+        ResultSetMetaData rsmd = rs.getMetaData();
+        Map<String, Object> map = new LinkedHashMap<>();
+        for (int k = 0; k < rsmd.getColumnCount(); k++) {
+            String columnName = rsmd.getColumnName(k + 1);
+            Object columnValue = rs.getObject(k + 1);
+            map.put(columnName, columnValue);
+        }
+        return map;
     }
 }

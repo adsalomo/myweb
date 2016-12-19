@@ -1,15 +1,13 @@
 package co.com.elenaschooldataaccess.persistencia.dataaccess;
 
-import co.com.elenaschooldataaccess.persistencia.helper.ModelMapperHelper;
+import co.com.elenaschooldataaccess.persistencia.helper.DynamicMapperHelper;
 import co.com.elenaschooldataaccess.persistencia.contract.IModelDao;
 import co.com.elenaschooldataaccess.persistencia.helper.ModelHelper;
 import co.com.elenaschoolmodel.model.Model;
-import co.com.elenaschooltransverse.util.ConnectionSingleton;
 import co.com.elenaschooltransverse.util.Util;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * Implementación crud dynamic table
@@ -18,10 +16,6 @@ import java.util.List;
  */
 public class ModelDao implements IModelDao {
 
-    private ResultSet resultSet;
-    private PreparedStatement preparedStatement;
-    private ConnectionSingleton conexion;
-    
     /**
      * Obtiene la estructura de una tabla de la base de datos
      * @param model objeto Model de la estructura de una tabla
@@ -30,17 +24,8 @@ public class ModelDao implements IModelDao {
      */
     @Override
     public List<Model> getEstructura(Model model) throws SQLException {
-        try{
-            conexion = ConnectionSingleton.getInstance();
-            preparedStatement = conexion.getConnection().prepareStatement(Util.SQL_ESTRUCTURA);
-            preparedStatement.setString(1, model.getNameTable());
-            resultSet = preparedStatement.executeQuery();
-            return ModelHelper.getEstructura(resultSet);
-        } finally {
-            Util.closePreparedStatement(preparedStatement);
-            Util.closeResultSet(resultSet);
-            conexion.closeConnection();
-        }
+       JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
+       return jdbcTemplate.query(Util.SQL_ESTRUCTURA, new Object[]{model.getNameTable()}, new ModelHelper());
     }
 
     /**
@@ -51,35 +36,20 @@ public class ModelDao implements IModelDao {
      */
     @Override
     public List<Object> getConsulta(String query) throws SQLException {
-        try {
-            conexion = ConnectionSingleton.getInstance();
-            preparedStatement = conexion.getConnection().prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-            return ModelMapperHelper.mapRersultSetToObject(resultSet);
-        } finally {
-            Util.closePreparedStatement(preparedStatement);
-            Util.closeResultSet(resultSet);
-            conexion.closeConnection();
-        }
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
+        return jdbcTemplate.query(query, new DynamicMapperHelper());
     }
 
     /**
      * Realiza operacion de actualizacion de una tabla
      * @param query
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     @Override
     public boolean updateModel(String query) throws SQLException {
-        try{
-            conexion = ConnectionSingleton.getInstance();
-            preparedStatement = conexion.getConnection().prepareStatement(query);
-            preparedStatement.execute();
-            return true;
-        } finally {
-            Util.closePreparedStatement(preparedStatement);
-            conexion.closeConnection();
-        }
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
+        jdbcTemplate.update(query);
+        return true;
     }
-
 }

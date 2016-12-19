@@ -39,12 +39,10 @@ public class ModelBusiness {
 
     /**
      * Obtiene la estructura de una tabla
-     *
      * @param actionRequest
      * @return
      */
     public ActionResponse getEstructuraTabla(ActionRequest actionRequest) {
-        stackTrace = Thread.currentThread().getStackTrace();
         ActionResponse actionResponse = new ActionResponse();
 
         try {
@@ -61,7 +59,10 @@ public class ModelBusiness {
         } catch (SQLException | IOException ex) {
             actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
-        }
+        } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
+        } 
         return actionResponse;
     }
 
@@ -72,7 +73,6 @@ public class ModelBusiness {
      * @return
      */
     public ActionResponse getConsulta(ActionRequest actionRequest) {
-        stackTrace = Thread.currentThread().getStackTrace();
         ActionResponse actionResponse = new ActionResponse();
 
         try {
@@ -90,6 +90,7 @@ public class ModelBusiness {
 
             // Esta activo el parametro de guardar Sentencia sql?
             if (config.getIsActiveLogSql()) {
+                stackTrace = Thread.currentThread().getStackTrace();
                 Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
             }
 
@@ -105,18 +106,61 @@ public class ModelBusiness {
         } catch (SQLException | IOException ex) {
             actionResponse = Util.getError(ex.getMessage(), 0);
             Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
+        } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
+        }
+        return actionResponse;
+    }
+    
+    /**
+     * Realiza actualizacion a una entidad de la base de datos
+     * @param actionRequest
+     * @return
+     */
+    public ActionResponse updateModel(ActionRequest actionRequest) {
+        ActionResponse actionResponse = new ActionResponse();
+
+        try {
+            // Obtenemos el objeto que viene en el request
+            QueryModel queryModel = mapper.readValue(actionRequest.getRequest(), new TypeReference<QueryModel>() {
+            });
+            String sql = "";
+
+            // Define el tipo de query
+            if (queryModel.getIsInsert()) {
+                sql = getQueryInsert(queryModel);
+            } else if (queryModel.getIsUpdate()) {
+                sql = getQueryUpdate(queryModel);
+            }
+
+            Configuration config = Util.readFileConfiguration();
+            if (config.getIsActiveLogSql()) {
+                stackTrace = Thread.currentThread().getStackTrace();
+                Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
+            }
+
+            actionResponse.setError(null);
+            boolean resp = iModelDao.updateModel(sql);
+            actionResponse.setStatus(resp);
+            actionResponse.setResponse("Operación Completada con Éxito.");
+        } catch (SQLException | IOException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
+        } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
         }
         return actionResponse;
     }
 
     /**
      * Obtiene numero de registros por consulta
-     *
      * @param queryModel
      * @return
      * @throws SQLException
      */
-    private int getCountTable(String table) throws SQLException {
+    private int getCountTable(String table) throws SQLException, Exception {
         query = new Query();
         query.setQueryTypes(Query.QueryTypes.Select);
         // Add table
@@ -127,7 +171,6 @@ public class ModelBusiness {
 
     /**
      * Arma query con la estructura de la tabla
-     *
      * @param queryModel Objeto que define la consulta
      * @return
      */
@@ -169,47 +212,7 @@ public class ModelBusiness {
     }
 
     /**
-     * Realiza actualizacion a una entidad de la base de datos
-     *
-     * @param actionRequest
-     * @return
-     */
-    public ActionResponse updateModel(ActionRequest actionRequest) {
-        stackTrace = Thread.currentThread().getStackTrace();
-        ActionResponse actionResponse = new ActionResponse();
-
-        try {
-            // Obtenemos el objeto que viene en el request
-            QueryModel queryModel = mapper.readValue(actionRequest.getRequest(), new TypeReference<QueryModel>() {
-            });
-            String sql = "";
-
-            // Define el tipo de query
-            if (queryModel.getIsInsert()) {
-                sql = getQueryInsert(queryModel);
-            } else if (queryModel.getIsUpdate()) {
-                sql = getQueryUpdate(queryModel);
-            }
-
-            Configuration config = Util.readFileConfiguration();
-            if (config.getIsActiveLogSql()) {
-                Logging.writeSQL(sql, stackTrace[1].getClassName(), stackTrace[1].getMethodName());
-            }
-
-            actionResponse.setError(null);
-            boolean resp = iModelDao.updateModel(sql);
-            actionResponse.setStatus(resp);
-            actionResponse.setResponse("Operación Completada con Éxito.");
-        } catch (SQLException | IOException ex) {
-            actionResponse = Util.getError(ex.getMessage(), 0);
-            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
-        }
-        return actionResponse;
-    }
-
-    /**
      * Obtiene el query para realizar el insert
-     *
      * @param queryModel
      * @return
      */
@@ -234,7 +237,6 @@ public class ModelBusiness {
 
     /**
      * Obtiene el query que realiza el update
-     *
      * @param queryModel
      * @return
      */
@@ -262,7 +264,6 @@ public class ModelBusiness {
 
     /**
      * Define el tipo de valor si es CADENA o NUMERICO
-     *
      * @param model
      * @return
      */
@@ -274,7 +275,7 @@ public class ModelBusiness {
             boolean valor = model.getValor() != null ? (boolean) model.getValor() : false;
             if (valor) {
                 value = "'1'";
-            } else{
+            } else {
                 value = "'0'";
             }
         } else {

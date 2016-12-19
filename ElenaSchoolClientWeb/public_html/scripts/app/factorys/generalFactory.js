@@ -36,36 +36,31 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                             if (grid.totalPages >= grid.actualPage) {
 
                                 // Arma objero queryModel
-                                var obj = getObjectQueryModel(
-                                        structure,
-                                        null,
-                                        grid.isOrderAscending,
-                                        grid.isOrderDescending,
-                                        table,
-                                        grid.actualPage,
-                                        grid.isPagination
-                                        );
+                                var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
+                                var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
-                                /**
-                                 * Request get consulta
-                                 */
-                                $myService.getConsultaService(obj)
-                                        .success(function (data, status, headers, config) {
-                                            grid.count = data.count;
+                                // Request get consulta
+                                $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                                    // Valida la respuesta del servicio
+                                    if (!isValidResponseService(data))
+                                        return;
 
-                                            // Reiniciamos el contador de las filas
-                                            grid.rowNumber = -1;
+                                    var response = JSON.parse(data.response);
 
-                                            // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                                            if (grid.isPagination)
-                                                grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
-                                            else
-                                                grid.pageSize = data.count;
+                                    grid.count = response.count;
+                                    // Reiniciamos el contador de las filas
+                                    grid.rowNumber = -1;
 
-                                            // Llena grid con los datos de la consulta
-                                            setListToGrid(grid, data.listResult, structure);
+                                    // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                                    if (grid.isPagination)
+                                        grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
+                                    else
+                                        grid.pageSize = data.count;
 
-                                        }).error(function (data, status, headers, config) {
+                                    // Llena grid con los datos de la consulta
+                                    setListToGrid(grid, response.listResult, structure);
+
+                                }).error(function (data, status, headers, config) {
                                     console.log(data);
                                 });
                             }
@@ -78,7 +73,6 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                     scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
                 }
             },
-           
             /**
              * Ir Anterior en grid
              * @param {object} grid
@@ -102,27 +96,30 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
 
                             // Arma objero queryModel
                             var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
+                            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
-                            /**
-                             * Request get consulta
-                             */
-                            $myService.getConsultaService(obj)
-                                    .success(function (data, status, headers, config) {
-                                        grid.count = data.count;
+                            // Request get consulta
+                            $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                                // Valida la respuesta del servicio
+                                if (!isValidResponseService(data))
+                                    return;
 
-                                        // Reiniciamos el contador de las filas
-                                        grid.rowNumber = -1;
+                                var response = JSON.parse(data.response);
 
-                                        // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                                        if (grid.isPagination)
-                                            grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
-                                        else
-                                            grid.pageSize = data.count;
+                                grid.count = response.count;
+                                // Reiniciamos el contador de las filas
+                                grid.rowNumber = -1;
 
-                                        // Llena grid con los datos de la consulta
-                                        setListToGrid(grid, data.listResult, structure);
+                                // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                                if (grid.isPagination)
+                                    grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
+                                else
+                                    grid.pageSize = response.count;
 
-                                    }).error(function (data, status, headers, config) {
+                                // Llena grid con los datos de la consulta
+                                setListToGrid(grid, response.listResult, structure);
+
+                            }).error(function (data, status, headers, config) {
                                 console.log(data);
                             });
                         } else {
@@ -143,7 +140,6 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                     scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
                 }
             },
-            
             /**
              * Va a la ultima pagina
              * @param {type} grid
@@ -154,39 +150,34 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
             lastGrid: function (grid, structure, table) {
                 grid.actualPage = grid.totalPages;
                 // Arma objero queryModel
-                var obj = getObjectQueryModel(
-                        structure,
-                        null,
-                        grid.isOrderAscending,
-                        grid.isOrderDescending,
-                        table,
-                        grid.actualPage,
-                        grid.isPagination
-                        );
-                /**
-                 * Request get consulta
-                 */
-                $myService.getConsultaService(obj)
-                        .success(function (data, status, headers, config) {
-                            grid.count = data.count;
+                var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
+                var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
-                            // Reiniciamos el contador de las filas
-                            grid.rowNumber = -1;
+                // Request get consulta
+                $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                    // Valida la respuesta del servicio
+                    if (!isValidResponseService(data))
+                        return;
 
-                            // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                            if (grid.isPagination)
-                                grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
-                            else
-                                grid.pageSize = data.count;
+                    var response = JSON.parse(data.response);
 
-                            // Llena grid con los datos de la consulta
-                            setListToGrid(grid, data.listResult, structure);
+                    grid.count = response.count;
+                    // Reiniciamos el contador de las filas
+                    grid.rowNumber = -1;
 
-                        }).error(function (data, status, headers, config) {
+                    // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                    if (grid.isPagination)
+                        grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
+                    else
+                        grid.pageSize = response.count;
+
+                    // Llena grid con los datos de la consulta
+                    setListToGrid(grid, response.listResult, structure);
+
+                }).error(function (data, status, headers, config) {
                     console.log(data);
                 });
             },
-            
             /**
              * Va a la primera pagina
              * @param {type} grid
@@ -197,39 +188,34 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
             firtsGrid: function (grid, structure, table) {
                 grid.actualPage = 0;
                 // Arma objero queryModel
-                var obj = getObjectQueryModel(
-                        structure,
-                        null,
-                        grid.isOrderAscending,
-                        grid.isOrderDescending,
-                        table,
-                        grid.actualPage,
-                        grid.isPagination
-                        );
-                /**
-                 * Request get consulta
-                 */
-                $myService.getConsultaService(obj)
-                        .success(function (data, status, headers, config) {
-                            grid.count = data.count;
+                var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
+                var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
+                
+                // Request get consulta
+                $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                    // Valida la respuesta del servicio
+                    if (!isValidResponseService(data))
+                        return;
 
-                            // Reiniciamos el contador de las filas
-                            grid.rowNumber = -1;
+                    var response = JSON.parse(data.response);
 
-                            // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                            if (grid.isPagination)
-                                grid.pageSize = isArrayNotNull(data.listResult) ? data.listResult.length : 0;
-                            else
-                                grid.pageSize = data.count;
+                    grid.count = response.count;
+                    // Reiniciamos el contador de las filas
+                    grid.rowNumber = -1;
 
-                            // Llena grid con los datos de la consulta
-                            setListToGrid(grid, data.listResult, structure);
+                    // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
+                    if (grid.isPagination)
+                        grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
+                    else
+                        grid.pageSize = response.count;
 
-                        }).error(function (data, status, headers, config) {
+                    // Llena grid con los datos de la consulta
+                    setListToGrid(grid, response.listResult, structure);
+
+                }).error(function (data, status, headers, config) {
                     console.log(data);
                 });
             }
-            
         };
     }]);
 
