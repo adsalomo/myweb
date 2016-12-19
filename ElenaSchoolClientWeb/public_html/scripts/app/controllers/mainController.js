@@ -85,7 +85,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
 
             // Request para obtener la estructura
-            $myService.getEstructuraTablaService(actionRequest).success(function (data, status, headers, config) {
+            $myService.getEstructuraTablaService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
                 // Valida la respuesta del servicio
                 if(!isValidResponseService(data))
                     return;
@@ -120,7 +120,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
             
             // Request para realizar la actualizacion del modelo
-            $myService.insertModelService(actionRequest).success(function (data, status, headers, config) {
+            $myService.insertModelService(actionRequest, obtenerUrlService('UpdateModel')).success(function (data, status, headers, config) {
                 // Valida la respuesta del servicio
                 if(!isValidResponseService(data))
                     return;
@@ -176,12 +176,12 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 windowClass: 'modal',
                 controller: 'lupaController',
                 resolve: {
-                    $foreignTableName: function () {
-                        return item.foreignTableName;
+                    $item: function () {
+                        return item;
                     }
                 }
             }).result.catch(function (resp) {
-                item.valor = resp;
+                
             });
         };
 
@@ -204,6 +204,8 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     }
                 }
             }).result.catch(function (resp) {
+                $scope.rowSelect = undefined;
+                $scope.isModeEdit = false;
                 if (resp) {
                     if (isArrayNotNull($scope.gridFormulario.data))
                         $scope.isActivoGrid = true;

@@ -21,7 +21,7 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
         function getEstructura() {
             var model = {nameTable: $tableName};
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
-            $myService.getEstructuraTablaService(actionRequest).success(function (data, status, headers, config) {
+            $myService.getEstructuraTablaService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
                 // Valida la respuesta del servicio
                 if (!isValidResponseService(data))
                     return;
@@ -51,7 +51,7 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
             
             // Request para obtener la consulta
-            $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+            $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                 // Valida la respuesta del servicio
                 if (!isValidResponseService(data))
                     return;

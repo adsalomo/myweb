@@ -7,23 +7,25 @@
  */
 
 /**
- * 
+ * Manejador de servios
  * @param {type} $http
  */
 app.factory('$myService', ['$http', function ($http) {
         return {
+            
             /**
              * Peticion http para obtener la estructura de una tabla
              * @param {type} actionRequest
+             * @param {type} url
              * @returns {unresolved}
              */
-            getEstructuraTablaService: function (actionRequest) {
+            getEstructuraTablaService: function (actionRequest, url) {
                 return $http({
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
-                    url: 'http://localhost:8081/web/elenaschool/getEstructuraTabla',
+                    url: url,
                     data: {
                         user: actionRequest.user,
                         password: actionRequest.password,
@@ -33,18 +35,20 @@ app.factory('$myService', ['$http', function ($http) {
                     }
                 });
             },
+            
             /**
              * Peticion http para realizar una consulta sobre una tabla
              * @param {type} actionRequest
+             * @param {type} url
              * @returns {unresolved}
              */
-            getConsultaService: function (actionRequest) {
+            getConsultaService: function (actionRequest, url) {
                 return $http({
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
-                    url: 'http://localhost:8081/web/elenaschool/getConsulta',
+                    url: url,
                     data: {
                         user: actionRequest.user,
                         password: actionRequest.password,
@@ -54,18 +58,20 @@ app.factory('$myService', ['$http', function ($http) {
                     }
                 });
             },
+           
             /**
              * Peticion http para insertar un registro en una tabla
              * @param {type} actionRequest
+             * @param {type} url
              * @returns {unresolved}
              */
-            insertModelService: function (actionRequest) {
+            insertModelService: function (actionRequest, url) {
                 return $http({
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
-                    url: 'http://localhost:8081/web/elenaschool/updateModel',
+                    url: url,
                     data: {
                         user: actionRequest.user,
                         password: actionRequest.password,

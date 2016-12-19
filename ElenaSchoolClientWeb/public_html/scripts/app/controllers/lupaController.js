@@ -5,13 +5,12 @@
  * @autor AdrianL
  * @since 21 sep 2016
  */
-app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableName', '$myService', '$setting', function ($scope, $uibModalInstance, $foreignTableName, $myService, $setting) {
+app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$myService', '$setting', function ($scope, $uibModalInstance, $item, $myService, $setting) {
 
         var nombreApp = $setting.varGlobals.nameApp;
-        var selection = null;
         $scope.gridApi = {};
         getEstructuraTabla();
-        $scope.foreignTableName = $foreignTableName;
+        $scope.foreignTableName = $item.foreignTableName;
 
         /**
          * Definición de la grid
@@ -80,7 +79,8 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
                     }
                 }
             }
-            selection = codigo + ' - ' + nombre;
+            $item.valor = codigo + ' - ' + nombre;
+            $item.codigo = codigo;
             $scope.closeLupaAction();
         };
 
@@ -89,7 +89,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
          * @returns {undefined}
          */
         $scope.closeLupaAction = function () {
-            $uibModalInstance.dismiss(selection);
+            $uibModalInstance.dismiss('cancel');
         };
 
         /**
@@ -97,11 +97,11 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
          * @returns {undefined}
          */
         function getEstructuraTabla() {
-            var model = {nameTable: $foreignTableName};
+            var model = {nameTable: $item.foreignTableName};
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
 
             // Request para obtener estructura
-            $myService.getEstructuraTablaService(actionRequest).success(function (data, status, headers, config) {
+            $myService.getEstructuraTablaService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
 
                 // Valida la respuesta del servicio
                 if (!isValidResponseService(data))
@@ -115,7 +115,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$foreignTableN
                     var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
 
                     // Request para obtener consulta
-                    $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                    $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                         // Valida la respuesta del servicio
                         if (!isValidResponseService(data))
                             return;

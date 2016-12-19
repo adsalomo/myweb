@@ -40,7 +40,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                                 // Request get consulta
-                                $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                                     // Valida la respuesta del servicio
                                     if (!isValidResponseService(data))
                                         return;
@@ -99,7 +99,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                             // Request get consulta
-                            $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                            $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                                 // Valida la respuesta del servicio
                                 if (!isValidResponseService(data))
                                     return;
@@ -154,7 +154,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                 // Request get consulta
-                $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                     // Valida la respuesta del servicio
                     if (!isValidResponseService(data))
                         return;
@@ -192,7 +192,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
                 
                 // Request get consulta
-                $myService.getConsultaService(actionRequest).success(function (data, status, headers, config) {
+                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                     // Valida la respuesta del servicio
                     if (!isValidResponseService(data))
                         return;

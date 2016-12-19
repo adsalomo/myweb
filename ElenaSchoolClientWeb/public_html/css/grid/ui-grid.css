@@ -427,6 +427,7 @@ select.ui-grid-filter-select:hover {
   text-overflow: ellipsis;
   overflow: hidden;
   height: 100%;
+  color:#000;
 }
 .ui-grid-cell-contents-hidden {
   visibility: hidden;

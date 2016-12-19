@@ -146,8 +146,12 @@ function setValueStructure(rowSelect, modelEstructura) {
         for (var property in rowSelect) {
             if (rowSelect.hasOwnProperty(property)) {
                 angular.forEach(modelEstructura, function (value, key) {
-                    if (value.columnName === property)
+                    if (value.columnName === property) {
                         value.valor = rowSelect[property];
+                        if (value.isForeign) {
+                            var resp = true;
+                        }
+                    }
                 });
             }
         }
@@ -173,10 +177,10 @@ function clearValueStructure(structure) {
  */
 function isValidResponseService(data) {
     if (angular.isDefined(data) && data !== null) {
-        if(!data.status){
-            if(angular.isDefined(data.error) && data.error !== null){
+        if (!data.status) {
+            if (angular.isDefined(data.error) && data.error !== null) {
                 messageBoxAlert('Solicitud', data.error.message, 'error');
-            }else
+            } else
                 messageBoxAlert('Solicitud', 'Ocurrión un error al procesar la solicitud.', 'error');
             return false;
         }
