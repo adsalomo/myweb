@@ -268,7 +268,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
 
                                                     var response = JSON.parse(data.response);
                                                     value.valor = isArrayNotNull(response.listResult) ? response.listResult[0].codigo : '';
-                                                    value.descripcion = isArrayNotNull(response.listResult) ? response.listResult[0].codigo + ' - ' + response.listResult[0].nombre : '';
+                                                    value.description = isArrayNotNull(response.listResult) ? response.listResult[0].codigo + ' - ' + response.listResult[0].nombre : '';
 
                                                 }).error(function (data, status, headers, config) {
                                                     console.log(data);

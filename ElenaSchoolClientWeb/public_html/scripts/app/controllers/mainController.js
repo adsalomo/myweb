@@ -116,15 +116,21 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.updateModelAction = function () {
+            angular.forEach($scope.modelEstructura, function (value, key) {
+               if(value.hasOwnProperty('description')){
+                   delete value['description'];
+               }
+            });
+            
             var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
-            
+
             // Request para realizar la actualizacion del modelo
             $myService.insertModelService(actionRequest, obtenerUrlService('UpdateModel')).success(function (data, status, headers, config) {
                 // Valida la respuesta del servicio
-                if(!isValidResponseService(data))
+                if (!isValidResponseService(data))
                     return;
-                
+
                 messageBoxAlert('Registro', data.response, 'info');
                 $scope.cancelEditionModelAction();
             }).error(function (data, status, headers, config) {
