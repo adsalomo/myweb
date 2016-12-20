@@ -131,7 +131,7 @@ var jconfirm, Jconfirm;
             this.animation = 'anim-' + this.animation.toLowerCase();
             this.closeAnimation = 'anim-' + this.closeAnimation.toLowerCase();
             this.theme = 'jconfirm-' + this.theme.toLowerCase();
-            if (this.animation == 'anim-none')
+            if (this.animation === 'anim-none')
                 this.animationSpeed = 0;
 
             this._lastFocused = $('body').find(':focus');
@@ -195,7 +195,7 @@ var jconfirm, Jconfirm;
             var that = this;
             this._timer = setInterval(function () {
                 var now = that._hash(that.$content.html());
-                if (that._contentHash != now) {
+                if (that._contentHash !== now) {
                     that._contentHash = now;
                     that.setDialogCenter();
                     that._imagesLoaded();
@@ -288,7 +288,7 @@ var jconfirm, Jconfirm;
                         clearInterval(interval);
                     }
                 }, 40);
-            })
+            });
         },
         _setButtons: function () {
             /*
@@ -322,9 +322,9 @@ var jconfirm, Jconfirm;
         setContent: function (string) {
             // only set the content on the modal.
             var that = this;
-            this.content = (typeof string == 'undefined') ? this.content : string;
+            this.content = (typeof string === 'undefined') ? this.content : string;
 
-            if (this.content == '') {
+            if (this.content === '') {
                 this.$content.html(this.content);
                 this.$contentPane.hide();
             } else {
@@ -444,13 +444,13 @@ var jconfirm, Jconfirm;
             }
         },
         setDialogCenter: function () {
-            if (this.$contentPane.css('display') == 'none') {
+            if (this.$contentPane.css('display') === 'none') {
                 var contentHeight = 0;
                 var paneHeight = 0;
             } else {
                 var contentHeight = this.$content.outerHeight();
                 var paneHeight = this.$contentPane.height();
-                if (paneHeight == 0)
+                if (paneHeight === 0)
                     paneHeight = contentHeight;
             }
             var off = 100;
@@ -475,12 +475,12 @@ var jconfirm, Jconfirm;
                 var style = {
                     'margin-top': minMargin / 2,
                     'margin-bottom': minMargin / 2
-                }
+                };
                 $('body').addClass('jconfirm-noscroll');
             } else {
                 var style = {
                     'margin-top': topMargin
-                }
+                };
                 $('body').removeClass('jconfirm-noscroll');
             }
             this.$b.css(style);
@@ -509,7 +509,7 @@ var jconfirm, Jconfirm;
             $('body').removeClass('jconfirm-noscroll');
 
             this.$b.addClass(this.closeAnimation);
-            var closeTimer = (this.closeAnimation == 'anim-none') ? 0 : this.animationSpeed;
+            var closeTimer = (this.closeAnimation === 'anim-none') ? 0 : this.animationSpeed;
             setTimeout(function () {
                 that.$el.remove();
             }, closeTimer * 25 / 100);

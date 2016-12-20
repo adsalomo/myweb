@@ -79,8 +79,8 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
                     }
                 }
             }
-            $item.valor = codigo + ' - ' + nombre;
-            $item.codigo = codigo;
+            $item.valor = codigo;
+            $item.descripcion = codigo + ' - ' + nombre;
             $scope.closeLupaAction();
         };
 

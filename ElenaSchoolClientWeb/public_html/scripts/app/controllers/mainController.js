@@ -159,7 +159,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.activateModeEditAction = function () {
-            setValueStructure($scope.rowSelect, $scope.modelEstructura);
+            $generalFactory.setValueStructure($scope.rowSelect, $scope.modelEstructura);
             $scope.openViewFormToTableAction();
             $scope.isModeEdit = true;
         };

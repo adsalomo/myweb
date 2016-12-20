@@ -11,19 +11,19 @@
  */
 function obtenerUrlService(nameUrl) {
     var url = '';
-    var baseServicios = window.location.protocol + '//' + window.location.hostname + ':' + '8081' + '/';
+    var serviceBase = window.location.protocol + '//' + window.location.hostname + ':' + '8081' + '/';
     switch (nameUrl) {
         case 'GetStructure':
-            url = baseServicios + 'web/elenaschool/getEstructuraTabla';
+            url = serviceBase + 'web/elenaschool/getEstructuraTabla';
             break;
         case 'GetQuery':
-            url = baseServicios + 'web/elenaschool/getConsulta';
+            url = serviceBase + 'web/elenaschool/getConsulta';
             break;
         case 'UpdateModel':
-            url = baseServicios + 'web/elenaschool/updateModel';
+            url = serviceBase + 'web/elenaschool/updateModel';
             break;
         default:
-            url = baseServicios + 'web/elenaschool/myWeb';
+            url = serviceBase + 'web/elenaschool/myWeb';
             break;
     }
     return url;

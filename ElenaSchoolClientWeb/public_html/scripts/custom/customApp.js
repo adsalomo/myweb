@@ -148,9 +148,6 @@ function setValueStructure(rowSelect, modelEstructura) {
                 angular.forEach(modelEstructura, function (value, key) {
                     if (value.columnName === property) {
                         value.valor = rowSelect[property];
-                        if (value.isForeign) {
-                            var resp = true;
-                        }
                     }
                 });
             }
