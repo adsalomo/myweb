@@ -37,7 +37,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             pageSize: 0, // Numero registros por pagina
             isPagination: true, // Si la grid es paginada
             isOrderAscending: false, // Ordenamiento consulta
-            isOrderDescending: false // Ordenamiento consulta
+            isOrderDescending: false // Ordenamiento Consulta
         };
 
         /**
