@@ -137,6 +137,19 @@ function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDes
 
 /**
  * 
+ * @returns {unresolved}
+ */
+function getValueState(){
+    var array = [];
+    var obj = {Description: 'Activo', Value: true};
+    array.push(obj);
+    var obj = {Description: 'Inactivo', Value: false};
+    array.push(obj);
+    return array;
+}
+
+/**
+ * 
  * @param {type} rowSelect
  * @param {type} modelEstructura
  * @returns {undefined}

@@ -16,12 +16,20 @@
                     </label>
                 </div>
                 <div ng-if="!item.isForeign">
-                    <label class="input" ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
-                        <input placeholder="{{item.labelName}}" ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary" 
-                               ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}" 
-                               class="form-control" 
-                               required />
-                    </label>
+                    <div ng-if="item.dataType === 'bit'">
+                        <label class="toggle">
+                            <input type="checkbox" ng-model="item.valor"/>
+                            <i class="pull-left" data-swchon-text="ON" data-swchoff-text="OFF"></i>
+                        </label>
+                    </div>
+                    <div ng-if="item.dataType !== 'bit'">
+                        <label class="input" ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
+                            <input placeholder="{{item.labelName}}" ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" 
+                                   ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}" 
+                                   class="form-control" 
+                                   required />
+                        </label>
+                    </div>
                 </div>
                 <em ng-show="formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine" 
                     for="{{item.columnName}}" class="invalid">Campo {{item.labelName}} es requerido.</em>

@@ -16,4 +16,8 @@ public interface IModelDao {
     
     boolean updateModel(String query) throws SQLException;
     
+    int getMaxTable(String query) throws SQLException;
+    
+    String getMaxCodeTable(String query) throws SQLException;
+    
 }

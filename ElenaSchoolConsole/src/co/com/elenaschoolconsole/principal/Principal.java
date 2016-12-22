@@ -28,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import javax.sql.DataSource;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonMethod;
@@ -44,16 +47,26 @@ public class Principal {
     public static void main(String[] args) {
         //Logging.writeSQL("sss", "ffff", "fffsss");
         try {
+           
             //getQuery();
             //serialize();
-            //Util.readFileConfiguration();
+            //Util.readFileConfiguration(); 10.000.000.000
+            // 0 000 000 009
+            for(long i = 1; i <= 1000000000; i++){
+                getConsecutive(i);
+            }
 
             //readModel();
-            getConsulta();
+            //getConsulta();
             //getQuery();
         } catch (Exception ex) {
 
         }
+    }
+    
+    public static void getConsecutive(long num){
+        String resp = String.format("%010d", num);
+        System.out.println("Consecutivo : " + resp);
     }
 
     public static void getConsulta() throws IOException {
@@ -125,7 +138,8 @@ public class Principal {
             }
         }
         queryModel = new QueryModel();
-        queryModel.setIsUpdate(true);
+        queryModel.setIsUpdate(false);
+        queryModel.setIsInsert(true);
         queryModel.setModel("grupo_academico");
         queryModel.setListModel(listModel);
         actionRequest.setRequest(mapper.writeValueAsString(queryModel));

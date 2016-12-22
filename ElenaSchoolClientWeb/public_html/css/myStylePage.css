@@ -185,8 +185,11 @@ body {
 }
 
 /* Border debajo de los botones */
-.btn {
-   
+.btn {  
     -webkit-box-shadow: none;
+}
+
+.smart-form .toggle i{
+    right: inherit;
 }
 

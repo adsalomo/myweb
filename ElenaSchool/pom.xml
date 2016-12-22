@@ -60,6 +60,13 @@
             <systemPath>${basedir}/libs/ElenaSchoolBusiness.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>elenaschoollogging</groupId>
+            <artifactId>elenaschoollogging</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/ElenaSchoolLogging.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>jacksonElenaSchool</groupId>
             <artifactId>jacksonElenaSchool</artifactId>
             <version>1.0</version>

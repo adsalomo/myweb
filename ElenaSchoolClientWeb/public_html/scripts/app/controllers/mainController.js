@@ -5,7 +5,6 @@
  * @since 21 sep 2016
  * @description controller principal
  */
-
 app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting', '$generalFactory', function ($scope, $myService, $modal, $setting, $generalFactory) {
 
         /**
@@ -18,6 +17,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.gridApi = {};
         $scope.isModeInsert = false;
         $scope.isModeEdit = false;
+        $scope.listState = getValueState();
 
         /**
          * Definicion de grid

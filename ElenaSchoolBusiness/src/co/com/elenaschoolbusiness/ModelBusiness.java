@@ -216,7 +216,7 @@ public class ModelBusiness {
      * @param queryModel
      * @return
      */
-    private String getQueryInsert(QueryModel queryModel) {
+    private String getQueryInsert(QueryModel queryModel) throws SQLException {
         if (queryModel.getListModel() != null && queryModel.getListModel().size() > 0) {
             query = new Query();
 
@@ -224,7 +224,14 @@ public class ModelBusiness {
             query.setQueryTypes(Query.QueryTypes.Insert);
 
             for (Model model : queryModel.getListModel()) {
-                query.addValuePair(model.getColumnName(), getValueXDataType(model));
+                // Si la columna es autonumerica
+                if (model.getIsSecuence()) {
+                    query.addValuePair(model.getColumnName(), "" + getMaxTable(model) + "");
+                } else if (model.getIsPrimary()) {
+                    query.addValuePair(model.getColumnName(), "'" + getMaxCodeTable(model) + "'");
+                } else {
+                    query.addValuePair(model.getColumnName(), getValueXDataType(model));
+                }
             }
 
             // Add table
@@ -234,6 +241,46 @@ public class ModelBusiness {
         }
         return "";
     }
+    
+    /**
+     * Obtiene el id maximo de una tabla
+     * @param model
+     * @return
+     * @throws SQLException 
+     */
+    private int getMaxTable(Model model) throws SQLException{
+        int max = 0;
+        Query sql = new Query();
+        sql.setQueryTypes(Query.QueryTypes.Select);
+        sql.addColumn("(CASE WHEN MAX(ID) IS NULL THEN 1 ELSE (MAX(ID) + 1) END)");
+        // Add table
+        sql.addTable(model.getNameTable());
+        max = iModelDao.getMaxTable(sql.getQuery());
+        return max;
+    }
+    
+    /**
+     * Obtiene el codigo maximo de la tabla que se referencia en la consulta
+     * @param model
+     * @return
+     * @throws SQLException 
+     */
+    private String getMaxCodeTable(Model model) throws SQLException{
+        String max = "";
+        Query sql = new Query();
+        sql.setQueryTypes(Query.QueryTypes.Select);
+        sql.addColumn("MAX(CODIGO)");
+        // Add table
+        sql.addTable(model.getNameTable());
+        
+        String codigo = iModelDao.getMaxCodeTable(sql.getQuery());
+        
+        if(codigo != null && codigo.length() > 0)
+            max = String.format("%010d", Long.parseLong(codigo) + 1);
+        else
+            max = String.format("%010d", 1);
+        return max;
+    }   
 
     /**
      * Obtiene el query que realiza el update

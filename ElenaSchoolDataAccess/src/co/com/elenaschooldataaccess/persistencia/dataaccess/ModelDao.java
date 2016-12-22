@@ -52,4 +52,28 @@ public class ModelDao implements IModelDao {
         jdbcTemplate.update(query);
         return true;
     }
+
+    /**
+     * Obtiene el maximo entero de una tabla
+     * @param query
+     * @return int id de la tabla referenciada en la consulta
+     * @throws SQLException 
+     */
+    @Override
+    public int getMaxTable(String query) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
+        return jdbcTemplate.queryForObject(query, Integer.class);
+    }
+
+    /**
+     * Obtiene el codigo maximo de la tabla
+     * @param query
+     * @return String codigo de la tabla referenciada en la consulta
+     * @throws SQLException 
+     */
+    @Override
+    public String getMaxCodeTable(String query) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
+        return jdbcTemplate.queryForObject(query, String.class);
+    }
 }
