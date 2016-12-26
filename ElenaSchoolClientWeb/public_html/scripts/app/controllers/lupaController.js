@@ -9,7 +9,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
 
         var nombreApp = $setting.varGlobals.nameApp;
         $scope.gridApi = {};
-        getEstructuraTabla();
+        getStructureTable();
         $scope.foreignTableName = $item.foreignTableName;
 
         /**
@@ -96,12 +96,12 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
          * Funcion obtener estructura tabla
          * @returns {undefined}
          */
-        function getEstructuraTabla() {
+        function getStructureTable() {
             var model = {nameTable: $item.foreignTableName};
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
 
             // Request para obtener estructura
-            $myService.getEstructuraTablaService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
+            $myService.getStructureTableService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
 
                 // Valida la respuesta del servicio
                 if (!isValidResponseService(data))
@@ -115,7 +115,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
                     var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
 
                     // Request para obtener consulta
-                    $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
+                    $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                         // Valida la respuesta del servicio
                         if (!isValidResponseService(data))
                             return;

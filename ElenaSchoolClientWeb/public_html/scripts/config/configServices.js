@@ -14,13 +14,16 @@ function obtenerUrlService(nameUrl) {
     var serviceBase = window.location.protocol + '//' + window.location.hostname + ':' + '8081' + '/';
     switch (nameUrl) {
         case 'GetStructure':
-            url = serviceBase + 'web/elenaschool/getEstructuraTabla';
+            url = serviceBase + 'web/elenaschool/getStructureTable';
             break;
         case 'GetQuery':
-            url = serviceBase + 'web/elenaschool/getConsulta';
+            url = serviceBase + 'web/elenaschool/getQuery';
             break;
         case 'UpdateModel':
             url = serviceBase + 'web/elenaschool/updateModel';
+            break;
+        case 'GetMaxCode':
+            url = serviceBase + 'web/elenaschool/getMaxCode';
             break;
         default:
             url = serviceBase + 'web/elenaschool/myWeb';

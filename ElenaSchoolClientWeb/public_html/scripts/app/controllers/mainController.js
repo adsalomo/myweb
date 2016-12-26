@@ -80,22 +80,22 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @param {type} nameTable Nombre tabla a obtener estructura
          * @returns {undefined}
          */
-        $scope.getEstructuraTablaAction = function (nameTable) {
+        $scope.getStructureTableAction = function (nameTable) {
             var model = {nameTable: nameTable};
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
 
             // Request para obtener la estructura
-            $myService.getEstructuraTablaService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
+            $myService.getStructureTableService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
                 // Valida la respuesta del servicio
-                if(!isValidResponseService(data))
+                if (!isValidResponseService(data))
                     return;
-                
+
                 var response = JSON.parse(data.response);
-                if(!isArrayNotNull(response)){
+                if (!isArrayNotNull(response)) {
                     messageBoxAlert('Obtener estructura', 'No existe estructura para la tabla ' + nameTable + '.', 'info');
                     return;
                 }
-                
+
                 $scope.modelEstructura = response;
                 var numRow = Math.floor($scope.modelEstructura.length / $setting.varGlobals.column);
                 var resto = ($scope.modelEstructura.length % $setting.varGlobals.column);
@@ -116,12 +116,8 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.updateModelAction = function () {
-            angular.forEach($scope.modelEstructura, function (value, key) {
-               if(value.hasOwnProperty('description')){
-                   delete value['description'];
-               }
-            });
-            
+            deleteColumnStructure($scope.modelEstructura);
+
             var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
 
@@ -144,7 +140,34 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.activateModeInsertAction = function () {
-            $scope.isModeInsert = true;
+            deleteColumnStructure($scope.modelEstructura);
+
+            var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
+            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+
+            // Requesta para obtener los valores de las columnas autonumericos y llaves primarias
+            $myService.getMaxCodeService(actionRequest, obtenerUrlService('GetMaxCode')).success(function (data, status, headers, config) {
+                // Valida la respuesta del servicio
+                if (!isValidResponseService(data))
+                    return;
+
+                var response = JSON.parse(data.response);
+                $scope.modelEstructura = response;
+                $scope.isModeInsert = true;
+            }).error(function (data, status, headers, config) {
+                console.log(data);
+                messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
+            });
+        };
+
+        $scope.openCalendarAction = function (id) {
+            $('#' + id + '').datepicker({
+                dateFormat: 'yy-mm-dd',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                onSelect: function (selectedDate) {
+                }
+            });
         };
 
         /**
@@ -187,7 +210,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     }
                 }
             }).result.catch(function (resp) {
-                
+
             });
         };
 

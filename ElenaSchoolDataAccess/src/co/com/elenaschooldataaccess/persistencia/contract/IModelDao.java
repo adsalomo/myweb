@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface IModelDao {
      
-    List<Model> getEstructura(Model model) throws SQLException;
+    List<Model> getStructureTable(Model model) throws SQLException;
     
-    List<Object> getConsulta(String query) throws SQLException;
+    List<Object> getQuery(String query) throws SQLException;
     
     boolean updateModel(String query) throws SQLException;
     

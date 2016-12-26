@@ -42,7 +42,7 @@ public class ModelBusiness {
      * @param actionRequest
      * @return
      */
-    public ActionResponse getEstructuraTabla(ActionRequest actionRequest) {
+    public ActionResponse getStructureTable(ActionRequest actionRequest) {
         ActionResponse actionResponse = new ActionResponse();
 
         try {
@@ -51,7 +51,7 @@ public class ModelBusiness {
             });
 
             // Obtenemos la estructura y la serializamos
-            List<Model> listModel = iModelDao.getEstructura(model);
+            List<Model> listModel = iModelDao.getStructureTable(model);
             actionResponse.setResponse(mapper.writeValueAsString(listModel));
 
             actionResponse.setError(null);
@@ -72,7 +72,7 @@ public class ModelBusiness {
      * @param actionRequest
      * @return
      */
-    public ActionResponse getConsulta(ActionRequest actionRequest) {
+    public ActionResponse getQuery(ActionRequest actionRequest) {
         ActionResponse actionResponse = new ActionResponse();
 
         try {
@@ -95,7 +95,7 @@ public class ModelBusiness {
             }
 
             // Ejecutamos el metodo para traer la consulta
-            List<Object> result = iModelDao.getConsulta(sql);
+            List<Object> result = iModelDao.getQuery(sql);
             queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);
 
@@ -153,6 +153,43 @@ public class ModelBusiness {
         }
         return actionResponse;
     }
+    
+    /**
+     * Obtiene los maximos de las columnas que sean autonumericas y llaves primarias
+     * @param actionRequest
+     * @return 
+     */
+    public ActionResponse getMaxCode(ActionRequest actionRequest) {
+        ActionResponse actionResponse = new ActionResponse();
+
+        try {
+            // Obtenemos el objeto que viene en el request
+            QueryModel queryModel = mapper.readValue(actionRequest.getRequest(), new TypeReference<QueryModel>() {
+            });
+
+            if(queryModel.getListModel() != null && queryModel.getListModel().size() > 0)
+                for (Model model : queryModel.getListModel()) {
+                    // Si la columna es autonumerica
+                    if (model.getIsSecuence()) {
+                        model.setValor(getMaxTable(model));
+                    } else if (model.getIsPrimary()) {
+                        model.setValor(getMaxCodeTable(model));
+                    }
+                }
+            
+            // Serealizamos el objeto listModel(Estructura tabla)
+            actionResponse.setResponse(mapper.writeValueAsString(queryModel.getListModel()));
+            actionResponse.setError(null);
+            actionResponse.setStatus(true);
+        } catch (SQLException | IOException ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
+        } catch (Exception ex) {
+            actionResponse = Util.getError(ex.getMessage(), 0);
+            Logging.writeError(ex.getMessage(), ex.getStackTrace()[1].getLineNumber(), ex.getStackTrace()[1].getClassName(), ex.getStackTrace()[1].getMethodName());
+        }
+        return actionResponse;
+    }
 
     /**
      * Obtiene numero de registros por consulta
@@ -165,7 +202,7 @@ public class ModelBusiness {
         query.setQueryTypes(Query.QueryTypes.Select);
         // Add table
         query.addTable(table);
-        List<Object> result = iModelDao.getConsulta(query.getQuery());
+        List<Object> result = iModelDao.getQuery(query.getQuery());
         return result != null ? result.size() : 0;
     }
 
@@ -229,6 +266,8 @@ public class ModelBusiness {
                     query.addValuePair(model.getColumnName(), "" + getMaxTable(model) + "");
                 } else if (model.getIsPrimary()) {
                     query.addValuePair(model.getColumnName(), "'" + getMaxCodeTable(model) + "'");
+                } else if(model.getDataType().equalsIgnoreCase("date")){
+                    query.addValuePair(model.getColumnName(), "current_date");
                 } else {
                     query.addValuePair(model.getColumnName(), getValueXDataType(model));
                 }
@@ -297,6 +336,8 @@ public class ModelBusiness {
             for (Model model : queryModel.getListModel()) {
                 if (model.getIsPrimary()) {
                     query.addCondition("" + model.getColumnName() + " = " + getValueXDataType(model) + "");
+                } else if (model.getDataType().equalsIgnoreCase("date") && (model.getColumnName().equalsIgnoreCase("fecha_modificacion") || model.getColumnName().equalsIgnoreCase("fecha_proceso"))) {
+                    query.addValuePair(model.getColumnName(), "current_date");
                 } else {
                     query.addValuePair(model.getColumnName(), getValueXDataType(model));
                 }

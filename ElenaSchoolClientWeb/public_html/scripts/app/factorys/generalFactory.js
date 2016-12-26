@@ -40,7 +40,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                                 // Request get consulta
-                                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
+                                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                                     // Valida la respuesta del servicio
                                     if (!isValidResponseService(data))
                                         return;
@@ -100,7 +100,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                             var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                             // Request get consulta
-                            $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
+                            $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                                 // Valida la respuesta del servicio
                                 if (!isValidResponseService(data))
                                     return;
@@ -156,7 +156,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                 // Request get consulta
-                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
+                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                     // Valida la respuesta del servicio
                     if (!isValidResponseService(data))
                         return;
@@ -195,7 +195,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
 
                 // Request get consulta
-                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
+                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                     // Valida la respuesta del servicio
                     if (!isValidResponseService(data))
                         return;
@@ -237,7 +237,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                                     var model = {nameTable: value.foreignTableName};
                                     var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
                                     // Request para obtener la estructura
-                                    $myService.getEstructuraTablaService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
+                                    $myService.getStructureTableService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
                                         // Valida la respuesta del servicio
                                         if (!isValidResponseService(data))
                                             return;
@@ -261,7 +261,7 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                                                 var obj = getObjectQueryModel(structure, null, false, false, value.foreignTableName, 0, false);
                                                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
                                                 // Request get consulta
-                                                $myService.getConsultaService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
+                                                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
                                                     // Valida la respuesta del servicio
                                                     if (!isValidResponseService(data))
                                                         return;

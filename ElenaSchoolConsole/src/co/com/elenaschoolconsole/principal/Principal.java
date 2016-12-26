@@ -79,7 +79,7 @@ public class Principal {
         actionRequest.setRequest(mapper.writeValueAsString(model));
 
         // Obtenemos la estrucura
-        ActionResponse actionResponse = business.getEstructuraTabla(actionRequest);
+        ActionResponse actionResponse = business.getStructureTable(actionRequest);
         List<Model> listModel = mapper.readValue(actionResponse.getResponse(), new TypeReference<List<Model>>() {
         });
 
@@ -88,7 +88,7 @@ public class Principal {
         queryModel.setModel("grupo_academico");
         queryModel.setListModel(listModel);
         actionRequest.setRequest(mapper.writeValueAsString(queryModel));
-        actionResponse = business.getConsulta(actionRequest);
+        actionResponse = business.getQuery(actionRequest);
         queryModel = mapper.readValue(actionResponse.getResponse(), new TypeReference<QueryModel>() {
         });
         System.out.print(queryModel);

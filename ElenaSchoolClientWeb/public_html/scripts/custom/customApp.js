@@ -139,7 +139,7 @@ function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDes
  * 
  * @returns {unresolved}
  */
-function getValueState(){
+function getValueState() {
     var array = [];
     var obj = {Description: 'Activo', Value: true};
     array.push(obj);
@@ -177,6 +177,9 @@ function clearValueStructure(structure) {
     if (!angular.isUndefined(structure) && isArrayNotNull(structure))
         angular.forEach(structure, function (value, key) {
             value.valor = null;
+            if (value.hasOwnProperty('description')) {
+                value.description = null;
+            }
         });
 }
 
@@ -199,5 +202,37 @@ function isValidResponseService(data) {
         messageBoxAlert('Solicitud', 'Ocurrión un error al procesar la solicitud.', 'error');
         return false;
     }
+}
+
+/**
+ * Setea los valores comparando dos estructuras iguales
+ * @param {type} structure1 Estructura a la cual se asignaran los valores
+ * @param {type} structure2 Estructura temporal con los valores
+ * @returns {undefined}
+ */
+function setValoresNotNull(structure1, structure2) {
+    structure2 = $.grep(structure2, function (e) {
+        return e.valor !== null;
+    });
+    angular.forEach(structure1, function (value, key) {
+        angular.forEach(structure2, function (value2, key2) {
+            if (value.columnName === value2.columnName) {
+                value.valor = value2.valor;
+            }
+        });
+    });
+}
+
+/**
+ * Elimina las columnas q se agregaron en la UI
+ * @param {type} structure
+ * @returns {undefined}
+ */
+function deleteColumnStructure(structure) {
+    angular.forEach(structure, function (value, key) {
+        if (value.hasOwnProperty('description')) {
+            delete value['description'];
+        }
+    });
 }
 

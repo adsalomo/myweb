@@ -3,36 +3,52 @@
         <div class="row">
             <section class="col col-6 " 
                      ng-repeat="item in modelEstructura.slice((row === 0 ? row : (row * numColumn)), (row === 0 ? numColumn : ((row * numColumn) + numColumn)))">
-                <div ng-if="item.isForeign">
-                    <label class="input">
-                        <div class="input-group">
-                            <input placeholder="{{item.labelName}}" ng-disabled="true" ng-model="item.description" 
-                                   type="text" name="{{item.columnName}}" id="{{item.columnName}}" 
-                                   class="form-control" required />
-                            <span class="input-group-addon" ng-click="openLupaAction(item)">
-                                <img src="img/imgElenaSchool/imgLupa.png" />
-                            </span>
+                <div ng-if="item.columnName !== 'fecha_creacion' && item.columnName !== 'fecha_modificacion'
+                            && item.columnName !== 'fecha_proceso' && item.columnName !== 'usuario'">
+                    <div ng-if="item.isForeign">
+                        <label class="input">
+                            <div class="input-group">
+                                <input placeholder="{{item.labelName}}" ng-disabled="true" ng-model="item.description" 
+                                       type="text" name="{{item.columnName}}" id="{{item.columnName}}" 
+                                       class="form-control" required 
+                                       data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"/>
+                                <span class="input-group-addon" ng-click="openLupaAction(item)">
+                                    <img src="img/imgElenaSchool/imgLupa.png" />
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                    <div ng-if="!item.isForeign">
+                        <div ng-switch on="item.dataType">
+                            <div ng-switch-when="bit">
+                                <label class="toggle">
+                                    <input type="checkbox" ng-model="item.valor" />
+                                    <i class="pull-left" data-swchon-text="ON" data-swchoff-text="OFF" 
+                                       data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"></i>
+                                </label>
+                            </div>
+                            <div ng-switch-when="date">
+                                <label class="input">
+                                    <li class="icon-append fa fa-calendar" ng-click="openCalendarAction(item.columnName)"></li>
+                                    <input type="text" required ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}"
+                                           data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"
+                                           placeholder="{{item.labelName}}"/>
+                                </label>
+                            </div>
+                            <div ng-switch-default>
+                                <label class="input" ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
+                                    <input placeholder="{{item.labelName}}" ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" 
+                                           ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}" 
+                                           class="form-control" maxlength="{{item.lenght}}" 
+                                           required 
+                                           data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"/>
+                                </label>
+                            </div>
                         </div>
-                    </label>
-                </div>
-                <div ng-if="!item.isForeign">
-                    <div ng-if="item.dataType === 'bit'">
-                        <label class="toggle">
-                            <input type="checkbox" ng-model="item.valor"/>
-                            <i class="pull-left" data-swchon-text="ON" data-swchoff-text="OFF"></i>
-                        </label>
                     </div>
-                    <div ng-if="item.dataType !== 'bit'">
-                        <label class="input" ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
-                            <input placeholder="{{item.labelName}}" ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" 
-                                   ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}" 
-                                   class="form-control" 
-                                   required />
-                        </label>
-                    </div>
+                    <em ng-show="formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine" 
+                        for="{{item.columnName}}" class="invalid">Campo {{item.labelName}} es requerido.</em>
                 </div>
-                <em ng-show="formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine" 
-                    for="{{item.columnName}}" class="invalid">Campo {{item.labelName}} es requerido.</em>
             </section>
         </div>
     </div>

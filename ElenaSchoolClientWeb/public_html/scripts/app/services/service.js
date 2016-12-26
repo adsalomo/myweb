@@ -19,7 +19,7 @@ app.factory('$myService', ['$http', function ($http) {
              * @param {type} url
              * @returns {unresolved}
              */
-            getEstructuraTablaService: function (actionRequest, url) {
+            getStructureTableService: function (actionRequest, url) {
                 return $http({
                     method: 'POST',
                     headers: {
@@ -42,7 +42,7 @@ app.factory('$myService', ['$http', function ($http) {
              * @param {type} url
              * @returns {unresolved}
              */
-            getConsultaService: function (actionRequest, url) {
+            getQueryService: function (actionRequest, url) {
                 return $http({
                     method: 'POST',
                     headers: {
@@ -66,6 +66,29 @@ app.factory('$myService', ['$http', function ($http) {
              * @returns {unresolved}
              */
             insertModelService: function (actionRequest, url) {
+                return $http({
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    url: url,
+                    data: {
+                        user: actionRequest.user,
+                        password: actionRequest.password,
+                        credentials: actionRequest.credentials,
+                        request: actionRequest.request,
+                        token: actionRequest.token
+                    }
+                });
+            },
+            
+            /**
+             * 
+             * @param {type} actionRequest
+             * @param {type} url
+             * @returns {unresolved}
+             */
+            getMaxCodeService: function (actionRequest, url) {
                 return $http({
                     method: 'POST',
                     headers: {

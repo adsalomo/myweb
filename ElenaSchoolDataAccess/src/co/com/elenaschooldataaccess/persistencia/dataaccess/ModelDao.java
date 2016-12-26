@@ -23,7 +23,7 @@ public class ModelDao implements IModelDao {
      * @throws SQLException
      */
     @Override
-    public List<Model> getEstructura(Model model) throws SQLException {
+    public List<Model> getStructureTable(Model model) throws SQLException {
        JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
        return jdbcTemplate.query(Util.SQL_ESTRUCTURA, new Object[]{model.getNameTable()}, new ModelHelper());
     }
@@ -35,7 +35,7 @@ public class ModelDao implements IModelDao {
      * @throws SQLException
      */
     @Override
-    public List<Object> getConsulta(String query) throws SQLException {
+    public List<Object> getQuery(String query) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(Util.getDataSource());
         return jdbcTemplate.query(query, new DynamicMapperHelper());
     }
