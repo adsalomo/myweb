@@ -5,7 +5,7 @@
  * @since 21 sep 2016
  * @description controller principal
  */
-app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting', '$generalFactory', function ($scope, $myService, $modal, $setting, $generalFactory) {
+app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting', '$generalFactory', '$timeout', function ($scope, $myService, $modal, $setting, $generalFactory, $timeout) {
 
         /**
          * Definicion de variables
@@ -140,32 +140,35 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.activateModeInsertAction = function () {
-            deleteColumnStructure($scope.modelEstructura);
+            $timeout(function () {
+                deleteColumnStructure($scope.modelEstructura);
 
-            var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
-            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+                var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
+                var actionRequest = {user: 'adsalomo', password: null, credentials: null, request: angular.toJson(queryModel), token: null};
 
-            // Requesta para obtener los valores de las columnas autonumericos y llaves primarias
-            $myService.getMaxCodeService(actionRequest, obtenerUrlService('GetMaxCode')).success(function (data, status, headers, config) {
-                // Valida la respuesta del servicio
-                if (!isValidResponseService(data))
-                    return;
+                // Requesta para obtener los valores de las columnas autonumericos y llaves primarias
+                $myService.getMaxCodeService(actionRequest, obtenerUrlService('GetMaxCode')).success(function (data, status, headers, config) {
+                    // Valida la respuesta del servicio
+                    if (!isValidResponseService(data))
+                        return;
 
-                var response = JSON.parse(data.response);
-                $scope.modelEstructura = response;
-                $scope.isModeInsert = true;
-            }).error(function (data, status, headers, config) {
-                console.log(data);
-                messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
-            });
+                    var response = JSON.parse(data.response);
+                    setValoresNotNull($scope.modelEstructura, response);
+                    $scope.isModeInsert = true;
+                }).error(function (data, status, headers, config) {
+                    console.log(data);
+                    messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
+                });
+            }, 200);
         };
 
-        $scope.openCalendarAction = function (id) {
-            $('#' + id + '').datepicker({
+        $scope.openCalendarAction = function (item) {
+            $('#' + item.columnName + '').datepicker({
                 dateFormat: 'yy-mm-dd',
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 onSelect: function (selectedDate) {
+                    item.valor = selectedDate;
                 }
             });
         };
@@ -175,12 +178,17 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.cancelEditionModelAction = function () {
-            $scope.isModeInsert = false;
-            $scope.isModeEdit = false;
-            $scope.isActivoGrid = false;
-            $scope.rowSelect = undefined;
-            clearValueStructure($scope.modelEstructura);
-            $scope.formOperation.$setPristine();
+            messageBoxConfirm('Confirmación', '¿ Está seguro de realizar está acción ?', function (result) {
+                $timeout(function () {
+                    $scope.isModeInsert = false;
+                    $scope.isModeEdit = false;
+                    $scope.isActivoGrid = false;
+                    $scope.rowSelect = undefined;
+                    clearValueStructure($scope.modelEstructura);
+                    $scope.formOperation.$setPristine();
+                }, 200);
+            }, function (result) {
+            });
         };
 
         /**

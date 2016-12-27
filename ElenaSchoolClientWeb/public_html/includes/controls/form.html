@@ -22,25 +22,45 @@
                         <div ng-switch on="item.dataType">
                             <div ng-switch-when="bit">
                                 <label class="toggle">
-                                    <input type="checkbox" ng-model="item.valor" />
-                                    <i class="pull-left" data-swchon-text="ON" data-swchoff-text="OFF" 
-                                       data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"></i>
+                                    <input type="checkbox" ng-model="item.valor" value="{{item.valor}}"
+                                           ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" />
+                                    <i class="pull-left" data-swchon-text="A" data-swchoff-text="I" 
+                                        data-toggle="tooltip" data-placement="top" title="{{item.labelName}}">
+                                    </i>
+                                    {{item.labelName}}
                                 </label>
                             </div>
                             <div ng-switch-when="date">
-                                <label class="input">
-                                    <li class="icon-append fa fa-calendar" ng-click="openCalendarAction(item.columnName)"></li>
-                                    <input type="text" required ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}"
+                                <label class="label">{{item.labelName}}</label>
+                                <label class="input"
+                                       ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
+                                    <li class="icon-append fa fa-calendar" ng-click="openCalendarAction(item)"></li>
+                                    <input required ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}"
                                            data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"
-                                           placeholder="{{item.labelName}}"/>
+                                           placeholder="{{item.labelName}}"
+                                           pattern="\d{4}-\d{2}-\d{2}"
+                                           ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" /> <!--\d{1,2}/\d{1,2}/\d{4}-->
+                                </label>
+                            </div>
+                            <div ng-switch-when="integer">
+                                <label class="label">{{item.labelName}}</label>
+                                <label class="input" 
+                                       ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
+                                    <input placeholder="{{item.labelName}}" ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" 
+                                           ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}" 
+                                           class="form-control"
+                                           required type="number"
+                                           data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"/>
                                 </label>
                             </div>
                             <div ng-switch-default>
-                                <label class="input" ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
+                                <label class="label">{{item.labelName}}</label>
+                                <label class="input" 
+                                       ng-class="{'state-error invalid' : formOperation.{{item.columnName}}.$invalid && !formOperation.{{item.columnName}}.$pristine}">
                                     <input placeholder="{{item.labelName}}" ng-disabled="(!isModeInsert && !isModeEdit) || item.isPrimary || item.isSecuence" 
                                            ng-model="item.valor" name="{{item.columnName}}" id="{{item.columnName}}" 
                                            class="form-control" maxlength="{{item.lenght}}" 
-                                           required 
+                                           required type="text"
                                            data-toggle="tooltip" data-placement="top" title="{{item.labelName}}"/>
                                 </label>
                             </div>

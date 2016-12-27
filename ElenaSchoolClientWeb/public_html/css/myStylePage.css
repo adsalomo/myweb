@@ -191,5 +191,10 @@ body {
 
 .smart-form .toggle i{
     right: inherit;
+    top: 30px;
+}
+
+.smart-form .toggle {
+    font-size: 13px;
 }
 

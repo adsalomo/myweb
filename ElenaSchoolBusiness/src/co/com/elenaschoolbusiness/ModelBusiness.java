@@ -170,13 +170,23 @@ public class ModelBusiness {
             if(queryModel.getListModel() != null && queryModel.getListModel().size() > 0)
                 for (Model model : queryModel.getListModel()) {
                     // Si la columna es autonumerica
-                    if (model.getIsSecuence()) {
-                        model.setValor(getMaxTable(model));
-                    } else if (model.getIsPrimary()) {
-                        model.setValor(getMaxCodeTable(model));
+                    if (model.getDataType().equalsIgnoreCase("date")) {
+                        if (model.getColumnName().equalsIgnoreCase("fecha_creacion") || model.getColumnName().equalsIgnoreCase("fecha_modificacion") || model.getColumnName().equalsIgnoreCase("fecha_proceso")) {
+                            model.setValor("current_date");
+                        }
+                    } else if (model.getDataType().equalsIgnoreCase("bit")) {
+                        model.setValor(true);
+                    } else {
+                        if (model.getIsSecuence()) {
+                            model.setValor(getMaxTable(model));
+                        } else if (model.getIsPrimary()) {
+                            model.setValor(getMaxCodeTable(model));
+                        } else if (model.getColumnName().equals("usuario")) {
+                            model.setValor(actionRequest.getUser());
+                        }
                     }
                 }
-            
+
             // Serealizamos el objeto listModel(Estructura tabla)
             actionResponse.setResponse(mapper.writeValueAsString(queryModel.getListModel()));
             actionResponse.setError(null);
