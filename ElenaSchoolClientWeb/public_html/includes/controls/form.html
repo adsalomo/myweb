@@ -6,6 +6,7 @@
                 <div ng-if="item.columnName !== 'fecha_creacion' && item.columnName !== 'fecha_modificacion'
                             && item.columnName !== 'fecha_proceso' && item.columnName !== 'usuario'">
                     <div ng-if="item.isForeign">
+                        <label class="label">{{item.labelName}}</label>
                         <label class="input">
                             <div class="input-group">
                                 <input placeholder="{{item.labelName}}" ng-disabled="true" ng-model="item.description" 
