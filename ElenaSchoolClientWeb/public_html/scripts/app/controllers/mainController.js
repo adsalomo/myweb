@@ -128,7 +128,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     return;
 
                 messageBoxAlert('Registro', data.response, 'info');
-                $scope.cancelEditionModelAction();
+                $scope.cancelEditionModelAction(false);
             }).error(function (data, status, headers, config) {
                 console.log(data);
                 messageBoxAlert('Registro', 'Ocurrión un error al procesar la solicitud.', 'error');
@@ -175,10 +175,23 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
 
         /**
          * Cancela modo edicion / nuevo registro
+         * @param {type} isViewConfirmation
          * @returns {undefined}
          */
-        $scope.cancelEditionModelAction = function () {
-            messageBoxConfirm('Confirmación', '¿ Está seguro de realizar está acción ?', function (result) {
+        $scope.cancelEditionModelAction = function (isViewConfirmation) {
+            if (isViewConfirmation) {
+                messageBoxConfirm('Confirmación', '¿ Está seguro de realizar está acción ?', function (result) {
+                    $timeout(function () {
+                        $scope.isModeInsert = false;
+                        $scope.isModeEdit = false;
+                        $scope.isActivoGrid = false;
+                        $scope.rowSelect = undefined;
+                        clearValueStructure($scope.modelEstructura);
+                        $scope.formOperation.$setPristine();
+                    }, 200);
+                }, function (result) {
+                });
+            } else {
                 $timeout(function () {
                     $scope.isModeInsert = false;
                     $scope.isModeEdit = false;
@@ -187,8 +200,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     clearValueStructure($scope.modelEstructura);
                     $scope.formOperation.$setPristine();
                 }, 200);
-            }, function (result) {
-            });
+            }
         };
 
         /**
@@ -251,7 +263,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar.', 'info');
                     }
                 } else {
-                    $scope.cancelEditionModelAction();
+                    $scope.cancelEditionModelAction(false);
                 }
             });
         };
