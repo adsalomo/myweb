@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.adsalomo.presentation;
 
 import co.com.adsalomo.business.PersonBusiness;
@@ -37,6 +32,7 @@ public class MainForm extends javax.swing.JFrame {
         String[] columns = {"Id", "Nombre", "Apellido"};
         Object[][] object = null;
         model = new DefaultTableModel(object, columns) {
+            // Si la columna es la 0 (Cero) q no sea editable (id)
             @Override
             public boolean isCellEditable(int row, int column) {
                 if (column == 0) {
