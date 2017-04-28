@@ -6,29 +6,28 @@
 
 /**
  * Asigna lista de valores a la grid dandole el ancho, nombre columna
- * @param {type} gridOptions Definición de la grid
- * @param {type} list Lista de items a pintar en la grid 
- * @param {type} modelEstructura Lista de items a pintar en la grid 
+ * @param {type} pGridOptions Definición de la grid
+ * @param {type} pList Lista de items a pintar en la grid 
+ * @param {type} pModelEstructura Lista de items a pintar en la grid 
  * @returns {undefined}
  */
-function setListToGrid(gridOptions, list, modelEstructura) {
-    var columns = [];
+function setListToGrid(pGridOptions, pList, pModelEstructura) {
+    var vColumns = [];
 
-    if (isArrayNotNull(list)) {
-        for (var property in list[0]) {
-            if (list[0].hasOwnProperty(property)) {
-                angular.forEach(modelEstructura, function (value, key) {
-                    if (value.columnName === property)
+    if (isArrayNotNull(pList)) {
+        for (var property in pList[0]) {
+            if (pList[0].hasOwnProperty(property)) {
+                angular.forEach(pModelEstructura, function (pValue, pKey) {
+                    if (pValue.columnName === property)
                         if (property === 'descripcion' || property === 'nombre')
-                            columns.push({name: value.labelName, field: property, width: 200});
+                            vColumns.push({name: pValue.labelName, field: property, width: 200});
                         else
-                            columns.push({name: value.labelName, field: property, width: 100});
-
+                            vColumns.push({name: pValue.labelName, field: property, width: 100});
                 });
             }
         }
-        gridOptions.columnDefs = columns;
-        gridOptions.data = list;
+        pGridOptions.columnDefs = vColumns;
+        pGridOptions.data = pList;
     }
 }
 
@@ -104,35 +103,6 @@ function isArrayNotNull(list) {
         return true;
     }
     return false;
-}
-
-/**
- * Obtiene objeto queryModel
- * @param {type} listModel
- * @param {type} listResult
- * @param {type} isOrderAscending
- * @param {type} isOrderDescending
- * @param {type} model
- * @param {type} page
- * @param {type} isPagination
- * @param {type} isInsert
- * @param {type} isUpdate
- * @returns {getObjectQueryModel.obj}
- */
-function getObjectQueryModel(listModel, listResult, isOrderAscending, isOrderDescending, model, page, isPagination, isInsert, isUpdate) {
-    var obj = {
-        listModel: listModel,
-        listResult: listResult,
-        isOrderAscending: isOrderAscending,
-        isOrderDescending: isOrderDescending,
-        model: model,
-        page: page,
-        isPagination: isPagination,
-        isInsert: isInsert,
-        isUpdate: isUpdate
-    };
-    //console.log(JSON.stringify(obj));
-    return obj;
 }
 
 /**

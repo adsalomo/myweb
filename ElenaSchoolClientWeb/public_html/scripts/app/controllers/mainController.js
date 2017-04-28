@@ -12,7 +12,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          */
         $scope.modelEstructura = [];
         $scope.numRow = [];
-        $scope.numColumn = $setting.varGlobals.column;
+        $scope.numColumn = $setting.varGlobals.columnsXRow;
         $scope.isActivoGrid = false;
         $scope.gridApi = {};
         $scope.isModeInsert = false;
@@ -25,19 +25,16 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         $scope.gridFormulario = {
             enableRowSelection: true,
             enableRowHeaderSelection: false,
-            enableFiltering: true,
+            enableFiltering: false,
             autoResize: true,
             multiSelect: false,
             noUnselect: true,
             flatEntityAccess: true,
             rowNumber: -1, // Fila actual seleccionada en la grid
             count: 0, // Total registros consulta
-            actualPage: 0, // Pagina actual
-            totalPages: 0, // Total paginas
-            pageSize: 0, // Numero registros por pagina
-            isPagination: true, // Si la grid es paginada
             isOrderAscending: false, // Ordenamiento consulta
-            isOrderDescending: false // Ordenamiento Consulta
+            isOrderDescending: false, // Ordenamiento Consulta
+            rowSelect: null // fila seleccionada
         };
 
         /**
@@ -51,15 +48,9 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             $scope.gridApi['gridFormulario'].cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
                 if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
                     $scope.gridApi['gridFormulario'].selection.selectRow(newRowCol.row.entity);
-                    $scope.rowSelect = newRowCol.row.entity;
+                    $scope.gridFormulario.rowNumber = newRowCol.row.entity.Secuence;
+                    $scope.gridFormulario.rowSelect = newRowCol.row.entity;
                 }
-                // Obtiene row index grid selection
-                $scope.gridFormulario.rowNumber = $scope.gridFormulario.data.indexOf(newRowCol.row.entity);
-            });
-
-            // Selection row
-            $scope.gridApi['gridFormulario'].selection.on.rowSelectionChanged($scope, function (row) {
-                $scope.rowSelect = row.entity;
             });
 
             gridApi.core.registerColumnsProcessor(hideIdColumn);
@@ -162,6 +153,10 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             }, 200);
         };
 
+        /**
+         * Action para abrir calendario
+         * @param {type} item
+         */
         $scope.openCalendarAction = function (item) {
             $('#' + item.columnName + '').datepicker({
                 dateFormat: 'yy-mm-dd',
@@ -176,7 +171,6 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         /**
          * Cancela modo edicion / nuevo registro
          * @param {type} isViewConfirmation
-         * @returns {undefined}
          */
         $scope.cancelEditionModelAction = function (isViewConfirmation) {
             if (isViewConfirmation) {
@@ -185,7 +179,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         $scope.isModeInsert = false;
                         $scope.isModeEdit = false;
                         $scope.isActivoGrid = false;
-                        $scope.rowSelect = undefined;
+                        $scope.gridFormulario.rowSelect = undefined;
                         clearValueStructure($scope.modelEstructura);
                         $scope.formOperation.$setPristine();
                     }, 200);
@@ -196,7 +190,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     $scope.isModeInsert = false;
                     $scope.isModeEdit = false;
                     $scope.isActivoGrid = false;
-                    $scope.rowSelect = undefined;
+                    $scope.gridFormulario.rowSelect = undefined;
                     clearValueStructure($scope.modelEstructura);
                     $scope.formOperation.$setPristine();
                 }, 200);
@@ -205,10 +199,9 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
 
         /**
          * Activa modo edicion del modelo
-         * @returns {undefined}
          */
         $scope.activateModeEditAction = function () {
-            $generalFactory.setValueStructure($scope.rowSelect, $scope.modelEstructura);
+            $generalFactory.setValueStructure($scope.gridFormulario.rowSelect, $scope.modelEstructura);
             $scope.openViewFormToTableAction();
             $scope.isModeEdit = true;
         };
@@ -253,18 +246,24 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     }
                 }
             }).result.catch(function (resp) {
-                $scope.rowSelect = undefined;
-                $scope.isModeEdit = false;
-                if (resp) {
-                    if (isArrayNotNull($scope.gridFormulario.data))
-                        $scope.isActivoGrid = true;
-                    else {
-                        $scope.isActivoGrid = false;
-                        messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar.', 'info');
+                $timeout(function () {
+                    $scope.gridFormulario.rowSelect = undefined;
+                    $scope.isModeEdit = false;
+                    if (resp) {
+                        if (isArrayNotNull($scope.gridFormulario.data)) {
+                            $scope.isActivoGrid = true;
+                            $scope.gridFormulario.rowSelect = $scope.gridFormulario.data[0];
+                            $scope.gridApi['gridFormulario'].selection.selectRow($scope.gridFormulario.rowSelect);
+                            $scope.gridFormulario.rowNumber = 0;
+                            $scope.gridFormulario.count = $scope.gridFormulario.data.length - 1;
+                        } else {
+                            $scope.isActivoGrid = false;
+                            messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar.', 'info');
+                        }
+                    } else {
+                        $scope.cancelEditionModelAction(false);
                     }
-                } else {
-                    $scope.cancelEditionModelAction(false);
-                }
+                }, 200);
             });
         };
 
@@ -287,45 +286,30 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
 
         /**
          * Action ir siguiente grid
-         * @returns {undefined}
          */
         $scope.nextGridAction = function () {
-            clearValueStructure($scope.modelEstructura);
-            $generalFactory.nextGrid(
-                    $scope.gridFormulario,
-                    $scope,
-                    $scope.modelEstructura,
-                    $scope.modelEstructura[0].nameTable,
-                    'gridFormulario');
+            $generalFactory.nextGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
         };
 
         /**
          * Action ir anterior
-         * @returns {undefined}
          */
         $scope.previousGridAction = function () {
-            $generalFactory.previousGrid(
-                    $scope.gridFormulario,
-                    $scope,
-                    $scope.modelEstructura,
-                    $scope.modelEstructura[0].nameTable,
-                    'gridFormulario');
+            $generalFactory.previousGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
         };
 
         /**
          * Action ir ultima pagina grid
-         * @returns {undefined}
          */
         $scope.lastGridAction = function () {
-            $generalFactory.lastGrid($scope.gridFormulario, $scope.modelEstructura, $scope.modelEstructura[0].nameTable);
+            $generalFactory.lastGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
         };
 
         /**
          * Action ir primera pagina
-         * @returns {undefined}
          */
         $scope.firtsGridAction = function () {
-            $generalFactory.firtsGrid($scope.gridFormulario, $scope.modelEstructura, $scope.modelEstructura[0].nameTable);
+            $generalFactory.firtsGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
         };
 
     }]);

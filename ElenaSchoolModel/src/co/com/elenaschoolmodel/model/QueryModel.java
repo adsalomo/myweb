@@ -12,76 +12,8 @@ public class QueryModel {
     private boolean isOrderAscending;
     private boolean isOrderDescending;
     private String model;
-    private int count;
-    private int numberRegistersXPage;
-    private int page;
-    private boolean isPagination;
     private boolean isInsert;
     private boolean isUpdate;
-    
-    /**
-     * Propiedad para definir si la consulta es paginada
-     * @return 
-     */
-    public boolean getIsPagination(){
-        return isPagination;
-    }
-    
-    /**
-     * setter propiedad isPagination
-     * @param isPagination 
-     */
-    public void setIsPagination(boolean isPagination){
-        this.isPagination = isPagination;
-    }
-    
-    /**
-     * Inicializador desde donde se empezara a mostrar el paginado
-     * @return 
-     */
-    public int getPage(){
-        return page;
-    }
-    
-    /**
-     * 
-     * @param page 
-     */
-    public void setPage(int page){
-        this.page = page;
-    }
-    
-    /**
-     * Numero de registros por pagina
-     * @return 
-     */
-    public int getNumberRegistersXPage(){
-        return numberRegistersXPage;
-    }
-    
-    /**
-     * 
-     * @param numberRegistersXPage 
-     */
-    public void setNumberRegistersXPage(int numberRegistersXPage){
-        this.numberRegistersXPage = numberRegistersXPage;
-    }
-
-    /**
-     * 
-     * @return 
-     */
-    public int getCount() {
-        return count;
-    }
-
-    /**
-     * 
-     * @param count 
-     */
-    public void setCount(int count) {
-        this.count = count;
-    }
     
     /**
      * @return the listModel

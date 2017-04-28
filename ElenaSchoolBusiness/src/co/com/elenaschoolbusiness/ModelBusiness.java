@@ -83,8 +83,6 @@ public class ModelBusiness {
             // Leemos el archivo configuracion
             Configuration config = Util.readFileConfiguration();
 
-            queryModel.setNumberRegistersXPage(config.getNumberRegisterXPage());
-
             // Obtenemos el sql
             String sql = getQuery(queryModel);
 
@@ -96,7 +94,6 @@ public class ModelBusiness {
 
             // Ejecutamos el metodo para traer la consulta
             List<Object> result = iModelDao.getQuery(sql);
-            queryModel.setCount(getCountTable(queryModel.getModel()));
             queryModel.setListResult(result);
 
             // Serializamos el objeto queryModel
@@ -202,21 +199,6 @@ public class ModelBusiness {
     }
 
     /**
-     * Obtiene numero de registros por consulta
-     * @param queryModel
-     * @return
-     * @throws SQLException
-     */
-    private int getCountTable(String table) throws SQLException, Exception {
-        query = new Query();
-        query.setQueryTypes(Query.QueryTypes.Select);
-        // Add table
-        query.addTable(table);
-        List<Object> result = iModelDao.getQuery(query.getQuery());
-        return result != null ? result.size() : 0;
-    }
-
-    /**
      * Arma query con la estructura de la tabla
      * @param queryModel Objeto que define la consulta
      * @return
@@ -249,10 +231,6 @@ public class ModelBusiness {
                 query.addSortOrder(Query.SortOrder.None);
             }
 
-            // Add pagination
-            if (queryModel.getIsPagination()) {
-                query.addPagination(queryModel.getNumberRegistersXPage(), queryModel.getPage());
-            }
             return query.getQuery();
         }
         return "";
@@ -315,7 +293,7 @@ public class ModelBusiness {
      * @throws SQLException 
      */
     private String getMaxCodeTable(Model model) throws SQLException{
-        String max = "";
+        String max;
         Query sql = new Query();
         sql.setQueryTypes(Query.QueryTypes.Select);
         sql.addColumn("MAX(CODIGO)");
@@ -366,7 +344,7 @@ public class ModelBusiness {
      * @return
      */
     private String getValueXDataType(Model model) {
-        String value = "";
+        String value;
         if (model.getDataType().equalsIgnoreCase("character") || model.getDataType().equalsIgnoreCase("character varying") || model.getDataType().equalsIgnoreCase("date")) {
             value = "'" + model.getValor() + "'";
         } else if (model.getDataType().equalsIgnoreCase("bit")) {

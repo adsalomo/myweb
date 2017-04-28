@@ -1,15 +1,15 @@
 <div class="top well-lg" style="padding:5px; margin-bottom: 10px;" >
         <div class="btn-group-xs">
-            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === 0" data-toggle="tooltip" data-placement="top" title="Primero">
+            <button class="btn btn-transparente btn-xs" ng-click="firtsGridAction()" ng-disabled="gridFormulario.data === null || gridFormulario.data.length === 0 || gridFormulario.rowNumber === 0" data-toggle="tooltip" data-placement="top" title="Primero">
                 <img src="img/imgElenaSchool/imgPrimero.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" ng-disabled="!isActivoGrid" data-toggle="tooltip" data-placement="top" title="Anterior">
+            <button class="btn btn-transparente btn-xs" ng-click="previousGridAction()" ng-disabled="gridFormulario.data === null || gridFormulario.data.length === 0 || gridFormulario.rowNumber === 0" data-toggle="tooltip" data-placement="top" title="Anterior">
                 <img src="img/imgElenaSchool/imgAnterior.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" ng-disabled="!isActivoGrid" data-toggle="tooltip" data-placement="top" title="Siguiente">
+            <button class="btn btn-transparente btn-xs" ng-click="nextGridAction()" ng-disabled="gridFormulario.data === null || gridFormulario.data.length === 0 || gridFormulario.rowNumber === gridFormulario.count" data-toggle="tooltip" data-placement="top" title="Siguiente">
                 <img src="img/imgElenaSchool/imgSiguiente.png" />
             </button>
-            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="!isActivoGrid || gridFormulario.actualPage === gridFormulario.totalPages" data-toggle="tooltip" data-placement="top" title="Último">
+            <button class="btn btn-transparente btn-xs" ng-click="lastGridAction()" ng-disabled="gridFormulario.data === null || gridFormulario.data.length === 0 || gridFormulario.rowNumber === gridFormulario.count" data-toggle="tooltip" data-placement="top" title="Último">
                 <img src="img/imgElenaSchool/imgUltimo.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-disabled="((isModeEdit || isActivoGrid) && !isModeInsert) || isModeInsert" ng-click="activateModeInsertAction();" 
@@ -17,7 +17,7 @@
                 <img src="img/imgElenaSchool/imgNuevo.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-click="activateModeEditAction();" data-toggle="tooltip" data-placement="top" 
-                    ng-disabled="!rowSelect || isModeEdit" data-toggle="tooltip" data-placement="top" title="Editar">
+                    ng-disabled="!gridFormulario.rowSelect || isModeEdit" data-toggle="tooltip" data-placement="top" title="Editar">
                 <img src="img/imgElenaSchool/imgEditar.png" />
             </button>
             <button class="btn btn-transparente btn-xs" ng-disabled="((!isModeInsert || !isModeEdit) && formOperation.$invalid) || isActivoGrid" 

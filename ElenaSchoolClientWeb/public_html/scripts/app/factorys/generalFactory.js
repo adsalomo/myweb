@@ -7,232 +7,59 @@
  */
 app.factory('$generalFactory', ['$myService', '$setting', function ($myService, $setting) {
         return {
-            /**
-             * Ir siguiente en grid
-             * @param {object} grid
-             * @param {object} scope
-             * @param {object} structure
-             * @param {string} table
-             * @param {string} nameObject
-             * @returns {undefined}
-             */
-            nextGrid: function (grid, scope, structure, table, nameObject) {
-                grid.rowNumber += 1;
+            
+            firtsGrid: function (pGrid, pEntidad, pScope, pModelStructure) {
+                pGrid.rowNumber = 0;
 
-                if (grid.pageSize === grid.rowNumber) {
-                    // Si la grid es paginada
-                    if (grid.isPagination) {
+                // Se obtiene el valor de la grid en la primera posicion
+                pGrid.rowSelect = pGrid.data[pGrid.rowNumber];
+                pScope.gridApi[pEntidad].selection.selectRow(pGrid.rowSelect);
+                setValueStructure(pGrid.rowSelect, pModelStructure);
+            },
+            
+            previousGrid: function (pGrid, pEntidad, pScope, pModelStructure) {
+                if (pGrid.rowNumber > 0) {
+                    // Disminuimos en uno la fila
+                    pGrid.rowNumber = pGrid.rowNumber - 1;
 
-                        // Aumentamos en 1 la pagina actual
-                        grid.actualPage += 1;
-
-                        // Si la pagina supera al total de paginas, la pagina actual es igual al numero de paginas
-                        if (grid.actualPage > grid.totalPages) {
-                            grid.actualPage = grid.totalPages;
-                            messageBoxAlert($setting.varGlobals.nameApp + ' - Grid', 'No hay más datos para mostrar', 'info');
-                            grid.rowNumber = grid.pageSize - 1;
-                        } else {
-                            // Preguntamos si el total de paginas en mayor o igual que la pagina actual para realizar el request
-                            if (grid.totalPages >= grid.actualPage) {
-
-                                // Arma objero queryModel
-                                var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
-                                var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
-
-                                // Request get consulta
-                                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
-                                    // Valida la respuesta del servicio
-                                    if (!isValidResponseService(data))
-                                        return;
-
-                                    var response = JSON.parse(data.response);
-
-                                    grid.count = response.count;
-                                    // Reiniciamos el contador de las filas
-                                    grid.rowNumber = -1;
-
-                                    // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                                    if (grid.isPagination)
-                                        grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
-                                    else
-                                        grid.pageSize = data.count;
-
-                                    // Llena grid con los datos de la consulta
-                                    setListToGrid(grid, response.listResult, structure);
-
-                                }).error(function (data, status, headers, config) {
-                                    console.log(data);
-                                });
-                            }
-                        }
-                    } else {
-                        grid.rowNumber = grid.pageSize - 1;
-                        messageBoxAlert($setting.varGlobals.nameApp + ' - Grid', 'No hay más datos para mostrar', 'info');
-                    }
-                } else {
-                    scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
+                    // Se obtiene el valor de la grid en la posicion anterior
+                    pGrid.rowSelect = pGrid.data[pGrid.rowNumber];
+                    pScope.gridApi[pEntidad].selection.selectRow(pGrid.rowSelect);
+                    setValueStructure(pGrid.rowSelect, pModelStructure);
                 }
             },
             
-            /**
-             * Ir Anterior en grid
-             * @param {object} grid
-             * @param {object} scope
-             * @param {object} structure
-             * @param {string} table
-             * @param {string} nameObject
-             * @returns {undefined}
-             */
-            previousGrid: function (grid, scope, structure, table, nameObject) {
-                grid.rowNumber -= 1;
+            lastGrid: function (pGrid, pEntidad, pScope, pModelStructure) {
+                pGrid.rowNumber = pGrid.count;
+                pGrid.rowSelect = pGrid.data[pGrid.rowNumber];
+                pScope.gridApi[pEntidad].selection.selectRow(pGrid.rowSelect);
+                setValueStructure(pGrid.rowSelect, pModelStructure);
+            },
+            
+            nextGrid: function (pGrid, pEntidad, pScope, pModelStructure) {
+                if (pGrid.count > pGrid.rowNumber) {
+                    // Aumentamos en uno la fila
+                    pGrid.rowNumber = pGrid.rowNumber + 1;
 
-                if (grid.rowNumber === -1) {
-
-                    // Si la grid es paginada
-                    if (grid.isPagination) {
-
-                        // Si la pagina actual es mayor que 0 se le resta una pagina para ir a la anterior
-                        if (grid.actualPage > 0) {
-                            grid.actualPage -= 1;
-
-                            // Arma objero queryModel
-                            var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
-                            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
-
-                            // Request get consulta
-                            $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
-                                // Valida la respuesta del servicio
-                                if (!isValidResponseService(data))
-                                    return;
-
-                                var response = JSON.parse(data.response);
-
-                                grid.count = response.count;
-                                // Reiniciamos el contador de las filas
-                                grid.rowNumber = -1;
-
-                                // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                                if (grid.isPagination)
-                                    grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
-                                else
-                                    grid.pageSize = response.count;
-
-                                // Llena grid con los datos de la consulta
-                                setListToGrid(grid, response.listResult, structure);
-
-                            }).error(function (data, status, headers, config) {
-                                console.log(data);
-                            });
-                        } else {
-                            grid.actualPage = 0;
-                            grid.rowNumber = 0;
-                            scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
-                        }
-                    }
-                } else if (grid.rowNumber < -1) {
-                    if (grid.isPagination) {
-                        grid.rowNumber = grid.pageSize - 1;
-                        scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
-                    } else {
-                        grid.rowNumber = 0;
-                        scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
-                    }
-                } else {
-                    scope.gridApi[nameObject].selection.selectRowByVisibleIndex(grid.rowNumber);
+                    // Se obtiene el valor de la grid en la posicion siguiente
+                    pGrid.rowSelect = pGrid.data[pGrid.rowNumber];
+                    pScope.gridApi[pEntidad].selection.selectRow(pGrid.rowSelect);
+                    setValueStructure(pGrid.rowSelect, pModelStructure);
                 }
-            },
-            
-            /**
-             * Va a la ultima pagina
-             * @param {type} grid
-             * @param {type} structure
-             * @param {type} table
-             * @returns {undefined}
-             */
-            lastGrid: function (grid, structure, table) {
-                grid.actualPage = grid.totalPages;
-                // Arma objero queryModel
-                var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
-                var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
-
-                // Request get consulta
-                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
-                    // Valida la respuesta del servicio
-                    if (!isValidResponseService(data))
-                        return;
-
-                    var response = JSON.parse(data.response);
-
-                    grid.count = response.count;
-                    // Reiniciamos el contador de las filas
-                    grid.rowNumber = -1;
-
-                    // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                    if (grid.isPagination)
-                        grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
-                    else
-                        grid.pageSize = response.count;
-
-                    // Llena grid con los datos de la consulta
-                    setListToGrid(grid, response.listResult, structure);
-
-                }).error(function (data, status, headers, config) {
-                    console.log(data);
-                });
-            },
-            
-            /**
-             * Va a la primera pagina
-             * @param {type} grid
-             * @param {type} structure
-             * @param {type} table
-             * @returns {undefined}
-             */
-            firtsGrid: function (grid, structure, table) {
-                grid.actualPage = 0;
-                // Arma objero queryModel
-                var obj = getObjectQueryModel(structure, null, grid.isOrderAscending, grid.isOrderDescending, table, grid.actualPage, grid.isPagination);
-                var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
-
-                // Request get consulta
-                $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
-                    // Valida la respuesta del servicio
-                    if (!isValidResponseService(data))
-                        return;
-
-                    var response = JSON.parse(data.response);
-
-                    grid.count = response.count;
-                    // Reiniciamos el contador de las filas
-                    grid.rowNumber = -1;
-
-                    // Define el tamano de la pagina de acuerdo a si la grid es paginada o no
-                    if (grid.isPagination)
-                        grid.pageSize = isArrayNotNull(response.listResult) ? response.listResult.length : 0;
-                    else
-                        grid.pageSize = response.count;
-
-                    // Llena grid con los datos de la consulta
-                    setListToGrid(grid, response.listResult, structure);
-
-                }).error(function (data, status, headers, config) {
-                    console.log(data);
-                });
             },
             
             /**
              * Asigna los valores a las propiedades value de la estructura. 
              * Para el caso de las columnas que sean foronaeas busca el objeto al que hace referencia por el codigo.
-             * @param {type} rowSelect
-             * @param {type} modelEstructura
-             * @returns {undefined}
+             * @param {type} pRowSelect
+             * @param {type} pModelEstructura
              */
-            setValueStructure: function (rowSelect, modelEstructura) {
-                if (!angular.isUndefined(rowSelect)) {
-                    for (var property in rowSelect) {
-                        angular.forEach(modelEstructura, function (value, key) {
+            setValueStructure: function (pRowSelect, pModelEstructura) {
+                if (!angular.isUndefined(pRowSelect)) {
+                    for (var property in pRowSelect) {
+                        angular.forEach(pModelEstructura, function (value, key) {
                             if (value.columnName === property) {
-                                value.valor = rowSelect[property];
+                                value.valor = pRowSelect[property];
                                 if (value.isForeign) {
                                     var model = {nameTable: value.foreignTableName};
                                     var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
@@ -242,23 +69,23 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                                         if (!isValidResponseService(data))
                                             return;
                                         // Obtiene la estructura
-                                        var structure = JSON.parse(data.response);
-                                        if (isArrayNotNull(structure)) {
+                                        var pStructure = JSON.parse(data.response);
+                                        if (isArrayNotNull(pStructure)) {
                                             // Obtiene la lista solo con el objeto donde el nombre de columna es igual a codigo
-                                            var item = $.grep(structure, function (e) {
+                                            var item = $.grep(pStructure, function (e) {
                                                 return e.columnName === 'codigo';
                                             });
                                             if (isArrayNotNull(item)) {
                                                 // Asigna el valor
                                                 item[0].valor = value.valor;
                                                 // Elimina el objeto de la lista donde nombre columna es igual a codigo
-                                                structure = $.grep(structure, function (e) {
+                                                pStructure = $.grep(pStructure, function (e) {
                                                     return e.columnName !== 'codigo';
                                                 });
                                                 // Agrega el objeto donde la columna es igual a codigo a la estrucutra
-                                                structure.push(item[0]);
+                                                pStructure.push(item[0]);
 
-                                                var obj = getObjectQueryModel(structure, null, false, false, value.foreignTableName, 0, false);
+                                                var obj = getObjectQueryModel(pStructure, null, false, false, value.foreignTableName, 0, false);
                                                 var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(obj), token: null};
                                                 // Request get consulta
                                                 $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
@@ -283,6 +110,30 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                             }
                         });
                     }
+                }
+            },
+            
+            setListToGrid: function (pGrid, pList, pModelEstructura) {
+                var vColumns = [];
+                if (isArrayNotNull(pList)) {
+                    for (var property in pList[0]) {
+                        if (pList[0].hasOwnProperty(property)) {
+                            angular.forEach(pModelEstructura, function (pValue, pKey) {
+                                if (pValue.columnName === property)
+                                    if (property === 'descripcion' || property === 'nombre')
+                                        vColumns.push({name: pValue.labelName, field: property, width: 200});
+                                    else
+                                        vColumns.push({name: pValue.labelName, field: property, width: 100});
+                            });
+                        }
+                    }
+                    
+                    angular.forEach(pList, function (pValue, pKey){
+                        pValue.Secuence = pKey;
+                    });
+                    
+                    pGrid.columnDefs = vColumns;
+                    pGrid.data = pList;
                 }
             }
         };
