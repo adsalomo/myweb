@@ -10,7 +10,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         /**
          * Definicion de variables
          */
-        $scope.modelEstructura = [];
+        $scope.modelStructure = [];
         $scope.numRow = [];
         $scope.numColumn = $setting.varGlobals.columnsXRow;
         $scope.isActivoGrid = false;
@@ -22,7 +22,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
         /**
          * Definicion de grid
          */
-        $scope.gridFormulario = {
+        $scope.gridForm = {
             enableRowSelection: true,
             enableRowHeaderSelection: false,
             enableFiltering: false,
@@ -30,7 +30,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
             multiSelect: false,
             noUnselect: true,
             flatEntityAccess: true,
-            rowNumber: -1, // Fila actual seleccionada en la grid
+            rowNumber: 0, // Fila actual seleccionada en la grid
             count: 0, // Total registros consulta
             isOrderAscending: false, // Ordenamiento consulta
             isOrderDescending: false, // Ordenamiento Consulta
@@ -42,14 +42,14 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @param {type} gridApi
          * @returns {undefined}
          */
-        $scope.gridFormulario.onRegisterApi = function (gridApi) {
-            $scope.gridApi['gridFormulario'] = gridApi;
+        $scope.gridForm.onRegisterApi = function (gridApi) {
+            $scope.gridApi['gridForm'] = gridApi;
 
-            $scope.gridApi['gridFormulario'].cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
+            $scope.gridApi['gridForm'].cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
                 if (angular.isUndefined(newRowCol.row.isSelected) || !newRowCol.row.isSelected) {
-                    $scope.gridApi['gridFormulario'].selection.selectRow(newRowCol.row.entity);
-                    $scope.gridFormulario.rowNumber = newRowCol.row.entity.Secuence;
-                    $scope.gridFormulario.rowSelect = newRowCol.row.entity;
+                    $scope.gridApi['gridForm'].selection.selectRow(newRowCol.row.entity);
+                    $scope.gridForm.rowNumber = newRowCol.row.entity.Secuence;
+                    $scope.gridForm.rowSelect = newRowCol.row.entity;
                 }
             });
 
@@ -87,9 +87,9 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     return;
                 }
 
-                $scope.modelEstructura = response;
-                var numRow = Math.floor($scope.modelEstructura.length / $setting.varGlobals.column);
-                var resto = ($scope.modelEstructura.length % $setting.varGlobals.column);
+                $scope.modelStructure = response;
+                var numRow = Math.floor($scope.modelStructure.length / $scope.numColumn);
+                var resto = ($scope.modelStructure.length % $scope.numColumn);
                 if (resto !== 0)
                     numRow++;
 
@@ -107,10 +107,22 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * @returns {undefined}
          */
         $scope.updateModelAction = function () {
-            deleteColumnStructure($scope.modelEstructura);
+            deleteColumnStructure($scope.modelStructure);
 
-            var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
-            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+            var queryModel = { 
+                listModel: $scope.modelStructure,
+                model: $scope.modelStructure[0].nameTable, 
+                isInsert: $scope.isModeInsert, 
+                isUpdate: $scope.isModeEdit 
+            };
+            
+            var actionRequest = {
+                user: null, 
+                password: null, 
+                credentials: null, 
+                request: angular.toJson(queryModel), 
+                token: null
+            };
 
             // Request para realizar la actualizacion del modelo
             $myService.insertModelService(actionRequest, obtenerUrlService('UpdateModel')).success(function (data, status, headers, config) {
@@ -132,10 +144,20 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          */
         $scope.activateModeInsertAction = function () {
             $timeout(function () {
-                deleteColumnStructure($scope.modelEstructura);
+                deleteColumnStructure($scope.modelStructure);
 
-                var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable, 0, false, $scope.isModeInsert, $scope.isModeEdit);
-                var actionRequest = {user: 'adsalomo', password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+                var queryModel = { 
+                    listModel: $scope.modelStructure, 
+                    model: $scope.modelStructure[0].nameTable
+                };
+                
+                var actionRequest = {
+                    user: 'adsalomo', 
+                    password: null, 
+                    credentials: null, 
+                    request: angular.toJson(queryModel), 
+                    token: null
+                };
 
                 // Requesta para obtener los valores de las columnas autonumericos y llaves primarias
                 $myService.getMaxCodeService(actionRequest, obtenerUrlService('GetMaxCode')).success(function (data, status, headers, config) {
@@ -144,7 +166,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         return;
 
                     var response = JSON.parse(data.response);
-                    setValoresNotNull($scope.modelEstructura, response);
+                    setValoresNotNull($scope.modelStructure, response);
                     $scope.isModeInsert = true;
                 }).error(function (data, status, headers, config) {
                     console.log(data);
@@ -179,9 +201,10 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                         $scope.isModeInsert = false;
                         $scope.isModeEdit = false;
                         $scope.isActivoGrid = false;
-                        $scope.gridFormulario.rowSelect = undefined;
-                        clearValueStructure($scope.modelEstructura);
+                        $scope.gridForm.rowSelect = undefined;
+                        clearValueStructure($scope.modelStructure);
                         $scope.formOperation.$setPristine();
+                        $scope.gridForm.data = [];
                     }, 200);
                 }, function (result) {
                 });
@@ -190,8 +213,8 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                     $scope.isModeInsert = false;
                     $scope.isModeEdit = false;
                     $scope.isActivoGrid = false;
-                    $scope.gridFormulario.rowSelect = undefined;
-                    clearValueStructure($scope.modelEstructura);
+                    $scope.gridForm.rowSelect = undefined;
+                    clearValueStructure($scope.modelStructure);
                     $scope.formOperation.$setPristine();
                 }, 200);
             }
@@ -201,7 +224,7 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * Activa modo edicion del modelo
          */
         $scope.activateModeEditAction = function () {
-            $generalFactory.setValueStructure($scope.gridFormulario.rowSelect, $scope.modelEstructura);
+            $generalFactory.setValueStructure($scope.gridForm.rowSelect, $scope.modelStructure);
             $scope.openViewFormToTableAction();
             $scope.isModeEdit = true;
         };
@@ -238,24 +261,24 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
                 controller: 'queryTableController',
                 resolve: {
                     $tableName: function () {
-                        if (isArrayNotNull($scope.modelEstructura))
-                            return $scope.modelEstructura[0].nameTable;
+                        if (isArrayNotNull($scope.modelStructure))
+                            return $scope.modelStructure[0].nameTable;
                     },
-                    $gridFormulario: function () {
-                        return $scope.gridFormulario;
+                    $gridForm: function () {
+                        return $scope.gridForm;
                     }
                 }
             }).result.catch(function (resp) {
                 $timeout(function () {
-                    $scope.gridFormulario.rowSelect = undefined;
+                    $scope.gridForm.rowSelect = undefined;
                     $scope.isModeEdit = false;
                     if (resp) {
-                        if (isArrayNotNull($scope.gridFormulario.data)) {
+                        if (isArrayNotNull($scope.gridForm.data)) {
                             $scope.isActivoGrid = true;
-                            $scope.gridFormulario.rowSelect = $scope.gridFormulario.data[0];
-                            $scope.gridApi['gridFormulario'].selection.selectRow($scope.gridFormulario.rowSelect);
-                            $scope.gridFormulario.rowNumber = 0;
-                            $scope.gridFormulario.count = $scope.gridFormulario.data.length - 1;
+                            $scope.gridForm.rowSelect = $scope.gridForm.data[0];
+                            $scope.gridApi['gridForm'].selection.selectRow($scope.gridForm.rowSelect);
+                            $scope.gridForm.rowNumber = 0;
+                            $scope.gridForm.count = $scope.gridForm.data.length - 1;
                         } else {
                             $scope.isActivoGrid = false;
                             messageBoxAlert($setting.varGlobals.nameApp + ' - Formulario', 'No hay datos para mostrar.', 'info');
@@ -288,28 +311,28 @@ app.controller('mainController', ['$scope', '$myService', '$uibModal', '$setting
          * Action ir siguiente grid
          */
         $scope.nextGridAction = function () {
-            $generalFactory.nextGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
+            $generalFactory.nextGrid($scope.gridForm, 'gridForm', $scope, $scope.modelStructure);
         };
 
         /**
          * Action ir anterior
          */
         $scope.previousGridAction = function () {
-            $generalFactory.previousGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
+            $generalFactory.previousGrid($scope.gridForm, 'gridForm', $scope, $scope.modelStructure);
         };
 
         /**
          * Action ir ultima pagina grid
          */
         $scope.lastGridAction = function () {
-            $generalFactory.lastGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
+            $generalFactory.lastGrid($scope.gridForm, 'gridForm', $scope, $scope.modelStructure);
         };
 
         /**
          * Action ir primera pagina
          */
         $scope.firtsGridAction = function () {
-            $generalFactory.firtsGrid($scope.gridFormulario, 'gridFormulario', $scope, $scope.modelEstructura);
+            $generalFactory.firtsGrid($scope.gridForm, 'gridForm', $scope, $scope.modelStructure);
         };
 
     }]);

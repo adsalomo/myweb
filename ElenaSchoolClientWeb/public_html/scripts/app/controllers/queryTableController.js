@@ -5,12 +5,12 @@
  * @autor AdrianL
  * @since 21 sep 2016
  */
-app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myService', '$setting', '$gridFormulario', '$tableName', '$generalFactory', function ($scope, $uibModalInstance, $myService, $setting, $gridFormulario, $tableName, $generalFactory) {
+app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myService', '$setting', '$gridForm', '$tableName', '$generalFactory', function ($scope, $uibModalInstance, $myService, $setting, $gridForm, $tableName, $generalFactory) {
 
         /**
          * Inicializacion variables
          */
-        $scope.modelEstructura = [];
+        $scope.modelStructure = [];
         $scope.isTypeOrder = 1;
 
         /**
@@ -23,7 +23,7 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
                 // Valida la respuesta del servicio
                 if (!isValidResponseService(data))
                     return;
-                $scope.modelEstructura = JSON.parse(data.response);
+                $scope.modelStructure = JSON.parse(data.response);
             }).error(function (data, status, headers, config) {
                 console.log(data);
                 messageBoxAlert('Consulta Tabla', 'Ocurrió un error al procesar su solicitud', 'error');
@@ -37,17 +37,18 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
         $scope.consultarAction = function () {
             // Define tipo de ordenamiento
             if ($scope.isTypeOrder === 1)
-                $gridFormulario.isOrderAscending = true;
+                $gridForm.isOrderAscending = true;
             else
-                $gridFormulario.isOrderDescending = true;
+                $gridForm.isOrderDescending = true;
 
-            $gridFormulario.data = [];
+            $gridForm.data = [];
 
             // Arma objeto queryModel
-            var vQueryModel = { listModel: $scope.modelEstructura, 
-                isOrderAscending: $gridFormulario.isOrderAscending, 
-                isOrderDescending: $gridFormulario.isOrderDescending,
-                model: $scope.modelEstructura[0].nameTable 
+            var vQueryModel = { 
+                listModel: $scope.modelStructure, 
+                isOrderAscending: $gridForm.isOrderAscending, 
+                isOrderDescending: $gridForm.isOrderDescending,
+                model: $scope.modelStructure[0].nameTable 
             };
             
             var vActionRequest = {user: null, password: null, credentials: null, request: angular.toJson(vQueryModel), token: null};
@@ -62,7 +63,7 @@ app.controller('queryTableController', ['$scope', '$uibModalInstance', '$myServi
 
                 if (vResponse !== null && angular.isDefined(vResponse) && isArrayNotNull(vResponse.listResult)) {
                     // Llena grid con los datos de la consulta
-                    $generalFactory.setListToGrid($gridFormulario, vResponse.listResult, $scope.modelEstructura);
+                    $generalFactory.setListToGrid($gridForm, vResponse.listResult, $scope.modelStructure);
                     $uibModalInstance.dismiss(true);
                 } else{
                     messageBoxAlert('Consulta Tabla', 'No hay datos para mostrar', 'info');

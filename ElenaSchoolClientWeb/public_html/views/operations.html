@@ -13,7 +13,7 @@
                             <div class="jarviswidget" id="wid-id-3" data-widget-editbutton="false" data-widget-custombutton="false">
                                 <header style="background: #2C3742; border: 1px #030405 solid;">
                                     <span class="widget-icon"><i class="fa fa-edit" style="color: #FFF"></i></span>
-                                    <h2 style="color: #FFF">Registro {{modelEstructura[0].nameTable}}</h2>				
+                                    <h2 style="color: #FFF">Registro {{modelStructure[0].nameTable}}</h2>				
                                 </header>
                                 <div>
                                     <div class="jarviswidget-editbox">
@@ -24,14 +24,14 @@
                                             <div ng-include="'includes/controls/buttons.html'"></div>
 
                                             <header>
-                                                Formulario <small>{{modelEstructura[0].nameTable}}</small>
+                                                Formulario <small>{{modelStructure[0].nameTable}}</small>
                                             </header>
                                             
                                             <!--Formulario-->
-                                            <div ng-include="'includes/controls/form.html'" ng-show="!isActivoGrid"></div>
+                                            <div ng-include="'includes/controls/form.html'" ng-if="!isActivoGrid"></div>
                                             
                                             <!--Grid-->
-                                            <div ng-include="'includes/controls/grid.html'" ng-show="isActivoGrid"></div>
+                                            <div ng-include="'includes/controls/grid.html'" ng-if="isActivoGrid"></div>
                                             <footer>
                                             </footer>
                                         </form>

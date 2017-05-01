@@ -2,7 +2,7 @@
     <div ng-repeat="row in numRow">
         <div class="row">
             <section class="col col-6 " 
-                     ng-repeat="item in modelEstructura.slice((row === 0 ? row : (row * numColumn)), (row === 0 ? numColumn : ((row * numColumn) + numColumn)))">
+                     ng-repeat="item in modelStructure.slice((row === 0 ? row : (row * numColumn)), (row === 0 ? numColumn : ((row * numColumn) + numColumn)))">
                 <div ng-if="item.columnName !== 'fecha_creacion' && item.columnName !== 'fecha_modificacion'
                             && item.columnName !== 'fecha_proceso' && item.columnName !== 'usuario'">
                     <div ng-if="item.isForeign">

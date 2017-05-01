@@ -2,7 +2,7 @@
     <!--Header modal-->
     <div class="modal-header">
         <button type="button" class="close" ng-click="cancelQueryTableAction();" data-dissmiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="fontTitleStyle">Consultar tabla <small class="fontTitleStyle">{{modelEstructura[0].nameTable}}</small></h3>
+        <h3 class="fontTitleStyle">Consultar tabla <small class="fontTitleStyle">{{modelStructure[0].nameTable}}</small></h3>
     </div>
     <!--Body modal-->
     <div class="modal-body-scrollbar">
@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="row in modelEstructura">
+                <tr ng-repeat="row in modelStructure">
                     <td>{{row.labelName}}</td>
                     <td>{{row.columnName}}</td>
                     <td>{{row.dataType}}</td>

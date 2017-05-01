@@ -8,16 +8,16 @@
  * Asigna lista de valores a la grid dandole el ancho, nombre columna
  * @param {type} pGridOptions Definición de la grid
  * @param {type} pList Lista de items a pintar en la grid 
- * @param {type} pModelEstructura Lista de items a pintar en la grid 
+ * @param {type} pmodelStructure Lista de items a pintar en la grid 
  * @returns {undefined}
  */
-function setListToGrid(pGridOptions, pList, pModelEstructura) {
+function setListToGrid(pGridOptions, pList, pmodelStructure) {
     var vColumns = [];
 
     if (isArrayNotNull(pList)) {
         for (var property in pList[0]) {
             if (pList[0].hasOwnProperty(property)) {
-                angular.forEach(pModelEstructura, function (pValue, pKey) {
+                angular.forEach(pmodelStructure, function (pValue, pKey) {
                     if (pValue.columnName === property)
                         if (property === 'descripcion' || property === 'nombre')
                             vColumns.push({name: pValue.labelName, field: property, width: 200});
@@ -121,14 +121,14 @@ function getValueState() {
 /**
  * 
  * @param {type} rowSelect
- * @param {type} modelEstructura
+ * @param {type} modelStructure
  * @returns {undefined}
  */
-function setValueStructure(rowSelect, modelEstructura) {
+function setValueStructure(rowSelect, modelStructure) {
     if (!angular.isUndefined(rowSelect)) {
         for (var property in rowSelect) {
             if (rowSelect.hasOwnProperty(property)) {
-                angular.forEach(modelEstructura, function (value, key) {
+                angular.forEach(modelStructure, function (value, key) {
                     if (value.columnName === property) {
                         value.valor = rowSelect[property];
                     }

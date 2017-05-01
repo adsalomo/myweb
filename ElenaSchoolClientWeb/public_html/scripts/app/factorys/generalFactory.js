@@ -52,12 +52,12 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
              * Asigna los valores a las propiedades value de la estructura. 
              * Para el caso de las columnas que sean foronaeas busca el objeto al que hace referencia por el codigo.
              * @param {type} pRowSelect
-             * @param {type} pModelEstructura
+             * @param {type} pModelStructure
              */
-            setValueStructure: function (pRowSelect, pModelEstructura) {
+            setValueStructure: function (pRowSelect, pModelStructure) {
                 if (!angular.isUndefined(pRowSelect)) {
                     for (var property in pRowSelect) {
-                        angular.forEach(pModelEstructura, function (value, key) {
+                        angular.forEach(pModelStructure, function (value, key) {
                             if (value.columnName === property) {
                                 value.valor = pRowSelect[property];
                                 if (value.isForeign) {
@@ -113,12 +113,12 @@ app.factory('$generalFactory', ['$myService', '$setting', function ($myService, 
                 }
             },
             
-            setListToGrid: function (pGrid, pList, pModelEstructura) {
+            setListToGrid: function (pGrid, pList, pModelStructure) {
                 var vColumns = [];
                 if (isArrayNotNull(pList)) {
                     for (var property in pList[0]) {
                         if (pList[0].hasOwnProperty(property)) {
-                            angular.forEach(pModelEstructura, function (pValue, pKey) {
+                            angular.forEach(pModelStructure, function (pValue, pKey) {
                                 if (pValue.columnName === property)
                                     if (property === 'descripcion' || property === 'nombre')
                                         vColumns.push({name: pValue.labelName, field: property, width: 200});

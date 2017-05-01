@@ -9,7 +9,6 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
 
         var nombreApp = $setting.varGlobals.nameApp;
         $scope.gridApi = {};
-        getStructureTable();
         $scope.foreignTableName = $item.foreignTableName;
 
         /**
@@ -94,11 +93,16 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
 
         /**
          * Funcion obtener estructura tabla
-         * @returns {undefined}
          */
-        function getStructureTable() {
+        $scope.getStructureTable = function() {
             var model = {nameTable: $item.foreignTableName};
-            var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(model), token: null};
+            var actionRequest = {
+                user: null, 
+                password: null, 
+                credentials: null, 
+                request: angular.toJson(model), 
+                token: null
+            };
 
             // Request para obtener estructura
             $myService.getStructureTableService(actionRequest, obtenerUrlService('GetStructure')).success(function (data, status, headers, config) {
@@ -107,12 +111,22 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
                 if (!isValidResponseService(data))
                     return;
 
-                $scope.modelEstructura = JSON.parse(data.response);
+                $scope.modelStructure = JSON.parse(data.response);
 
                 // Si la estructura es un array obtenemos la consulta
-                if (isArrayNotNull($scope.modelEstructura)) {
-                    var queryModel = getObjectQueryModel($scope.modelEstructura, null, false, false, $scope.modelEstructura[0].nameTable);
-                    var actionRequest = {user: null, password: null, credentials: null, request: angular.toJson(queryModel), token: null};
+                if (isArrayNotNull($scope.modelStructure)) {
+                    var queryModel = {
+                        listModel: $scope.modelStructure,
+                        model: $scope.modelStructure[0].nameTable
+                    };
+                    
+                    var actionRequest = {
+                        user: null, 
+                        password: null, 
+                        credentials: null, 
+                        request: angular.toJson(queryModel), 
+                        token: null
+                    };
 
                     // Request para obtener consulta
                     $myService.getQueryService(actionRequest, obtenerUrlService('GetQuery')).success(function (data, status, headers, config) {
@@ -123,7 +137,7 @@ app.controller('lupaController', ['$scope', '$uibModalInstance', '$item', '$mySe
                         var response = JSON.parse(data.response);
                         
                         if (isArrayNotNull(response.listResult))
-                            setListToGrid($scope.gridOptionsLupa, response.listResult, $scope.modelEstructura);
+                            setListToGrid($scope.gridOptionsLupa, response.listResult, $scope.modelStructure);
                         else {
                             messageBoxAlert(nombreApp + ' - Lupa', 'No hay datos para mostrar', 'info');
                             $uibModalInstance.dismiss(null);
