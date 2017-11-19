@@ -22,7 +22,6 @@ public class PersonHelper implements RowMapper<PersonModel> {
         personModel.setId(rs.getInt("id"));
         personModel.setName(rs.getString("nombre"));
         personModel.setLastName(rs.getString("apellido"));
-        
         return personModel;
     }
 
